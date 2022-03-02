@@ -1,0 +1,16 @@
+set.seed(42)
+X = matrix(rnorm(10*100), 10, 100)
+pdf("patterns.pdf", width = 6, height = 4.2)
+matplot(t(X), type = "l", lty = 1)
+dev.off()
+
+
+pdf("a.pdf", width = 6, height = 4.2)
+matplot(t(X)[,1:3], type = "l", lty = 1, col = 1:3)
+dev.off()
+
+
+
+pdf("b.pdf", width = 6, height = 4.2)
+matplot(t(X)[,4:5], type = "l", lty = 1, col = c(4, 6))
+dev.off()

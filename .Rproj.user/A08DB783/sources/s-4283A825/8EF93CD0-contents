@@ -1,0 +1,57 @@
+set.seed(4)
+N = 500
+Con = runif(N, -0.2, 0.2)
+X = 1*Con + rnorm(N, sd = 0.82)
+Y = 0.3*X - (X**3)/1 + (X**5)/50 - (X**7)/100 - 0.3*Con + rnorm(N, sd = 1.4)
+plot(X, Y)
+
+m = lm(Y~X + I(X^3) + I(X^5)+I(X^7) +I(X^9) +Con, data = data.frame(X = X, Y = Y, Con=Con)[1:100,])
+summary(m)
+m2 = lm(Y~X + I(X^3) + I(X^5)+I(X^7) +I(X^9), data = data.frame(X = X, Y = Y, Con=Con)[1:100,])
+summary(m2)
+library(MASS)
+
+best = stepAIC(m)
+best
+
+lines(smooth.spline(data.frame(X = X, Y = Y, Con=Con)[101:N,]$X,predict(m, newdata=data.frame(X = X, Y = Y, Con=Con)   [101:N,])), col = "red")
+lines(smooth.spline(data.frame(X = X, Y = Y, Con=Con)[101:N,]$X,predict(best, newdata=data.frame(X = X, Y = Y, Con=Con)[101:N,])), col = "blue")
+
+cor(data.frame(X = X, Y = Y, Con=Con)[301:N,]$X,predict(m, newdata=data.frame(X = X, Y = Y, Con=Con)   [301:N,]))
+cor(data.frame(X = X, Y = Y, Con=Con)[301:N,]$X,predict(best, newdata=data.frame(X = X, Y = Y, Con=Con)[301:N,]))
+
+set.seed(1)
+N = 50
+X1 = runif(N,-1,1)
+X2 = X1+rnorm(N, sd = 0.5)
+X3 = runif(N, -1, 1)
+X4 = runif(N, -1, 1)
+Y = -X1 + 0.5*X2 + X3 + X4 + rnorm(N)
+m = lm(Y~X1+X2+I(X3^2) +X4)
+summary(m)
+
+best = stepAIC(m)
+best
+
+plot(predict(best), Y, xlim = c(-2, 2), ylim = c(-2, 2))
+plot(predict(m), Y, xlim = c(-2, 2), ylim = c(-2, 2))
+
+cor(predict(best), Y)
+cor(predict(m), Y)
+
+
+res=
+sapply(c( 60, 70, 80, 90 , 100, 200, 500), function(i) {
+N = i
+E = 50
+X = matrix(runif(N*E, -1, 1), N, E)
+W = matrix(rnorm(E), E, 1) 
+Y = X%*%W + rnorm(N)
+m = lm(Y~., data.frame(Y = Y, X))
+summary(m)
+
+best = stepAIC(m)
+best
+return(length(coef(best)))
+})
+res

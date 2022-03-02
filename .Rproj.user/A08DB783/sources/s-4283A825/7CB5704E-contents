@@ -1,0 +1,316 @@
+library(bibliometrix)
+library(tidyverse)
+
+# ecolog* AND machin*
+
+
+library(wosr)
+wosr::query_wos("ecolog* AND machin*")
+
+wosr::auth("de055e80-0475-11ea-a43c-e161fbe6fcfe", password = "jSC3bt6Q/5s{")
+
+files = list.files("data/",full.names = TRUE)[-1]
+
+bibs = convert2df(bibliometrix::readFiles(files),  format = "bibtex")
+
+
+vars = sapply(bibs, names)
+
+data = bibs
+
+
+keywordSearch = function(keys,data = NULL) {
+    tmp = rep(FALSE, nrow(data))
+    for(i in 1:length(keys)){
+      key = keys[i]
+      tmp2 = 
+        sapply(data$AB, function(s) {
+          tmp3 = stringr::str_detect(s, key)
+          return(ifelse(is.na(tmp3), FALSE, tmp3 ))
+          },USE.NAMES = FALSE) | 
+        sapply(data$DE, function(s) {
+          tmp3 = stringr::str_detect(s, key)
+          return(ifelse(is.na(tmp3), FALSE, tmp3 ))
+        },USE.NAMES = FALSE)| 
+        sapply(data$ID, function(s) {
+          tmp3 = stringr::str_detect(s, key)
+          return(ifelse(is.na(tmp3), FALSE, tmp3 ))
+        },USE.NAMES = FALSE)
+      if(length(tmp2) > 0) tmp[which(tmp2, TRUE)] = TRUE
+    }
+    return(tmp)
+}
+ML = table(data$PY)
+DL = data$PY[keywordSearch(c("NEURAL NETWORK", "DEEP LEARNING", "CONVOLUTIONAL", "DNN", "CNN"), data)] %>% table %>% data.frame
+RF = data$PY[keywordSearch(c("RANDOM FOREST"), data)] %>% table %>% data.frame
+BRT = data$PY[keywordSearch(c("BOOSTED", "BOOSTED REGRESSION TREES", "BRT"), data)] %>% table %>% data.frame
+SVM = data$PY[keywordSearch(c("SUPPORT VECTOR","SUPPORT VECTOR MACHINE", "SVM"), data)] %>% table %>% data.frame
+KNN = data$PY[keywordSearch(c("NEIGHBOR", "KNN", "K-NN"), data)] %>% table %>% data.frame
+
+colnames(DL) = c("year", "DL")
+colnames(RF) = c("year", "RF")
+colnames(BRT) = c("year", "BRT")
+colnames(SVM) = c("year", "SVM")
+colnames(KNN) = c("year", "KNN")
+
+result = data.frame(ML = ML)
+colnames(result) = c("year", "ML")
+results = 
+  result %>% 
+    left_join( DL, by = "year") %>% 
+    left_join(RF, by = "year") %>% 
+    left_join( BRT, by = "year") %>% 
+    left_join( SVM, by = "year") %>% 
+    left_join( KNN, by = "year") %>% 
+    replace(. , is.na(.), 0)
+
+results$rest = results$ML - apply(as.matrix(results[, 3:7]), 1, sum)
+
+results
+cols = RColorBrewer::brewer.pal(6, "Set2")
+
+plot(NULL, NULL, xlim = c(1, 31.8), ylim = c(0,500), xaxt = "n", main = "",yaxt = "n",xlab = "Year", ylab = "Number of publications", yaxs = "i")
+for(i in 3:8){
+  if(i == 3) prev = rep(0, 33)
+  polygon(y = c(prev, rev(prev)+rev(results[,i])), x= c(1:33, 33:1), col = cols[i-2])
+  prev = prev+results[,i]
+}
+axis(1, labels = (results$year)[seq(1, to = 33, by = 2)], at = seq(1, to = 33, by = 2), lwd = 0)
+axis(2, las = 2)
+legend("topleft", legend = c("DL, CNN, and Neural Networks", "Random Forest", "Boosted Regression Trees", "Support Vector Machines", "k-NN", "other"),  
+       bty="n", lty = 0,col = cols, pch = 17)
+
+
+
+## ML in Ecology:
+h = hist(data$PY,freq = T, main = "ML in Ecology", breaks = 25, axes = F, xlab = "Year", ylab = "Number of publications")
+lines(smooth.spline(x = h$breaks[-c(1, length(h$breaks))], y =  h$counts[-length(h$counts)], spar = 0.6), col = "red", lwd = 3)
+axis(1)
+axis(2, las = 2)
+
+## DL in Ecology:
+sub = keywordSearch("NEURAL NETWORK", data)
+h = hist(data$PY[sub],freq = T, main = "DL in Ecology", breaks = 25, xlab = "Year", ylab = "Number of publications")
+lines(smooth.spline(x = h$breaks[-c(1, length(h$breaks))], y =  h$counts[-length(h$counts)], spar = 0.6), col = "red", lwd = 3)
+axis(1)
+axis(2, las = 2)
+
+
+## RF in Ecology:
+sub = keywordSearch("RANDOM FOREST", data)
+h = hist(data$PY[sub],freq = T, main = "DL in Ecology")
+sData = data$PY[sub][complete.cases(data$PY[sub])]
+RF = smooth.spline(x = rev(unique(sData)), y = table(sData))
+
+
+## BRT in Ecology:
+sub = keywordSearch("BOOSTED REGR")
+h = hist(data$PY[sub],freq = T, main = "DL in Ecology")
+sData = data$PY[sub][complete.cases(data$PY[sub])]
+BRT = smooth.spline(x = rev(unique(sData)), y = table(sData))
+lines(smooth.spline(x = rev(unique(sData)), y = table(sData)), col = "red", lwd = 5)
+
+
+## SVM in Ecology:
+sub = keywordSearch("SUPPORT VECTOR")
+h = hist(data$PY[sub],freq = T, main = "DL in Ecology")
+sData = data$PY[sub][complete.cases(data$PY[sub])]
+SVM = smooth.spline(x = rev(unique(sData)), y = table(sData))
+lines(smooth.spline(x = rev(unique(sData)), y = table(sData)), col = "red", lwd = 5)
+
+
+## kNN in Ecology:
+sub = keywordSearch("NEAREST NEIGHBOR")
+h = hist(data$PY[sub],freq = T, main = "DL in Ecology")
+sData = data$PY[sub][complete.cases(data$PY[sub])]
+kNN = smooth.spline(x = rev(unique(sData)), y = table(sData))
+lines(smooth.spline(x = rev(unique(sData)), y = table(sData)), col = "red", lwd = 5)
+
+
+
+###### 
+par(mfrow = c(1,2))
+## ML in Ecology:
+h = hist(data$PY,freq = T, main = "ML")
+lines(smooth.spline(x = rev(unique(data$PY[complete.cases(data$PY)])), y = table(data$PY)), col = "red", lwd = 5)
+
+sub = keywordSearch("GLOBAL")
+h = hist(data$PY[sub],freq = T, main = "Global", ylim = c(0, max(h$counts)))
+sData = data$PY[sub][complete.cases(data$PY[sub])]
+Global = smooth.spline(x = rev(unique(sData)), y = table(sData))
+lines(smooth.spline(x = rev(unique(sData)), y = table(sData)), col = "red", lwd = 5)
+
+
+
+##### Algorithms:
+par(mfrow = c(1,1))
+algorithms = list(RF, DL, SVM, BRT, kNN)
+plot(NULL, NULL, ylim = c(0, max(sapply(algorithms, function(a) max(a$y)))), xlim = c(1995,2020), xlab = "Year", ylab = "Frequency")
+for(i in 1:length(algorithms)) lines(algorithms[[i]], lwd = 4, col = i)
+legend("topleft", col = 1:length(algorithms), legend = c("RF", "DEEP", "SVM", "BRT", "kNN"), pch = 16)
+
+## VI in Ecology:
+sub = keywordSearch("VARIABLE IMPORTANCE")
+h = hist(data$PY[sub],freq = T, main = "VI in Ecology")
+sData = data$PY[sub][complete.cases(data$PY[sub])]
+lines(smooth.spline(x = rev(unique(sData)), y = table(sData)), col = "red", lwd = 5)
+
+
+
+
+dist = matrix(0, nrow = 5, ncol = 3)
+sub = keywordSearch("REMOTE",data = data)
+dist[2,1]=  rf_remote = table(keywordSearch("RANDOM FOREST",data = data[sub,]))[2]
+dist[3,1]=  deep_remote = table(keywordSearch("DEEP",data = data[sub,]))[2]
+dist[4,1]=  svm_remote = table(keywordSearch("SVM",data = data[sub,]))[2]
+dist[5,1]=  brt_remote = table(keywordSearch("BOOST",data = data[sub,]))[2]
+
+sub = keywordSearch("SPECIES DISTRIBUTION",data = data)
+dist[2,2]=  rf_sdm = table(keywordSearch("RANDOM FOREST",data = data[sub,]))[2]
+dist[3,2]=  deep_sdm = table(keywordSearch("DEEP",data = data[sub,]))[2]
+dist[4,2]=  svm_sdm = table(keywordSearch("SVM",data = data[sub,]))[2]
+dist[5,2]=  brt_sdm = table(keywordSearch("BOOST",data = data[sub,]))[2]
+
+sub = !keywordSearch("REMOTE",data = data) & !keywordSearch("SPECIES DISTRIBUTION",data = data)
+dist[2,3] =  rf_rest = table(keywordSearch("RANDOM FOREST",data = data[sub,]))[2]
+dist[3,3]=  deep_rest= table(keywordSearch("DEEP",data = data[sub,]))[2]
+dist[4,3]=  svm_rest = table(keywordSearch("SVM",data = data[sub,]))[2]
+dist[5,3]=  brt_rest = table(keywordSearch("BOOST",data = data[sub,]))[2]
+
+dist = dist[-1,]
+distP = apply(dist, 2, function(s) s/sum(s))
+barplot(distP, col = 1:4,legend.text = c("RF", "DEEP", "SVM", "BRT"),names.arg = c("Remote", "SDM", "Rest"))
+
+
+h = hist(data$PY[sub],freq = T, main = "VI in Ecology")
+sData = data$PY[sub][complete.cases(data$PY[sub])]
+lines(smooth.spline(x = rev(unique(sData)), y = table(sData)), col = "red", lwd = 5)
+
+
+# ecolog* AND (predict* OR forecast*)
+predFor = read.csv("analyze.txt",sep = "\t")
+predFor=predFor[order(predFor$Year),]
+names(predFor) = c("Year", "Records", "% of all")
+
+predFor = predFor[-nrow(predFor),]
+## ML in Ecology:
+tmp = sapply(1:nrow(predFor), function(i) rep(predFor$Year[i], predFor$Records[i]))
+tmp = unlist(tmp)
+tmp = as.numeric(as.character(tmp))
+h = hist(tmp, main = "Predictions and Forecasting", breaks = 15)
+lines(DL, col = "red", lwd = 5)
+
+
+pdf("freq_plots.pdf", width = 12., height = 5.)
+par(mfrow = c(1,2))
+plot(NULL, NULL, xlim = c(1, 31.8), ylim = c(0,500), 
+     xaxt = "n", main = "",yaxt = "n",xlab = "Year", 
+     ylab = "Number of publications", yaxs = "i",
+     axes=TRUE)
+for(i in 3:8){
+  if(i == 3) prev = rep(0, 33)
+  polygon(y = c(prev, rev(prev)+rev(results[,i])), x= c(1:33, 33:1), col = cols[i-2])
+  prev = prev+results[,i]
+}
+axis(1, labels = (results$year)[seq(1, to = 33, by = 2)], at = seq(1, to = 33, by = 2), lwd = 0)
+axis(2, las = 2)
+legend("topleft", legend = c("DL, CNN, and Neural Networks", "Random Forest", "Boosted Regression Trees", "Support Vector Machines", "k-NN", "other"),  
+       bty="n", lty = 0,col = cols, pch = 17)
+text(-1, 550, pos = 2, xpd = NA, labels = "A", cex = 1.5)
+
+cc = RColorBrewer::brewer.pal(5,"Set2")[1]
+plot(NULL, NULL, xlim = c(1,nrow(predFor)), ylim = c(0, 8000), xaxt="n", 
+     las = 2, 
+     ylab = "'Predictions' or 'Forecasting'", xlab = "", axes = FALSE)
+axis(2, las = 2)
+lines(smooth.spline( x =1:nrow(predFor), predFor$Records , spar = 0.65), 
+      col = cc, lwd = 4.0)
+axis(1, at = c(1:nrow(predFor))[seq(1, nrow(predFor), by = 2)], labels = predFor$Year[seq(1, nrow(predFor), by = 2)])
+text(-1, 9000, pos = 2, xpd = NA, labels = "B", cex = 1.5)
+dev.off()
+
+
+pdf("uses.pdf", width = 12., height = 6.)
+cc2 = RColorBrewer::brewer.pal(5,"Set1")[1:2]
+par(mfrow = c(1,1))
+plot(NULL, NULL, xlim = c(1,nrow(results)), ylim = c(0, 300), xaxt="n", 
+     las = 2, 
+     ylab = "'Predictions' or 'Forecasting'", xlab = "", axes = FALSE)
+axis(2, las = 2)
+lines(smooth.spline( x =1:nrow(results), results$RF+results$BRT+results$SVM+results$KNN , spar = 0.55), 
+      col = cc2[1], lwd = 4.0)
+
+axis(1, at = c(1:nrow(results))[seq(1, nrow(results), by = 2)], labels = results$year[seq(1, nrow(results), by = 2)])
+
+
+
+
+
+plot(NULL, NULL, xlim = c(1,nrow(results)), ylim = c(0, 300), xaxt="n", 
+     las = 2, 
+     ylab = "'Predictions' or 'Forecasting'", xlab = "", axes = FALSE)
+axis(2, las = 2)
+
+lines(smooth.spline( x =1:nrow(results), results$DL , spar = 0.55), 
+      col = cc2[2], lwd = 4.0)
+axis(1, at = c(1:nrow(results))[seq(1, nrow(results), by = 2)], labels = results$year[seq(1, nrow(results), by = 2)])
+
+barplot(results$RF+results$BRT+results$SVM+results$KNN)
+dev.off()
+
+
+
+addA = function(col, alpha = 0.25) apply(sapply(col, grDevices::col2rgb)/255, 2, function(x) grDevices::rgb(x[1], x[2], x[3], alpha=alpha))
+
+pdf("uses.pdf", width = 12., height = 6.)
+cc2 = RColorBrewer::brewer.pal(5,"Set1")[1:2]
+par(mfrow = c(1,1))
+plot(NULL, NULL, xlim = c(1,nrow(results)), ylim = c(0, 300), xaxt="n", 
+     las = 2, 
+     ylab = "", xlab = "", axes = FALSE)
+axis(2, las = 2)
+
+p = smooth.spline( x =1:nrow(results), results$RF+results$BRT+results$SVM+results$KNN , spar = 0.55)
+lines(p, col = cc2[2], lwd = 4.0)
+polygon(x = c(p$x, rev(p$x)), y = c(p$y, rep(0.0, length(p$y))), col = addA(cc2[2], alpha = 0.1), border = FALSE)
+
+
+p = smooth.spline( x =1:nrow(results), results$DL , spar = 0.55)
+lines(p, col = cols[1], lwd = 4.0)
+polygon(x = c(p$x, rev(p$x)), y = c(p$y, rep(0.0, length(p$y))), col = addA(cols[1], alpha = 0.2), border = FALSE)
+
+
+p = smooth.spline( x =1:nrow(results), results$RF+results$BRT+results$SVM+results$KNN , spar = 0.55)
+lines(p, col = cc2[2], lwd = 4.0)
+axis(1, at = c(1:nrow(results))[seq(1, nrow(results), by = 2)], labels = results$year[seq(1, nrow(results), by = 2)])
+dev.off()
+
+
+
+
+
+
+
+
+
+
+
+pdf("algorithms.pdf", width = 12., height = 6.)
+cc2 = RColorBrewer::brewer.pal(5,"Set1")[1:2]
+par(mfrow = c(1,1))
+plot(NULL, NULL, xlim = c(1,nrow(results)), ylim = c(0, 100), xaxt="n", 
+     las = 2, 
+     ylab = "", xlab = "", axes = FALSE)
+axis(2, las = 2)
+
+for( i in 3:7){
+  if(i == 3) tmp = cols[1]
+  else tmp = cc2[2]
+  p = smooth.spline( x =1:nrow(results), results[,i] , spar = 0.55)
+  lines(p, col = tmp, lwd = 4.0)
+  #polygon(x = c(p$x, rev(p$x)), y = c(p$y, rep(0.0, length(p$y))), col = addA(cc2[2], alpha = 0.1), border = FALSE)
+}
+
+axis(1, at = c(1:nrow(results))[seq(1, nrow(results), by = 2)], labels = results$year[seq(1, nrow(results), by = 2)])
+dev.off()
+
