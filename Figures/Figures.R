@@ -9,7 +9,8 @@ library(wordcloud2)
 eco_query =   ' AND ("ecology" OR "ecolog*" OR "evolution*")'
 add_second = function(first, second) paste0(first, second)
 search_terms = c(
-  '("deep neural network" OR "convolutional neural network" OR "image recognition")',
+  #'("deep neural network" OR "convolutional neural network" OR "image recognition")',
+  '("artificial neural network" OR "deep neural network" OR "multi-layer perceptron" OR "fully connected neural network")',
   '("deep learning")',
   '("convolutional neural network" OR "object detection")',
   '("recurrent neural network")',
