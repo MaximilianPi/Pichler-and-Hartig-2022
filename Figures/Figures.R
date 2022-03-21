@@ -82,6 +82,7 @@ dev.off()
 
 text_lists = readRDS("Figures/data/text_lists.RDS")
 
+set.seed(42)
 k = 4
 pdf("Figures/wordclouds.pdf", width = 8, height = 7)
 for(k in 1:10) {
@@ -113,40 +114,10 @@ for(k in 1:10) {
   freq = sapply(1:length(subjects), function(i) sum(grepl(subjects[i], words)))
   wordcloud(words = subjects, freq = freq, min.freq = 2,           
             max.words=max(freq), random.order=FALSE, rot.per=0.00,            
-            colors=brewer.pal(8, "Dark2"))
+            colors=(ggthemes::economist_pal()(9))[1:8])#brewer.pal(8, "Dark2"))
   title(search_terms[k])
 }
 dev.off()
-
-
-
-
-stats$year = 1990:2021
-stats = stats[,-1]
-
-data = pivot_longer(stats, cols = c("KNN", "NN", "RIDGE", "RF", "BRT", "SVM"))
-
-library(ggstream)
-ggplot(data, aes(x = year, y = value, fill = name)) +
-  geom_stream(bw=0.5) +
-  geom_stream_label(aes(label = name)) +
-  theme_minimal()
-
-
-
-
-#### Test prop Plot ####
-#cols = c(   "#F4B183", "#4FB998", "#377EB8")
-
-Ridge_stats = data_eco %>% filter(Year>1989) %>% select(-STATS)
-Ridge_stats = data.frame((Ridge_stats)/(apply(Ridge_stats[,3:ncol(Ridge_stats)],1, sum ) + 1e-7)) %>% select(KNN, NN, RIDGE, BRT, RF, SVM)
-
-#pdf("stats_ml.pdf", width = 10, height = 4)
-plot(NULL, NULL, xlim = c(1990,2020), ylim = c(0, 0.4))
-splines = lapply(Ridge_stats, function(p) smooth.spline(1990:2021, y = p, spar = 0.3) )
-lapply(1:6, function(i) lines(x = 1990:2021, y = splines[[i]]$y, col = cols[i], lwd = 3.0))
-legend("topright", col = cols, legend = colnames(Ridge_stats), lty=1)
-
 
 
 
@@ -154,23 +125,24 @@ library(ggstream)
 library(patchwork)
 library(gridExtra)
 
-names = c("KNN", "NN", "RIDGE", "RF", "BRT", "SVM")
+names = c("KNN", "DL", "RIDGE", "RF", "BRT", "SVM")
 cols = rev((viridis::turbo(7))[-1])
 names(cols) = names
 ############ G1 #############
-stats = data_eco %>% filter(Year>1989)
-stats = data.frame((stats)/(apply(stats[,c(13, 14)],1, sum ) + 1e-7)) %>% select(KNN, NN, RIDGE, BRT, RF, SVM)
-stats$year = 1990:2021
-data = pivot_longer(stats, cols = c("KNN", "NN", "RIDGE", "RF", "BRT", "SVM"))
-labels=c("kNN", "NN", "Ridge/Lasso", "BRT", "RF", "SVM")
+stats = data_eco %>% filter(Year>1999)
+stats = data.frame((stats)) %>% select(KNN, DL, RIDGE, BRT, RF, SVM)
+#stats = stats/apply(stats, 1, sum)
+stats$year = 2000:2021
+data = pivot_longer(stats, cols = c("KNN", "DL", "RIDGE", "RF", "BRT", "SVM"))
+labels=c("kNN", "DL", "Ridge/Lasso", "BRT", "RF", "SVM")
 g1 = 
-  ggplot(data, aes(x = year, y = value, fill = name)) +
-  geom_stream(color="white", lwd = 0.3, bw = 0.70, type = "ridge", sorting = "none") +
+  ggplot(data, aes(x = year, y = value*100, fill = name)) +
+  geom_stream(color="white", lwd = 0.3, type = "ridge",bw = 0.75, sorting = "none") +
   scale_fill_manual(values = cols) +
-  labs(y = "Relative useage of ML", x = "Year") +
+  labs(y = "Absolute useage of ML in %", x = "Year") +
   theme_minimal() + 
   ggplot2::annotate("text",x = rep(2021, 6), 
-           y = c(0.025, 0.059, 0.09, 0.15, 0.19, 0.2), 
+           y = c(0.08, 0.18, 0.3, 0.4, 0.5, 0.7), 
            label=labels[rev(order(names))],
            hjust=0) + 
   coord_cartesian(clip = "off") +
@@ -179,23 +151,23 @@ g1 =
         plot.margin = margin(3, 55, 20, 3),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank())
-
 ############ G2 #############
-Ridge_stats = data_eco %>% filter(Year>1989) %>% select(-STATS)
-Ridge_stats = data.frame((Ridge_stats)/(apply(Ridge_stats[,3:ncol(Ridge_stats)],1, sum ) + 1e-7)) %>% select(KNN, NN, RIDGE, BRT, RF, SVM)
-Ridge_stats$year = 1990:2021
-data = pivot_longer(Ridge_stats, cols = c("KNN", "NN", "RIDGE", "RF", "BRT", "SVM"))
+stats = data_eco %>% filter(Year>1999)
+stats = data.frame((stats)) %>% select(KNN, DL, RIDGE, BRT, RF, SVM)
+stats = stats/apply(stats, 1, sum)
+stats$year = 2000:2021
+data = pivot_longer(stats, cols = c("KNN", "DL", "RIDGE", "RF", "BRT", "SVM"))
 
 
-labels=c("kNN", "NN", "Ridge/Lasso", "BRT", "RF", "SVM")
+labels=c("kNN", "DL", "Ridge/Lasso", "BRT", "RF", "SVM")
 g2 = 
-    ggplot(data, aes(x = year, y = value, fill = name)) +
-    geom_stream(color="white", lwd = 0.3, bw = 0.75) +
+    ggplot(data, aes(x = year, y = value*100, fill = name)) +
+    geom_stream(color="white",type = "proportional", lwd = 0.3, bw = 0.85, extra_span = 0.023) +
     scale_fill_manual(values = cols) +
-    labs(y = "Relative proportion of ML", x = "Year") +
+    labs(y = "Relative usage of ML algorithms in %", x = "Year") +
     theme_minimal() + 
     ggplot2::annotate("text",x = rep(2021, 6), 
-             y = c(-0.15, -0.07, 0.0, 0.12, 0.17, 0.2), 
+             y = c(0.125, 0.27, 0.4, 0.58, 0.77, 0.96), 
              label=labels[rev(order(names))],
              hjust=0) + 
     coord_cartesian(clip = "off") +
@@ -205,7 +177,7 @@ g2 =
           panel.grid.major.y = element_blank(),
           panel.grid.minor.y = element_blank())
 
-pdf("Figures/Fig_2.pdf", width = 9, height = 6)
+pdf("Figures/Fig_2.pdf", width = 9, height = 7)
 grid.arrange(g1, g2, ncol=1, nrow = 2)
 dev.off()
 
