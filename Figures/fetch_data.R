@@ -6,7 +6,7 @@ library(parallel)
 eco_query =   ' AND ("ecology" OR "ecolog*" OR "evolution*")'
 add_second = function(first, second) paste0(first, second)
 search_terms = c(
-  '("deep neural network" OR "convolutional neural network" OR "image recognition")',
+  '("artificial neural network" OR "deep neural network" OR "multi-layer perceptron" OR "fully connected neural network")',
   '("deep learning")',
   '("convolutional neural network" OR "object detection")',
   '("recurrent neural network")',
@@ -26,11 +26,11 @@ names(search_terms) = search_names
 
 cl = makeCluster(14L)
 
-if(!file.exists("Figures/data/all.RDS")) {
+if(TRUE) {
   results = parLapply(cl, add_second(search_terms, ""), fun = function(q) europepmc::epmc_hits_trend(query=q, period = 1920:2021) )
   saveRDS(results, "Figures/data/all.RDS")
 }
-if(!file.exists("Figures/data/all_eco.RDS")) {
+if(TRUE) {
   results_eco = parLapply(cl, add_second(c("", search_terms), eco_query), fun = function(q) europepmc::epmc_hits_trend(query=q, period = 1920:2021) )
   saveRDS(results_eco, "Figures/data/all_eco.RDS")
 }
@@ -41,7 +41,7 @@ if(!file.exists("Figures/data/all_eco.RDS")) {
 cl = parallel::makeCluster(10L)
 parallel::clusterExport(cl, list("add_second", "search_terms", "eco_query"))
 
-if(!file.exists("Figures/data/text_lists.RDS")) {
+if(TRUE) {
   text_lists = parLapply(cl, 1:10, function(term) return(europepmc::epmc_search( add_second(search_terms[term], eco_query), output = "raw", limit = 999099999, verbose = FALSE)))
   saveRDS(text_lists, "Figures/data/text_lists.RDS")
 }
