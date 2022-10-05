@@ -1,3 +1,5 @@
 .ipynb_checkpoints
-.Rproj.user
+.Rproj.user/
+.Rproj.user/*
+Supporting-Information_cache/
 data

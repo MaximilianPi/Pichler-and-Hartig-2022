@@ -1,0 +1,1216 @@
+---
+title: "Supporting information S1 for Pichler & Hartig – Machine Learning and Deep Learning – A review for Ecologists"
+author: Pichler & Hartig, 2022
+format: 
+  docx:
+    toc: true
+    number-sections: true
+    reference-doc: custom-reference-doc.docx
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+```
+
+**Summary:** This document provides supporting information on Pichler & Hartig -- Machine Learning and Deep Learning -- A review for ecologists. The first section describes the methods for the trend analysis and the word clouds, the second section demnstrates the application of common supervised Machine learning and Deep learning algorithms in the R programming languages based on code examples.
+
+## Trend analysis
+
+For the global trend analysis in Figure 1, we used the R package 'europepmc' (v0.4.1, @jahn_europepmc_2021) to search from 1920 to 2021 the PubMed and Medline NLM databases. We used the following queries 'deep learning', ('machine learning' OR 'machine-learning'), and ('p value' OR 'p-value' OR 'statistically significant) as representatives for Deep Learning, Machine Learning, and classical statistical approaches. The number of hits were normalized by total hits in each year. For the stream charts in Figure 2, we used the search queries Table S1 and added them to the query' AND ("ecology" OR "ecolog\*" OR "evolution") to restrict the queries to hits from the ecology and evolution field.
+
+```{r, echo=FALSE}
+library(flextable)
+set_flextable_defaults(fonts_ignore=TRUE)
+queries = c(
+  '("artificial neural network" OR "deep neural network" OR 
+  "multi-layer perceptron" OR "fully connected neural network")',
+  '("convolutional neural network" OR "object detection")',
+  '("recurrent neural network")',
+  '("graph neural network" OR "graph convolutional")',
+  '("random forest")',
+  '("boosted regression tree" OR "boosted reg" OR 
+  "gradient boosting" OR "adaboost")',
+  '("k-nearest-neighbor")',
+  '("ridge regression" OR "lasso regression" OR 
+  "elastic-net" OR "elastic net")',
+  '("support vector machine" OR "support vector")'
+)
+algorithms = c(
+  "Deep neural network (ANN)",
+  "Convolutional neural network (CNN)",
+  "Recurrent neural network (RNN)",
+  "Graph neural network (GNN)",
+  "Random Forest (RF)",
+  "Boosted Regression Trees (BRT)",
+  "k-nearest neighbor (kNN)",
+  "Ridge, lasso, or elastic-net regression",
+  "Support vector machine (SVM)"
+)
+data = data.frame(cbind(queries, algorithms))
+colnames(data) = c("Queries", "ML and DL algorithm")
+fl = flextable(data)
+fl = set_caption(fl, caption = "Search queries and their corresponding ML and DL algorithm.")
+fl = theme_zebra(fl)
+fl = set_table_properties(fl, width = .3, layout = "autofit")
+fl
+```
+
+For the word clouds in Table 1, we used again the 'europepmc' R package to search abstracts and titles within the ML and DL algorithm specific queries (Table 1) for the following ecological keywords: species distribution, species interaction, mortality, remote sensing, invasive, decision making, ecosystem, species identification, species detection, extinction, functional trait, ecological network, biodiversity, and camera trap.
+
+We used the R packages 'tm' (@feinerer2008), 'wordcloud' (@wordcloud2018) ,and 'wordcloud2' (@wordcloud_2_2018) to analyze and create the final word cloud plots.
+
+## Algorithms
+
+The goal of this chapter is to provide short code examples for all common supervised ML algorithms. All examples are shown in the R programming language and are demonstrated at the example of the iris dataset (4 continuous and 1 nominal variables). We demonstrate a) how to apply the algorithms on classification tasks (response = nominal, three species) and how to generate class specific (quasi) probability predictions and b) how to apply the algorithms to regression tasks (response = continuous) and make continuous predictions.
+
+### Ridge, LASSO, and elastic-net regression
+
+We can use the 'glmnet' R package (@glmnet) for Ridge, LASSO, or elastic-net regularization. The 'glmnet' package supports different response families including 'gaussian', 'binomial' and 'Poisson'. The strength of the regularization is set by the 'lambda' argument ($\lambda$) and the weighting between Ridge and LASSO regularization by the 'alpha' parameter ($\alpha$):
+
+$$
+\lambda*[(1 - \alpha)\|\beta\|_1 + \alpha\|\beta||^2]
+$$ Setting alpha = 0 turns off the LASSO and alpha = 1 the Ridge. Alphas between (0,1) will use both regularization types, turning the model into an elastic-net regularization.
+
+When using regularization, it is important to scale all features otherwise effects for features that are on a larger scale are stronger regularized.
+
+#### Classification
+
+Build models (for regularization it is important to scale the features):
+
+::: panel-tabset
+##### R
+
+```{r, message=FALSE}
+library(glmnet)
+X = scale(iris[,1:4])
+Y = iris$Species
+
+# Ridge:
+ridge = glmnet(X, Y, family = "multinomial", alpha = 0, lambda = 0.01)
+
+# LASSO:
+lasso = glmnet(X, Y, family = "multinomial", alpha = 1, lambda = 0.01)
+
+# Elastic-net:
+elastic = glmnet(X, Y, family = "multinomial", alpha = 0.5, lambda = 0.01)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(lasso, newx = X, type = "response")[,,1], n = 3)
+```
+
+##### Python
+
+In the sklearn implementation the regularization strength parameter 'C' corresponds to the lambda parameter from glmnet:
+
+```{r, include=FALSE}
+Sys.setenv(PYTHONWARNINGS="ignore")
+```
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.linear_model import LogisticRegression
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+
+# Ridge:
+ridge = LogisticRegression(multi_class='multinomial', 
+                           penalty = "l2", 
+                           C = 0.01, 
+                           solver="saga")
+ridge.fit(X, Y)
+
+# LASSO:
+lasso = LogisticRegression(multi_class='multinomial', 
+                           penalty = "l1", 
+                           C = 0.01, 
+                           solver="saga")
+lasso.fit(X, Y)
+
+# Elastic-net:
+elastic = LogisticRegression(multi_class='multinomial', 
+                             penalty = "elasticnet", 
+                             C = 0.01, 
+                             l1_ratio=0.5, 
+                             solver="saga")
+elastic.fit(X, Y)
+
+# Make predictions (class probabilities):
+
+lasso.predict_proba(X)[0:10,:]
+
+```
+:::
+
+#### Regression
+
+::: panel-tabset
+##### R
+
+```{r, message=FALSE}
+X = scale(iris[,2:4])
+Y = iris[,1]
+
+# Ridge:
+ridge = glmnet(X, Y, family = gaussian(), alpha = 0, lambda = 0.01)
+
+# LASSO:
+lasso = glmnet(X, Y, family = gaussian(), alpha = 1, lambda = 0.01)
+
+# Elastic-net:
+elastic = glmnet(X, Y, family = gaussian(), alpha = 0.5, lambda = 0.01)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(lasso, newx = X), n = 3)
+```
+
+##### Python
+
+For regressions we can use the ElasticNet model class, here, however, lambda corresponds to alpha and l1_ratio to the alpha parameter.
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.linear_model import ElasticNet
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+
+# Ridge:
+ridge = ElasticNet(alpha = 0.01,
+                   l1_ratio = 0.011)
+ridge.fit(X, Y)
+
+# LASSO:
+lasso = ElasticNet(alpha = 0.01,
+                   l1_ratio = 1.0)
+lasso.fit(X, Y)
+
+# Elastic-net:
+elastic = ElasticNet(alpha = 0.01,
+                     l1_ratio = 0.5)
+elastic.fit(X, Y)
+
+# Make predictions:
+
+lasso.predict(X)[0:10]
+
+```
+:::
+
+### Support Vector Machines
+
+The support vector machine (SVM) algorithm estimates hyper-planes to separate our response species. In the following we use the 'e1071' package which supports a variety of different SVM algorithms (@e1071).
+
+#### Classification
+
+::: panel-tabset
+##### R
+
+```{r, message=FALSE}
+library(e1071)
+X = scale(iris[,1:4])
+Y = iris$Species
+
+sv = svm(X, Y, probability = TRUE) 
+summary(sv)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(attr(predict(sv, newdata = X, probability = TRUE), "probabilities"), n = 3)
+```
+
+##### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn import svm
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+model = svm.SVC(probability=True).fit(X, Y)
+
+# Make predictions (class probabilities):
+
+model.predict_proba(X)[0:10,:]
+
+```
+:::
+
+#### Regression
+
+::: panel-tabset
+##### R
+
+```{r, message=FALSE}
+library(e1071)
+X = scale(iris[,2:4])
+Y = iris[,1]
+
+sv = svm(X, Y) 
+summary(sv)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(sv, newdata = X), n = 3)
+```
+
+##### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn import svm
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+model = svm.SVR().fit(X, Y)
+
+# Make predictions:
+
+model.predict(X)[0:10]
+
+```
+:::
+
+### k-nearest-neighbor
+
+The k-nearest-neighbor algorithm doesn't really learn from the data, predictions for new observations are made based on the class affiliation (or response value) of the nearest neighbors, e.g. by majority voting or averaging. The nearest neighbors are found by calculating the distance of the new observation to all observations in the train dataset.
+
+In the following we use the 'kknn' package (@kknn). Different to other ML packages we can provide here already the test dataset in the fit function.
+
+#### Classification
+
+::: panel-tabset
+##### R
+
+```{r, message=FALSE}
+library(kknn)
+X = scale(iris[,1:4])
+Y = iris[,5,drop=FALSE]
+data = cbind(Y, X)
+
+knn = kknn(Species~., train = data, test = data) 
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(knn$prob, n = 3)
+```
+
+##### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+model = KNeighborsClassifier().fit(X, Y)
+
+# Make predictions:
+
+model.predict_proba(X)[0:10,:]
+
+```
+:::
+
+#### Regression
+
+::: panel-tabset
+##### R
+
+```{r, message=FALSE}
+library(e1071)
+X = scale(iris[,2:4])
+data = cbind(iris[,1,drop=FALSE], X)
+
+knn = kknn(Sepal.Length~., train = data, test = data) 
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(knn), n = 3)
+```
+
+##### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+model = KNeighborsRegressor().fit(X, Y)
+
+# Make predictions:
+
+model.predict(X)[0:10]
+
+```
+
+:::
+
+### Random forest
+
+The random forest (RF) algorithm is probably one of the most famous ML algorithms, and not without reason. Compared to other well performing algorithms, the RF algorithm has only a few hyper-parameters and because of the bagging and the random sampling of available variables in for the node splits, it has a well working internal complexity adaption.
+
+In the following, we use the 'ranger' package (@ranger).
+
+#### Classification
+
+::: panel-tabset
+##### R
+
+```{r, message=FALSE}
+library(ranger)
+X = iris[,1:4]
+Y = iris[,5,drop=FALSE]
+data = cbind(Y, X)
+
+rf = ranger(Species~., data = data, probability = TRUE, importance = "impurity")
+```
+
+Show feature importances:
+
+```{r, message=FALSE}
+importance(rf)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(rf, data = data)$predictions, n = 3)
+```
+
+##### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+model = RandomForestClassifier().fit(X, Y)
+
+```
+
+
+Feature importance
+
+```{python, warning=FALSE, message=FALSE}
+print(model.feature_importances_)
+```
+
+Make predictions:
+
+```{python, warning=FALSE, message=FALSE}
+model.predict_proba(X)[0:10,:]
+
+```
+
+:::
+
+#### Regression
+
+::: panel-tabset
+##### R
+
+```{r, message=FALSE}
+library(ranger)
+X = iris[,2:4]
+data = cbind(iris[,1,drop=FALSE], X)
+
+rf = ranger(Sepal.Length~., data = data, importance = "impurity")
+```
+
+Show feature importances:
+
+```{r, message=FALSE}
+importance(rf)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(rf, data = data)$predictions, n = 3)
+```
+
+##### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.ensemble import RandomForestRegressor
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+model = RandomForestRegressor().fit(X, Y)
+```
+
+
+Feature importance:
+
+```{python, warning=FALSE, message=FALSE}
+print(model.feature_importances_)
+```
+
+Make predictions:
+
+```{python, warning=FALSE, message=FALSE}
+model.predict(X)[0:10]
+
+```
+
+:::
+
+### Boosted gradient trees
+
+Boosted gradient machines achieve currently state-of-the-art performance for structured (tabular) data which makes them probably one of the most important algorithms for E&E where structured data dominates the field.
+
+In the following, we use the 'xgboost' package (@xgboost).
+
+#### Classification
+
+::: panel-tabset
+##### R
+
+```{r, message=FALSE}
+library(xgboost)
+X = as.matrix(iris[,1:4])
+Y = as.integer(iris[,5]) - 1 # classes must be integers starting from 0
+
+xgdata = xgb.DMatrix(X, label = Y)
+
+# nrounds = number of trees in the ensemble
+brt = xgboost(data = xgdata, 
+              objective="multi:softprob", 
+              nrounds = 50, 
+              num_class = 3,
+              verbose = 0)
+```
+
+Show feature importances:
+
+```{r, message=FALSE}
+xgb.importance(model = brt)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(matrix(predict(brt, newdata = xgb.DMatrix(X)), ncol =3), n = 3)
+```
+
+##### Python
+
+```{python, warning=FALSE, message=FALSE}
+import xgboost as xgb
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+# Parameters:
+param = {
+  'max_depth':2, 
+  'eta':1, 
+  'objective':'multi:softmax' }
+num_round = 50
+
+model = xgb.XGBClassifier(param, num_round, verbosity = 0).fit(X, Y)
+
+```
+
+
+Feature importance
+
+```{python, warning=FALSE,  message=FALSE}
+model.feature_importances_
+```
+
+Make predictions:
+
+```{python, warning=FALSE, message=FALSE}
+model.predict_proba(X)[0:10,:]
+
+```
+
+
+:::
+
+
+#### Regression
+
+::: panel-tabset
+##### R
+
+```{r, message=FALSE}
+library(xgboost)
+X = as.matrix(iris[,2:4])
+Y = iris[,1]
+
+xgdata = xgb.DMatrix(X, label = Y)
+
+# nrounds = number of trees in the ensemble
+brt = xgboost(data = xgdata, 
+              objective="reg:squarederror", 
+              nrounds = 50, 
+              verbose = 0)
+```
+
+Show feature importances:
+
+```{r, message=FALSE}
+xgb.importance(model = brt)
+```
+
+Make predictions:
+
+```{r, message=FALSE}
+head(predict(brt, newdata = xgb.DMatrix(X), n = 3))
+```
+
+##### Python
+
+```{python, warning=FALSE, message=FALSE}
+import xgboost as xgb
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+# Parameters:
+model = xgb.XGBRegressor(
+  objective = 'reg:squarederror',
+  max_depth = 2,  
+  n_estimators = 50, 
+  verbosity = 0).fit(X, Y)
+```
+
+
+Feature importance:
+
+```{python, warning=FALSE, message=FALSE}
+print(model.feature_importances_)
+```
+
+Make predictions:
+
+```{python, warning=FALSE, message=FALSE}
+model.predict(X)[0:10]
+
+```
+
+:::
+
+### Deep neural networks
+
+Deep neural networks, or more precisely here fully connected neural networks, can be flexibly built which makes their application more challenging than other ML algorithms.
+
+In the following, we use the 'keras' (@kerasR; @chollet2015keras) package which is a higher level API on the python 'tensorflow' framework (@abadi2016tensorflow).
+
+#### Classification
+
+
+::: panel-tabset
+##### R
+
+```{r, message=FALSE,eval=FALSE}
+library(keras)
+X = scale(as.matrix(iris[,1:4]))
+Y = as.integer(iris$Species)
+# We need to one hot encode our response classes
+YT = k_one_hot(Y-1L, num_classes = 3)
+
+DNN = keras_model_sequential() %>% 
+  # first hidden layer
+  layer_dense(input_shape = ncol(X), 
+              units = 10, 
+              activation = "relu") %>% 
+  # second hidden layer with regularization
+  layer_dense(units = 20, 
+              activation = "relu",
+              kernel_regularizer = regularizer_l1()) %>% 
+  # output layer, 3 output neurons for our three classes
+  # and softmax activation to get quasi probabilities 
+  # that sum up to 1 for each observation
+  layer_dense(units = 3, 
+              activation = "softmax")
+
+# print architecture
+summary(DNN)
+
+# add loss function and optimizer
+DNN %>% 
+  compile(loss = loss_categorical_crossentropy,
+          optimizer = optimizer_adamax(0.01))
+
+# train model
+DNN %>% 
+  fit(X, YT, epochs = 50, verbose = 0)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE,eval=FALSE}
+head(predict(DNN, X), n = 3)
+```
+
+
+##### Python
+
+```{python, warning=FALSE, message=FALSE, eval=FALSE}
+from tensorflow import keras
+from tensorflow.keras.layers import *
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+# We need to one hot encode our response classes
+YT = keras.one_hot(Y, num_classes = 3)
+
+DNN = keras.model_sequential()
+  # first hidden layer
+DNN.add(Dense(
+  input_shape = X.shape[1], 
+  units = 10, 
+  activation = "relu")) 
+  # second hidden layer with regularization
+DNN.add(Dense(
+  units = 20, 
+  activation = "relu",
+  kernel_regularizer = keras.regularizers.l1()))
+  # output layer, 3 output neurons for our three classes
+  # and softmax activation to get quasi probabilities 
+  # that sum up to 1 for each observation
+DNN.add(Dense(
+  units = 3, 
+  activation = "softmax"))
+
+# print architecture
+DNN.summary()
+
+# add loss function and optimizer
+DNN.compile(loss = keras.losses.categorical_crossentropy,
+            optimizer = keras.optimizer.adamax(0.01))
+
+# train model
+DNN.fit(X, YT, epochs = 50, verbose = 0)
+
+
+```
+
+Make predictions:
+
+```{python, eval=FALSE}
+DNN.predict(X)[0:10,:]
+```
+
+:::
+
+
+#### Regression
+
+::: panel.-tabset
+##### R
+
+```{r, message=FALSE,eval=FALSE}
+library(keras)
+X = scale(as.matrix(iris[,2:4]))
+Y = as.matrix(iris[,1,drop=FALSE])
+
+DNN = keras_model_sequential() %>% 
+  # first hidden layer
+  layer_dense(input_shape = ncol(X), 
+              units = 10, 
+              activation = "relu") %>% 
+  # second hidden layer with regularization
+  layer_dense(units = 20, 
+              activation = "relu",
+              kernel_regularizer = regularizer_l1()) %>% 
+  # output layer, one output neuron for one response
+  # and no activation function
+  layer_dense(units = 1)
+
+# print architecture
+summary(DNN)
+
+# add loss function and optimizer
+DNN %>% 
+  compile(loss = loss_mean_squared_error,
+          optimizer = optimizer_adamax(0.01))
+
+# train model
+DNN %>% 
+  fit(X, YT, epochs = 50, verbose = 0)
+```
+
+Make predictions:
+
+```{r, message=FALSE,eval=FALSE}
+head(predict(DNN, X), n = 3)
+```
+
+##### Python
+
+```{python, warning=FALSE, message=FALSE, eval=FALSE}
+from tensorflow import keras
+from tensorflow.keras.layers import *
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+DNN = keras.model_sequential()
+  # first hidden layer
+DNN.add(Dense(
+  input_shape = X.shape[1], 
+  units = 10, 
+  activation = "relu")) 
+  # second hidden layer with regularization
+DNN.add(Dense(
+  units = 20, 
+  activation = "relu",
+  kernel_regularizer = keras.regularizers.l1()))
+  # output layer, 3 output neurons for our three classes
+  # and softmax activation to get quasi probabilities 
+  # that sum up to 1 for each observation
+DNN.add(Dense(
+  units = 1, 
+  activation = "None"))
+
+# print architecture
+DNN.summary()
+
+# add loss function and optimizer
+DNN.compile(loss = keras.losses.mean_squared_error,
+            optimizer = keras.optimizer.adamax(0.01))
+
+# train model
+DNN.fit(X, YT, epochs = 50, verbose = 0)
+```
+
+Make predictions:
+
+```{python, eval=FALSE}
+DNN.predict(X)[0:10]
+```
+
+:::
+
+### Convolutional neural networks
+
+Convolutional neural networks (CNN) are also deep neural networks but they are based on convolutional layers, which is a biologically inspired variation optimized to process image-based data (@lecun2015deep). CNNs consist of two stages, in the first, the images are passed through convolutional layers and the models learns to detect edges and shapes in the images. In the second stage, the dimensions are dropped and fully-connected layers are used to classify the previously identified shapes.
+
+In the following, we will use again the 'keras' package but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section 'Deep neural networks').
+
+We will demonstrate the application of CNNs with the MNIST dataset which consists of handwritten digits. The objective of the CNNs is to classify the images. The MNIST dataset is one of the most famous benchmark dataset for image-based tasks (@lecun_mnist_2010).
+
+::: panel-tabset
+#### R
+
+```{r,eval=FALSE}
+library(keras)
+data = keras::dataset_mnist()
+train = data$train
+X = train$x/255
+# we have to add a dimension that 
+# informs the network about the channels
+# of the images
+X = array(X, dim = c(dim(X), 1))
+YT = k_one_hot(train$y, num_classes = 10)
+
+
+
+CNN = 
+  keras_model_sequential() %>% 
+  # first hidden layer
+  layer_conv_2d(input_shape = list(28, 28, 1), 
+                filters = 16,
+                kernel_size = c(2, 2),
+                activation = "relu") %>%
+  layer_average_pooling_2d() %>% 
+  layer_conv_2d(filters = 8,
+                kernel_size = c(2, 2),
+                activation = "relu") %>%
+  # we use a normal DNN on top of the CNN:
+  # the layer flatten will remove the additional 
+  # dimensions
+  layer_flatten() %>% 
+  layer_dense(units = 20, 
+              activation = "relu") %>%
+  # 10 output neurons for 10 classes
+  layer_dense(units = 10, 
+              activation = "softmax")
+
+
+# print architecture
+summary(CNN)
+
+# add loss function and optimizer
+CNN %>% 
+  compile(loss = loss_categorical_crossentropy,
+          optimizer = optimizer_adamax(0.01))
+
+CNN %>% 
+  fit(X, YT, epochs = 3, verbose = 1, batch_size = 125)
+```
+
+Make predictions (class probabilites):
+
+```{r, eval=FALSE}
+head(predict(CNN, X[1:100,,,,drop=FALSE]), n = 3)
+```
+
+#### Python
+
+
+```{python, warning=FALSE, message=FALSE, eval=FALSE}
+from tensorflow import keras
+from tensorflow.keras.layers import *
+data = keras.datasets.mnist.load_data()
+train = data.train[0][0]
+labels = data.train[0][1]
+
+# We need to one hot encode our response classes
+YT = keras.one_hot(labels, num_classes = 10)
+
+CNN = keras.model_sequential()
+  # first hidden layer
+CNN.add(Conv2D(input_shape = [28, 28, 1], 
+                filters = 16,
+                kernel_size = (2, 2),
+                activation = "relu"))
+CNN.add(AveragePooling2D())
+CNN.add(Conv2D(filters = 8,
+                kernel_size = (2, 2),
+                activation = "relu"))
+  # we use a normal DNN on top of the CNN:
+  # the layer flatten will remove the additional 
+  # dimensions
+CNN.add(Flatten())
+  # output layer, 3 output neurons for our three classes
+  # and softmax activation to get quasi probabilities 
+  # that sum up to 1 for each observation
+CNN.add(Dense(
+  units = 10, 
+  activation = "softmax"))
+
+# print architecture
+CNN.summary()
+
+# add loss function and optimizer
+CNN.compile(loss = keras.losses.categorical_crossentropy,
+            optimizer = keras.optimizer.adamax(0.01))
+
+# train model
+CNN.fit(train, YT, epochs = 50, verbose = 0)
+
+
+```
+
+Make predictions:
+
+```{python, eval=FALSE}
+CNN.predict(train[0:10,:,:])
+```
+
+:::
+
+### Recurrent neural networks
+
+Recurrent neural networks are also deep neural networks but use layers specialized to handle time-series. In the following, we will use again the 'keras' package but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section 'Deep neural networks').
+
+About the data, we simulated in the following one time series from a simple ARIMA process, using the 'arima.sim' function. Our goal is to train a net which is able to predict the next 10 time points based on the previous 10 time points.
+
+::: panel-tabset
+#### R
+
+```{r, eval=FALSE}
+## RNNs
+library(keras)
+data = as.matrix(arima.sim(n = 1000, list(ar = c(0.3, -0.7)) ))
+# We use here a simplified way to create X and Y 
+# since the focus is on creating the RNNs
+data = matrix(data, ncol = 10L, byrow = TRUE)
+X = array(data[seq(1, 100, by = 2), ], dim = c(50, 10, 1))
+Y = data[seq(2, 100, by = 2), ]
+
+RNN = 
+  keras_model_sequential() %>% 
+  # first hidden layer
+  layer_gru(input_shape = list(10L, 1L),
+            units = 50, 
+            activation = "relu") %>%
+  # we want to predict the next 10 time steps
+  layer_dense(units = 10)
+
+
+# add loss function and optimizer
+RNN %>% 
+  compile(loss = loss_mean_squared_error,
+          optimizer = optimizer_adamax(0.01))
+
+RNN %>% 
+  fit(X, Y, epochs = 50, verbose = 0)
+```
+
+Make predictions:
+
+```{python, eval=FALSE}
+head(predict(RNN, X), n = 3)
+```
+
+
+#### Python
+```{python, warning=FALSE, message=FALSE, eval=FALSE}
+from tensorflow import keras
+from tensorflow.keras.layers import *
+X = r.X # get data from R
+Y = r.Y 
+
+RNN = keras.model_sequential()
+  # first hidden layer
+RNN.add(GRU(input_shape = [10, 1],units = 50, activation = "relu"))
+RNN.add(Dense(units = 10))
+
+RNN.summary()
+
+# add loss function and optimizer
+RNN.compile(loss = keras.losses.mean_squared_error,
+            optimizer = keras.optimizer.adamax(0.01))
+
+# train model
+RNN.fit(X, Y, epochs = 50, verbose = 0)
+
+
+```
+
+Make predictions:
+
+```{python, eval=FALSE}
+RNN.predict(X)[0:10,:]
+```
+
+
+:::
+
+### Graph (convolutional) neural networks
+
+Graph neural networks (GNN) is a young representative of the deep neural network family but is receiving more and more attention in the last years because of their ability to process non-Euclidean data such as graphs.
+
+Currently there is no R package for GNNs available. However, we can use the 'reticulate' package (@reticulate) to use the python packages 'torch' and 'torch_geometric' (@NEURIPS2019_9015, 2019; @Fey_Lenssen_2019).
+
+The following example was mostly adapted from the 'Node Classification with Graph Neural Networks' example from the torch_geometric documentation (<https://pytorch-geometric.readthedocs.io/en/latest/notes/colabs.html>).
+
+The dataset is also provided by the 'torch_geometric' package and consists of molecules presented as graphs and the task is to predict whether HIV virus replication is inhibited by the molecule or not (classification, binary classification).
+
+::: panel-tabset
+#### R
+
+```{r, eval=FALSE}
+library(reticulate)
+# Load python packages torch and torch_geometric via the reticulate R package
+torch = import("torch") 
+torch_geometric = import("torch_geometric")
+
+# helper functions from the torch_geometric modules
+GCNConv = torch_geometric$nn$GCNConv
+global_mean_pool = torch_geometric$nn$global_mean_pool
+
+
+# Download the MUTAG TUDataset
+dataset = torch_geometric$datasets$TUDataset(root='data/TUDataset', 
+                                             name='MUTAG')
+dataloader = torch_geometric$loader$DataLoader(dataset, 
+                                               batch_size=64L,
+                                               shuffle=TRUE)
+
+# Create the model with a python class
+# There are two classes in the response variable
+GCN = PyClass(
+  "GCN", 
+   inherit = torch$nn$Module, 
+   defs = list(
+       `__init__` = function(self, hidden_channels) {
+         super()$`__init__`()
+         torch$manual_seed(42L)
+         self$conv = GCNConv(dataset$num_node_features, hidden_channels)
+         self$linear = torch$nn$Linear(hidden_channels, dataset$num_classes)
+         NULL
+       },
+       forward = function(self, x, edge_index, batch) {
+         x = self$conv(x, edge_index)
+         x = x$relu()
+         x = global_mean_pool(x, batch)
+         
+         x = torch$nn$functional$dropout(x, p = 0.5, training=self$training)
+         x = self$linear(x)
+         return(x)
+       }
+   ))
+```
+
+Training loop:
+
+```{r,eval=FALSE}
+# create model object
+model = GCN(hidden_channels = 64L)
+
+# get optimizer and loss function
+optimizer = torch$optim$Adamax(model$parameters(), lr = 0.01)
+loss_func = torch$nn$CrossEntropyLoss()
+
+# set model into training mode (because of the dropout layer)
+model$train()
+
+# train model
+for(e in 1:50) {
+  iterator = reticulate::as_iterator(dataloader)
+  coro::loop(for (b in iterator) { 
+     pred = model(b$x, b$edge_index, b$batch)
+     loss = loss_func(pred, b$y)
+     loss$backward()
+     optimizer$step()
+     optimizer$zero_grad()
+  })
+  if(e %% 10 ==0) cat(paste0("Epoch: ",e," Loss: ", round(loss$item()[1], 4), "\n"))
+}
+```
+
+Make predictions:
+
+```{r,eval=FALSE}
+preds = list()
+test = torch_geometric$loader$DataLoader(dataset, batch_size=64L,shuffle=FALSE)
+iterator = reticulate::as_iterator(test)
+model$eval()
+counter = 1
+coro::loop(for (b in iterator) {
+  preds[[counter]] = model(b$x, b$edge_index, b$batch)
+  counter <<- counter + 1
+  })
+head(torch$concat(preds)$sigmoid()$data$cpu()$numpy(), n = 3)
+```
+
+#### Python
+
+```{python, eval=FALSE}
+# Load python packages torch and torch_geometric via the reticulate R package
+import torch
+import torch_geometric
+
+# helper functions from the torch_geometric modules
+GCNConv = torch_geometric.nn.GCNConv
+global_mean_pool = torch_geometric.nn.global_mean_pool
+
+
+# Download the MUTAG TUDataset
+dataset = torch_geometric.datasets.TUDataset(root='data/TUDataset', 
+                                             name='MUTAG')
+dataloader = torch_geometric.loader.DataLoader(dataset, 
+                                               batch_size=64,
+                                               shuffle=True)
+
+# Create the model with a python class
+# There are two classes in the response variable
+class GCN(torch.nn.Module):
+    def __init__(self, hidden_channels):
+         super().__init__()
+         torch.manual_seed(42)
+         self.conv = GCNConv(dataset.num_node_features, hidden_channels)
+         self.linear = torch.nn.Linear(hidden_channels, dataset.num_classes)
+         
+    def forward(self, x, edge_index, batch):
+        x = self.conv(x, edge_index)
+        x = x.relu()
+        x = global_mean_pool(x, batch)
+        x = torch.nn.functional$dropout(x, p = 0.5, training=self.training)
+        x = self.linear(x)
+      return(x)
+```
+
+Training loop:
+
+```{python,eval=FALSE}
+# create model object
+model = GCN(hidden_channels = 64)
+
+# get optimizer and loss function
+optimizer = torch.optim.Adamax(model.parameters(), lr = 0.01)
+loss_func = torch.nn.CrossEntropyLoss()
+
+# set model into training mode (because of the dropout layer)
+model.train()
+
+# train model
+for e in 0:50:
+  iterator = reticulate::as_iterator(dataloader)
+  
+  for b in dataloader:
+  
+    pred = model(b$x, b$edge_index, b$batch)
+    loss = loss_func(pred, b$y)
+    loss.backward()
+    optimizer.step()
+    optimizer.zero_grad()
+     
+  if e % 10 ==0:
+    print("Epoch: ", e," Loss: ", loss.item()[0], "\n"))
+```
+
+Make predictions:
+
+```{python,eval=FALSE}
+preds = []
+test = torch_geometric.loader.DataLoader(dataset, batch_size=64,shuffle=False)
+model.eval()
+counter = 1
+for b in test:
+  preds.append( model(b.x, b.edge_index, b.batch) )
+  
+  
+torch.concat(preds).sigmoid().data.cpu().numpy()[0:10]
+```
+
+:::
+
+## References {.unnumbered}
