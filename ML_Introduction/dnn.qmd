@@ -1,0 +1,199 @@
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+reticulate::use_condaenv("r-sjsdm", required = TRUE)
+reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+```
+
+# Deep neural networks
+
+Deep neural networks, or more precisely here fully connected neural networks, can be flexibly built which makes their application more challenging than other ML algorithms.
+
+In the following, we use the 'keras' (@kerasR; @chollet2015keras) package which is a higher level API on the python 'tensorflow' framework (@abadi2016tensorflow).
+
+## Classification
+
+::: panel-tabset
+### R
+
+```{r, message=FALSE,eval=TRUE}
+library(keras)
+X = scale(as.matrix(iris[,1:4]))
+Y = as.integer(iris$Species)
+# We need to one hot encode our response classes
+YT = k_one_hot(Y-1L, num_classes = 3)
+
+DNN = keras_model_sequential() %>% 
+  # first hidden layer
+  layer_dense(input_shape = ncol(X), 
+              units = 10, 
+              activation = "relu") %>% 
+  # second hidden layer with regularization
+  layer_dense(units = 20, 
+              activation = "relu",
+              kernel_regularizer = regularizer_l1()) %>% 
+  # output layer, 3 output neurons for our three classes
+  # and softmax activation to get quasi probabilities 
+  # that sum up to 1 for each observation
+  layer_dense(units = 3, 
+              activation = "softmax")
+
+# print architecture
+summary(DNN)
+
+# add loss function and optimizer
+DNN %>% 
+  compile(loss = loss_categorical_crossentropy,
+          optimizer = optimizer_adamax(0.01))
+
+# train model
+DNN %>% 
+  fit(X, YT, epochs = 50, verbose = 0)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE,eval=TRUE}
+head(predict(DNN, X), n = 3)
+```
+
+### Python
+
+```{python, warning=FALSE, message=FALSE, eval=TRUE}
+from tensorflow import keras
+from tensorflow.keras.layers import *
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+# We need to one hot encode our response classes
+YT = keras.utils.to_categorical(Y, num_classes = 3)
+
+DNN = keras.Sequential()
+  # first hidden layer
+DNN.add(Dense(
+  input_shape=[X.shape[1]], 
+  units = 10, 
+  activation = "relu")) 
+  # second hidden layer with regularization
+DNN.add(Dense(
+  units = 20, 
+  activation = "relu",
+  kernel_regularizer = keras.regularizers.l1()))
+  # output layer, 3 output neurons for our three classes
+  # and softmax activation to get quasi probabilities 
+  # that sum up to 1 for each observation
+DNN.add(Dense(
+  units = 3, 
+  activation = "softmax"))
+
+# print architecture
+DNN.summary()
+
+# add loss function and optimizer
+DNN.compile(loss = keras.losses.categorical_crossentropy,
+            optimizer = keras.optimizers.Adamax(0.01))
+
+# train model
+DNN.fit(X, YT, epochs = 50, verbose = 0)
+
+
+```
+
+Make predictions:
+
+```{python, eval=TRUE}
+DNN.predict(X)[0:10,:]
+```
+:::
+
+## Regression
+
+::: panel.-tabset
+### R
+
+```{r, message=FALSE,eval=TRUE}
+library(keras)
+X = scale(as.matrix(iris[,2:4]))
+Y = as.matrix(iris[,1,drop=FALSE])
+
+DNN = keras_model_sequential() %>% 
+  # first hidden layer
+  layer_dense(input_shape = ncol(X), 
+              units = 10, 
+              activation = "relu") %>% 
+  # second hidden layer with regularization
+  layer_dense(units = 20, 
+              activation = "relu",
+              kernel_regularizer = regularizer_l1()) %>% 
+  # output layer, one output neuron for one response
+  # and no activation function
+  layer_dense(units = 1)
+
+# print architecture
+summary(DNN)
+
+# add loss function and optimizer
+DNN %>% 
+  compile(loss = loss_mean_squared_error,
+          optimizer = optimizer_adamax(0.01))
+
+# train model
+DNN %>% 
+  fit(X, YT, epochs = 50, verbose = 0)
+```
+
+Make predictions:
+
+```{r, message=FALSE,eval=TRUE}
+head(predict(DNN, X), n = 3)
+```
+
+### Python
+
+```{python, warning=FALSE, message=FALSE, eval=TRUE}
+from tensorflow import keras
+from tensorflow.keras.layers import *
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+DNN = keras.Sequential()
+  # first hidden layer
+DNN.add(Dense(
+  input_shape=[X.shape[1]], 
+  units = 10, 
+  activation = "relu")) 
+  # second hidden layer with regularization
+DNN.add(Dense(
+  units = 20, 
+  activation = "relu",
+  kernel_regularizer = keras.regularizers.l1()))
+  # output layer, 3 output neurons for our three classes
+  # and softmax activation to get quasi probabilities 
+  # that sum up to 1 for each observation
+DNN.add(Dense(
+  units = 1, 
+  activation = None))
+
+# print architecture
+DNN.summary()
+
+# add loss function and optimizer
+DNN.compile(loss = keras.losses.mean_squared_error,
+            optimizer = keras.optimizers.Adamax(0.01))
+
+# train model
+DNN.fit(X, Y, epochs = 50, verbose = 0)
+```
+
+Make predictions:
+
+```{python, eval=TRUE}
+DNN.predict(X)[0:10]
+```
+:::

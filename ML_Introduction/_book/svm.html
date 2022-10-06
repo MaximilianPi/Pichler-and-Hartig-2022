@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introduction to Machine Learning and Deep Learning - 2&nbsp; Support Vector Machines</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./knn.html" rel="next">
+<link href="./elastic_net.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<meta name="citation_title" content="[2]{.chapter-number}&nbsp; [Support Vector Machines]{.chapter-title}">
+<meta name="citation_journal_title" content="undefined">
+<meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;,citation_publication_date=2021;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_publication_date=2008;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=Wordcloud: Word clouds;,citation_author=Ian Fellows;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud;,citation_publication_date=2018;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=wordcloud2: Create word cloud by ’htmlwidget’;,citation_author=Dawei Lang;,citation_author=Guan-tin Chien;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud2;,citation_publication_date=2018;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Regularization paths for cox’s proportional hazards model via coordinate descent;,citation_author=Noah Simon;,citation_author=Jerome Friedman;,citation_author=Trevor Hastie;,citation_author=Rob Tibshirani;,citation_fulltext_html_url=https://www.jstatsoft.org/v39/i05/;,citation_publication_date=2011;,citation_issue=5;,citation_volume=39;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=e1071: Misc functions of the department of statistics, probability theory group (formerly: E1071), TU wien;,citation_author=David Meyer;,citation_author=Evgenia Dimitriadou;,citation_author=Kurt Hornik;,citation_author=Andreas Weingessel;,citation_author=Friedrich Leisch;,citation_fulltext_html_url=https://CRAN.R-project.org/package=e1071;,citation_publication_date=2022;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Kknn: Weighted k-nearest neighbors;,citation_author=Klaus Schliep;,citation_author=Klaus Hechenbichler;,citation_fulltext_html_url=https://CRAN.R-project.org/package=kknn;,citation_publication_date=2016;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=ranger: A fast implementation of random forests for high dimensional data in C++ and R;,citation_author=Marvin N. Wright;,citation_author=Andreas Ziegler;,citation_publication_date=2017;,citation_issue=1;,citation_volume=77;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=Xgboost: Extreme gradient boosting;,citation_author=Tianqi Chen;,citation_author=Tong He;,citation_author=Michael Benesty;,citation_author=Vadim Khotilovich;,citation_author=Yuan Tang;,citation_author=Hyunsu Cho;,citation_author=Kailong Chen;,citation_author=Rory Mitchell;,citation_author=Ignacio Cano;,citation_author=Tianyi Zhou;,citation_author=Mu Li;,citation_author=Junyuan Xie;,citation_author=Min Lin;,citation_author=Yifeng Geng;,citation_author=Yutian Li;,citation_author=Jiaming Yuan;,citation_fulltext_html_url=https://CRAN.R-project.org/package=xgboost;,citation_publication_date=2022;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Keras: R interface to ’keras’;,citation_author=JJ Allaire;,citation_author=François Chollet;,citation_fulltext_html_url=https://CRAN.R-project.org/package=keras;,citation_publication_date=2022;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Keras;,citation_author=Francois Chollet;,citation_author=others;,citation_fulltext_html_url=https://github.com/fchollet/keras;,citation_publication_date=2015;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Tensorflow: A system for large-scale machine learning;,citation_author=Martı́n Abadi;,citation_author=Paul Barham;,citation_author=Jianmin Chen;,citation_author=Zhifeng Chen;,citation_author=Andy Davis;,citation_author=Jeffrey Dean;,citation_author=Matthieu Devin;,citation_author=Sanjay Ghemawat;,citation_author=Geoffrey Irving;,citation_author=Michael Isard;,citation_author=others;,citation_publication_date=2016;,citation_conference_title=12th \{USENIX\} symposium on operating systems design and implementation (\{OSDI\} 16);">
+<meta name="citation_reference" content="citation_title=MNIST handwritten digit database;,citation_author=Yann LeCun;,citation_author=Corinna Cortes;,citation_author=CJ Burges;,citation_publication_date=2010;,citation_volume=2;,citation_journal_title=ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist;">
+<meta name="citation_reference" content="citation_title=Deep learning;,citation_author=Yann LeCun;,citation_author=Yoshua Bengio;,citation_author=Geoffrey Hinton;,citation_publication_date=2015;,citation_issue=7553;,citation_volume=521;,citation_journal_title=nature;">
+<meta name="citation_reference" content="citation_title=Reticulate: Interface to ’python’;,citation_author=Kevin Ushey;,citation_author=JJ Allaire;,citation_author=Yuan Tang;,citation_fulltext_html_url=https://CRAN.R-project.org/package=reticulate;,citation_publication_date=2022;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=PyTorch: An imperative style, high-performance deep learning library;,citation_author=Adam Paszke;,citation_author=Sam Gross;,citation_author=Francisco Massa;,citation_author=Adam Lerer;,citation_author=James Bradbury;,citation_author=Gregory Chanan;,citation_author=Trevor Killeen;,citation_author=Zeming Lin;,citation_author=Natalia Gimelshein;,citation_author=Luca Antiga;,citation_author=Alban Desmaison;,citation_author=Andreas Kopf;,citation_author=Edward Yang;,citation_author=Zachary DeVito;,citation_author=Martin Raison;,citation_author=Alykhan Tejani;,citation_author=Sasank Chilamkurthy;,citation_author=Benoit Steiner;,citation_author=Lu Fang;,citation_author=Junjie Bai;,citation_author=Soumith Chintala;,citation_fulltext_html_url=http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf;,citation_publication_date=2019;,citation_journal_title=Advances in neural information processing systems 32;">
+<meta name="citation_reference" content="citation_title=Fast graph representation learning with PyTorch Geometric;,citation_author=Matthias Fey;,citation_author=Jan E. Lenssen;,citation_publication_date=2019;,citation_conference_title=ICLR workshop on representation learning on graphs and manifolds;">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to Machine Learning and Deep Learning</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./elastic_net.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./svm.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rf.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random forest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./brt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Boosted gradient trees</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Deep neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Convolutional neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Graph (convolutional) neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Appendices</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./refs.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#classification" id="toc-classification" class="nav-link active" data-scroll-target="#classification"> <span class="header-section-number">2.1</span> Classification</a></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression"> <span class="header-section-number">2.2</span> Regression</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>The support vector machine (SVM) algorithm estimates hyper-planes to separate our response species. In the following we use the ‘e1071’ package which supports a variety of different SVM algorithms (<span class="citation" data-cites="e1071">Meyer et al. (<a href="refs.html#ref-e1071" role="doc-biblioref">2022</a>)</span>).</p>
+<section id="classification" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="classification"><span class="header-section-number">2.1</span> Classification</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell" data-hash="svm_cache/html/unnamed-chunk-1_af09d49e9719174f34f690613bb07eac">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris<span class="sc">$</span>Species</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>sv <span class="ot">=</span> <span class="fu">svm</span>(X, Y, <span class="at">probability =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+svm.default(x = X, y = Y, probability = TRUE)
+
+
+Parameters:
+   SVM-Type:  C-classification 
+ SVM-Kernel:  radial 
+       cost:  1 
+
+Number of Support Vectors:  51
+
+ ( 8 22 21 )
+
+
+Number of Classes:  3 
+
+Levels: 
+ setosa versicolor virginica</code></pre>
+</div>
+</div>
+<p>Make predictions (class probabilities):</p>
+<div class="cell" data-hash="svm_cache/html/unnamed-chunk-2_7027ef3de5bacbf2004328a995731449">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">attr</span>(<span class="fu">predict</span>(sv, <span class="at">newdata =</span> X, <span class="at">probability =</span> <span class="cn">TRUE</span>), <span class="st">"probabilities"</span>), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     setosa versicolor   virginica
+1 0.9805055 0.01119040 0.008304068
+2 0.9731565 0.01793966 0.008903881
+3 0.9792215 0.01181014 0.008968335</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-hash="svm_cache/html/unnamed-chunk-3_3949c98e37481edc3a77d6d8bc92512a">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> svm</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scale(iris.data)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris.target</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> svm.SVC(probability<span class="op">=</span><span class="va">True</span>).fit(X, Y)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions (class probabilities):</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>model.predict_proba(X)[<span class="dv">0</span>:<span class="dv">10</span>,:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([[0.9811499 , 0.01051815, 0.00833194],
+       [0.97431749, 0.01672267, 0.00895984],
+       [0.97995873, 0.01104259, 0.00899868],
+       [0.97616243, 0.01416908, 0.00966849],
+       [0.98032481, 0.01085089, 0.0088243 ],
+       [0.97519955, 0.01563513, 0.00916532],
+       [0.97668604, 0.0125787 , 0.01073526],
+       [0.98105781, 0.01061998, 0.00832221],
+       [0.96786931, 0.02083993, 0.01129076],
+       [0.97787346, 0.01303339, 0.00909315]])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="regression" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="regression"><span class="header-section-number">2.2</span> Regression</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell" data-hash="svm_cache/html/unnamed-chunk-4_47f11b8c3dfaa1615fff01301efb6255">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(iris[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris[,<span class="dv">1</span>]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>sv <span class="ot">=</span> <span class="fu">svm</span>(X, Y) </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+svm.default(x = X, y = Y)
+
+
+Parameters:
+   SVM-Type:  eps-regression 
+ SVM-Kernel:  radial 
+       cost:  1 
+      gamma:  0.3333333 
+    epsilon:  0.1 
+
+
+Number of Support Vectors:  124</code></pre>
+</div>
+</div>
+<p>Make predictions (class probabilities):</p>
+<div class="cell" data-hash="svm_cache/html/unnamed-chunk-5_7cc3146f6a8708c353d181043a75c257">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(sv, <span class="at">newdata =</span> X), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2        3 
+5.042085 4.711768 4.836291 </code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell" data-hash="svm_cache/html/unnamed-chunk-6_5056369b8e4cb80cc6671c1f674c4ab9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> svm</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris()</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> iris.data</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scale(data[:,<span class="dv">1</span>:<span class="dv">4</span>])</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> data[:,<span class="dv">0</span>]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> svm.SVR().fit(X, Y)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions:</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>model.predict(X)[<span class="dv">0</span>:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([5.03583855, 4.69496586, 4.81438855, 4.77951854, 5.10018373,
+       5.29981857, 4.97308737, 4.98199033, 4.63701656, 4.78431078])</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-e1071" class="csl-entry" role="doc-biblioentry">
+Meyer, David, Evgenia Dimitriadou, Kurt Hornik, Andreas Weingessel, and Friedrich Leisch. 2022. <em>E1071: Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien</em>. <a href="https://CRAN.R-project.org/package=e1071">https://CRAN.R-project.org/package=e1071</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./elastic_net.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./knn.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

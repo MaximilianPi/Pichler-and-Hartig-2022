@@ -1,0 +1,10 @@
+# Preface {.unnumbered}
+
+The goal of this book is to provide short code examples for all common supervised ML algorithms. All examples are shown in the R programming language and are demonstrated at the example of the iris dataset (4 continuous and 1 nominal variables). We demonstrate a) how to apply the algorithms on classification tasks (response = nominal, three species) and how to generate class specific (quasi) probability predictions and b) how to apply the algorithms to regression tasks (response = continuous) and make continuous predictions.
+
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+reticulate::use_condaenv("r-sjsdm", required = TRUE)
+reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+```

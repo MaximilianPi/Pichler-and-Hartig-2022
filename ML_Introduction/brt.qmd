@@ -1,0 +1,142 @@
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+reticulate::use_condaenv("r-sjsdm", required = TRUE)
+reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+```
+
+# Boosted gradient trees
+
+Boosted gradient machines achieve currently state-of-the-art performance for structured (tabular) data which makes them probably one of the most important algorithms for E&E where structured data dominates the field.
+
+In the following, we use the 'xgboost' package (@xgboost).
+
+## Classification
+
+::: panel-tabset
+### R
+
+```{r, message=FALSE}
+library(xgboost)
+X = as.matrix(iris[,1:4])
+Y = as.integer(iris[,5]) - 1 # classes must be integers starting from 0
+
+xgdata = xgb.DMatrix(X, label = Y)
+
+# nrounds = number of trees in the ensemble
+brt = xgboost(data = xgdata, 
+              objective="multi:softprob", 
+              nrounds = 50, 
+              num_class = 3,
+              verbose = 0)
+```
+
+Show feature importances:
+
+```{r, message=FALSE}
+xgb.importance(model = brt)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(matrix(predict(brt, newdata = xgb.DMatrix(X)), ncol =3), n = 3)
+```
+
+### Python
+
+```{python, warning=FALSE, message=FALSE}
+import xgboost as xgb
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+# Parameters:
+param = {
+  'max_depth':2, 
+  'eta':1, 
+  'objective':'multi:softmax' }
+num_round = 50
+
+model = xgb.XGBClassifier(param, num_round, verbosity = 0).fit(X, Y)
+
+```
+
+Feature importance
+
+```{python, warning=FALSE,  message=FALSE}
+model.feature_importances_
+```
+
+Make predictions:
+
+```{python, warning=FALSE, message=FALSE}
+model.predict_proba(X)[0:10,:]
+
+```
+:::
+
+## Regression
+
+::: panel-tabset
+### R
+
+```{r, message=FALSE}
+library(xgboost)
+X = as.matrix(iris[,2:4])
+Y = iris[,1]
+
+xgdata = xgb.DMatrix(X, label = Y)
+
+# nrounds = number of trees in the ensemble
+brt = xgboost(data = xgdata, 
+              objective="reg:squarederror", 
+              nrounds = 50, 
+              verbose = 0)
+```
+
+Show feature importances:
+
+```{r, message=FALSE}
+xgb.importance(model = brt)
+```
+
+Make predictions:
+
+```{r, message=FALSE}
+head(predict(brt, newdata = xgb.DMatrix(X), n = 3))
+```
+
+### Python
+
+```{python, warning=FALSE, message=FALSE}
+import xgboost as xgb
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+# Parameters:
+model = xgb.XGBRegressor(
+  objective = 'reg:squarederror',
+  max_depth = 2,  
+  n_estimators = 50, 
+  verbosity = 0).fit(X, Y)
+```
+
+Feature importance:
+
+```{python, warning=FALSE, message=FALSE}
+print(model.feature_importances_)
+```
+
+Make predictions:
+
+```{python, warning=FALSE, message=FALSE}
+model.predict(X)[0:10]
+
+```
+:::

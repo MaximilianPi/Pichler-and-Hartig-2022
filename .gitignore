@@ -2,4 +2,6 @@
 .Rproj.user/
 .Rproj.user/*
 Supporting-Information_cache/
+Supporting_Information_cache/
+ML_Introduction/*_cache
 data

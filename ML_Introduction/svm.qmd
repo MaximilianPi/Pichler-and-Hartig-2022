@@ -1,0 +1,88 @@
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+reticulate::use_condaenv("r-sjsdm", required = TRUE)
+reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+```
+
+# Support Vector Machines
+
+The support vector machine (SVM) algorithm estimates hyper-planes to separate our response species. In the following we use the 'e1071' package which supports a variety of different SVM algorithms (@e1071).
+
+## Classification
+
+::: panel-tabset
+### R
+
+```{r, message=FALSE}
+library(e1071)
+X = scale(iris[,1:4])
+Y = iris$Species
+
+sv = svm(X, Y, probability = TRUE) 
+summary(sv)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(attr(predict(sv, newdata = X, probability = TRUE), "probabilities"), n = 3)
+```
+
+### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn import svm
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+model = svm.SVC(probability=True).fit(X, Y)
+
+# Make predictions (class probabilities):
+
+model.predict_proba(X)[0:10,:]
+
+```
+:::
+
+## Regression
+
+::: panel-tabset
+### R
+
+```{r, message=FALSE}
+library(e1071)
+X = scale(iris[,2:4])
+Y = iris[,1]
+
+sv = svm(X, Y) 
+summary(sv)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(sv, newdata = X), n = 3)
+```
+
+### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn import svm
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+model = svm.SVR().fit(X, Y)
+
+# Make predictions:
+
+model.predict(X)[0:10]
+
+```
+:::

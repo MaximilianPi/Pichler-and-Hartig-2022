@@ -1,0 +1,81 @@
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+reticulate::use_condaenv("r-sjsdm", required = TRUE)
+reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+```
+
+# Recurrent neural networks
+
+Recurrent neural networks are also deep neural networks but use layers specialized to handle time-series. In the following, we will use again the 'keras' package but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section 'Deep neural networks').
+
+About the data, we simulated in the following one time series from a simple ARIMA process, using the 'arima.sim' function. Our goal is to train a net which is able to predict the next 10 time points based on the previous 10 time points.
+
+::: panel-tabset
+### R
+
+```{r, eval=TRUE}
+## RNNs
+library(keras)
+data = as.matrix(arima.sim(n = 1000, list(ar = c(0.3, -0.7)) ))
+# We use here a simplified way to create X and Y 
+# since the focus is on creating the RNNs
+data = matrix(data, ncol = 10L, byrow = TRUE)
+X = array(data[seq(1, 100, by = 2), ], dim = c(50, 10, 1))
+Y = data[seq(2, 100, by = 2), ]
+
+RNN = 
+  keras_model_sequential() %>% 
+  # first hidden layer
+  layer_gru(input_shape = list(10L, 1L),
+            units = 50, 
+            activation = "relu") %>%
+  # we want to predict the next 10 time steps
+  layer_dense(units = 10)
+
+
+# add loss function and optimizer
+RNN %>% 
+  compile(loss = loss_mean_squared_error,
+          optimizer = optimizer_adamax(0.01))
+
+RNN %>% 
+  fit(X, Y, epochs = 5, verbose = 0)
+```
+
+Make predictions:
+
+```{r, eval=TRUE}
+head(predict(RNN, X), n = 3)
+```
+
+### Python
+
+```{python, warning=FALSE, message=FALSE, eval=TRUE}
+from tensorflow import keras
+from tensorflow.keras.layers import *
+X = r.X # get data from R
+Y = r.Y 
+
+RNN = keras.Sequential()
+  # first hidden layer
+RNN.add(GRU(input_shape = [10, 1],units = 50, activation = "relu"))
+RNN.add(Dense(units = 10))
+
+RNN.summary()
+
+# add loss function and optimizer
+RNN.compile(loss = keras.losses.mean_squared_error,
+            optimizer = keras.optimizers.Adamax(0.01))
+
+# train model
+RNN.fit(X, Y, epochs = 5, verbose = 0)
+
+
+```
+
+Make predictions:
+
+```{python, eval=TRUE}
+RNN.predict(X)[0:10,:]
+```
+:::

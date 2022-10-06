@@ -1,0 +1,89 @@
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+reticulate::use_condaenv("r-sjsdm", required = TRUE)
+reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+```
+
+# k-nearest-neighbor
+
+The k-nearest-neighbor algorithm doesn't really learn from the data, predictions for new observations are made based on the class affiliation (or response value) of the nearest neighbors, e.g. by majority voting or averaging. The nearest neighbors are found by calculating the distance of the new observation to all observations in the train dataset.
+
+In the following we use the 'kknn' package (@kknn). Different to other ML packages we can provide here already the test dataset in the fit function.
+
+## Classification
+
+::: panel-tabset
+### R
+
+```{r, message=FALSE}
+library(kknn)
+X = scale(iris[,1:4])
+Y = iris[,5,drop=FALSE]
+data = cbind(Y, X)
+
+knn = kknn(Species~., train = data, test = data) 
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(knn$prob, n = 3)
+```
+
+### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+model = KNeighborsClassifier().fit(X, Y)
+
+# Make predictions:
+
+model.predict_proba(X)[0:10,:]
+
+```
+:::
+
+## Regression
+
+::: panel-tabset
+### R
+
+```{r, message=FALSE}
+library(e1071)
+X = scale(iris[,2:4])
+data = cbind(iris[,1,drop=FALSE], X)
+
+knn = kknn(Sepal.Length~., train = data, test = data) 
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(knn), n = 3)
+```
+
+### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+model = KNeighborsRegressor().fit(X, Y)
+
+# Make predictions:
+
+model.predict(X)[0:10]
+
+```
+:::

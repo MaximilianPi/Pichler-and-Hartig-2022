@@ -1,0 +1,122 @@
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+reticulate::use_condaenv("r-sjsdm", required = TRUE)
+reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+```
+
+# Convolutional neural networks
+
+Convolutional neural networks (CNN) are also deep neural networks but they are based on convolutional layers, which is a biologically inspired variation optimized to process image-based data (@lecun2015deep). CNNs consist of two stages, in the first, the images are passed through convolutional layers and the models learns to detect edges and shapes in the images. In the second stage, the dimensions are dropped and fully-connected layers are used to classify the previously identified shapes.
+
+In the following, we will use again the 'keras' package but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section 'Deep neural networks').
+
+We will demonstrate the application of CNNs with the MNIST dataset which consists of handwritten digits. The objective of the CNNs is to classify the images. The MNIST dataset is one of the most famous benchmark dataset for image-based tasks (@lecun_mnist_2010).
+
+::: panel-tabset
+## R
+
+```{r,eval=TRUE}
+library(keras)
+data = keras::dataset_mnist()
+train = data$train
+X = train$x/255
+# we have to add a dimension that 
+# informs the network about the channels
+# of the images
+X = array(X, dim = c(dim(X), 1))
+YT = k_one_hot(train$y, num_classes = 10)
+
+
+
+CNN = 
+  keras_model_sequential() %>% 
+  # first hidden layer
+  layer_conv_2d(input_shape = list(28, 28, 1), 
+                filters = 16,
+                kernel_size = c(2, 2),
+                activation = "relu") %>%
+  layer_average_pooling_2d() %>% 
+  layer_conv_2d(filters = 8,
+                kernel_size = c(2, 2),
+                activation = "relu") %>%
+  # we use a normal DNN on top of the CNN:
+  # the layer flatten will remove the additional 
+  # dimensions
+  layer_flatten() %>% 
+  layer_dense(units = 20, 
+              activation = "relu") %>%
+  # 10 output neurons for 10 classes
+  layer_dense(units = 10, 
+              activation = "softmax")
+
+
+# print architecture
+summary(CNN)
+
+# add loss function and optimizer
+CNN %>% 
+  compile(loss = loss_categorical_crossentropy,
+          optimizer = optimizer_adamax(0.01))
+
+CNN %>% 
+  fit(X, YT, epochs = 3, batch_size = 125, verbose = 0)
+```
+
+Make predictions (class probabilites):
+
+```{r, eval=TRUE}
+head(predict(CNN, X[1:100,,,,drop=FALSE]), n = 3)
+```
+
+## Python
+
+```{python, warning=FALSE, message=FALSE, eval=TRUE}
+from tensorflow import keras
+from tensorflow.keras.layers import *
+data = keras.datasets.mnist.load_data()
+train = data[0][0]
+labels = data[0][1]
+
+# We need to one hot encode our response classes
+YT = keras.utils.to_categorical(labels, num_classes = 10)
+
+CNN = keras.Sequential()
+  # first hidden layer
+CNN.add(Conv2D(input_shape = [28, 28, 1], 
+                filters = 16,
+                kernel_size = (2, 2),
+                activation = "relu"))
+CNN.add(AveragePooling2D())
+CNN.add(Conv2D(filters = 8,
+                kernel_size = (2, 2),
+                activation = "relu"))
+  # we use a normal DNN on top of the CNN:
+  # the layer flatten will remove the additional 
+  # dimensions
+CNN.add(Flatten())
+  # output layer, 3 output neurons for our three classes
+  # and softmax activation to get quasi probabilities 
+  # that sum up to 1 for each observation
+CNN.add(Dense(
+  units = 10, 
+  activation = "softmax"))
+
+# print architecture
+CNN.summary()
+
+# add loss function and optimizer
+CNN.compile(loss = keras.losses.categorical_crossentropy,
+            optimizer = keras.optimizers.Adamax(0.01))
+
+# train model
+CNN.fit(train, YT, epochs = 5, verbose = 0)
+
+
+```
+
+Make predictions:
+
+```{python, eval=TRUE}
+CNN.predict(train[0:10,:,:])
+```
+:::

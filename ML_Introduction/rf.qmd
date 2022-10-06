@@ -1,0 +1,118 @@
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+reticulate::use_condaenv("r-sjsdm", required = TRUE)
+reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+```
+
+# Random forest
+
+The random forest (RF) algorithm is probably one of the most famous ML algorithms, and not without reason. Compared to other well performing algorithms, the RF algorithm has only a few hyper-parameters and because of the bagging and the random sampling of available variables in for the node splits, it has a well working internal complexity adaption.
+
+In the following, we use the 'ranger' package (@ranger).
+
+## Classification
+
+::: panel-tabset
+### R
+
+```{r, message=FALSE}
+library(ranger)
+X = iris[,1:4]
+Y = iris[,5,drop=FALSE]
+data = cbind(Y, X)
+
+rf = ranger(Species~., data = data, probability = TRUE, importance = "impurity")
+```
+
+Show feature importances:
+
+```{r, message=FALSE}
+importance(rf)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(rf, data = data)$predictions, n = 3)
+```
+
+### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+model = RandomForestClassifier().fit(X, Y)
+
+```
+
+Feature importance
+
+```{python, warning=FALSE, message=FALSE}
+print(model.feature_importances_)
+```
+
+Make predictions:
+
+```{python, warning=FALSE, message=FALSE}
+model.predict_proba(X)[0:10,:]
+
+```
+:::
+
+## Regression
+
+::: panel-tabset
+### R
+
+```{r, message=FALSE}
+library(ranger)
+X = iris[,2:4]
+data = cbind(iris[,1,drop=FALSE], X)
+
+rf = ranger(Sepal.Length~., data = data, importance = "impurity")
+```
+
+Show feature importances:
+
+```{r, message=FALSE}
+importance(rf)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(rf, data = data)$predictions, n = 3)
+```
+
+### Python
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.ensemble import RandomForestRegressor
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+model = RandomForestRegressor().fit(X, Y)
+```
+
+Feature importance:
+
+```{python, warning=FALSE, message=FALSE}
+print(model.feature_importances_)
+```
+
+Make predictions:
+
+```{python, warning=FALSE, message=FALSE}
+model.predict(X)[0:10]
+
+```
+:::

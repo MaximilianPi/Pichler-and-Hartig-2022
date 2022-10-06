@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introduction to Machine Learning and Deep Learning - 6&nbsp; Deep neural networks</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./cnn.html" rel="next">
+<link href="./brt.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="citation_title" content="[6]{.chapter-number}&nbsp; [Deep neural networks]{.chapter-title}">
+<meta name="citation_journal_title" content="undefined">
+<meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;,citation_publication_date=2021;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_publication_date=2008;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=Wordcloud: Word clouds;,citation_author=Ian Fellows;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud;,citation_publication_date=2018;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=wordcloud2: Create word cloud by ’htmlwidget’;,citation_author=Dawei Lang;,citation_author=Guan-tin Chien;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud2;,citation_publication_date=2018;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Regularization paths for cox’s proportional hazards model via coordinate descent;,citation_author=Noah Simon;,citation_author=Jerome Friedman;,citation_author=Trevor Hastie;,citation_author=Rob Tibshirani;,citation_fulltext_html_url=https://www.jstatsoft.org/v39/i05/;,citation_publication_date=2011;,citation_issue=5;,citation_volume=39;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=e1071: Misc functions of the department of statistics, probability theory group (formerly: E1071), TU wien;,citation_author=David Meyer;,citation_author=Evgenia Dimitriadou;,citation_author=Kurt Hornik;,citation_author=Andreas Weingessel;,citation_author=Friedrich Leisch;,citation_fulltext_html_url=https://CRAN.R-project.org/package=e1071;,citation_publication_date=2022;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Kknn: Weighted k-nearest neighbors;,citation_author=Klaus Schliep;,citation_author=Klaus Hechenbichler;,citation_fulltext_html_url=https://CRAN.R-project.org/package=kknn;,citation_publication_date=2016;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=ranger: A fast implementation of random forests for high dimensional data in C++ and R;,citation_author=Marvin N. Wright;,citation_author=Andreas Ziegler;,citation_publication_date=2017;,citation_issue=1;,citation_volume=77;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=Xgboost: Extreme gradient boosting;,citation_author=Tianqi Chen;,citation_author=Tong He;,citation_author=Michael Benesty;,citation_author=Vadim Khotilovich;,citation_author=Yuan Tang;,citation_author=Hyunsu Cho;,citation_author=Kailong Chen;,citation_author=Rory Mitchell;,citation_author=Ignacio Cano;,citation_author=Tianyi Zhou;,citation_author=Mu Li;,citation_author=Junyuan Xie;,citation_author=Min Lin;,citation_author=Yifeng Geng;,citation_author=Yutian Li;,citation_author=Jiaming Yuan;,citation_fulltext_html_url=https://CRAN.R-project.org/package=xgboost;,citation_publication_date=2022;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Keras: R interface to ’keras’;,citation_author=JJ Allaire;,citation_author=François Chollet;,citation_fulltext_html_url=https://CRAN.R-project.org/package=keras;,citation_publication_date=2022;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Keras;,citation_author=Francois Chollet;,citation_author=others;,citation_fulltext_html_url=https://github.com/fchollet/keras;,citation_publication_date=2015;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=Tensorflow: A system for large-scale machine learning;,citation_author=Martı́n Abadi;,citation_author=Paul Barham;,citation_author=Jianmin Chen;,citation_author=Zhifeng Chen;,citation_author=Andy Davis;,citation_author=Jeffrey Dean;,citation_author=Matthieu Devin;,citation_author=Sanjay Ghemawat;,citation_author=Geoffrey Irving;,citation_author=Michael Isard;,citation_author=others;,citation_publication_date=2016;,citation_conference_title=12th \{USENIX\} symposium on operating systems design and implementation (\{OSDI\} 16);">
+<meta name="citation_reference" content="citation_title=MNIST handwritten digit database;,citation_author=Yann LeCun;,citation_author=Corinna Cortes;,citation_author=CJ Burges;,citation_publication_date=2010;,citation_volume=2;,citation_journal_title=ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist;">
+<meta name="citation_reference" content="citation_title=Deep learning;,citation_author=Yann LeCun;,citation_author=Yoshua Bengio;,citation_author=Geoffrey Hinton;,citation_publication_date=2015;,citation_issue=7553;,citation_volume=521;,citation_journal_title=nature;">
+<meta name="citation_reference" content="citation_title=Reticulate: Interface to ’python’;,citation_author=Kevin Ushey;,citation_author=JJ Allaire;,citation_author=Yuan Tang;,citation_fulltext_html_url=https://CRAN.R-project.org/package=reticulate;,citation_publication_date=2022;,citation_journal_title=undefined;">
+<meta name="citation_reference" content="citation_title=PyTorch: An imperative style, high-performance deep learning library;,citation_author=Adam Paszke;,citation_author=Sam Gross;,citation_author=Francisco Massa;,citation_author=Adam Lerer;,citation_author=James Bradbury;,citation_author=Gregory Chanan;,citation_author=Trevor Killeen;,citation_author=Zeming Lin;,citation_author=Natalia Gimelshein;,citation_author=Luca Antiga;,citation_author=Alban Desmaison;,citation_author=Andreas Kopf;,citation_author=Edward Yang;,citation_author=Zachary DeVito;,citation_author=Martin Raison;,citation_author=Alykhan Tejani;,citation_author=Sasank Chilamkurthy;,citation_author=Benoit Steiner;,citation_author=Lu Fang;,citation_author=Junjie Bai;,citation_author=Soumith Chintala;,citation_fulltext_html_url=http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf;,citation_publication_date=2019;,citation_journal_title=Advances in neural information processing systems 32;">
+<meta name="citation_reference" content="citation_title=Fast graph representation learning with PyTorch Geometric;,citation_author=Matthias Fey;,citation_author=Jan E. Lenssen;,citation_publication_date=2019;,citation_conference_title=ICLR workshop on representation learning on graphs and manifolds;">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Deep neural networks</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to Machine Learning and Deep Learning</a> 
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./elastic_net.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./svm.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rf.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random forest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./brt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Boosted gradient trees</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dnn.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Deep neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Convolutional neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Graph (convolutional) neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Appendices</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./refs.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#classification" id="toc-classification" class="nav-link active" data-scroll-target="#classification"> <span class="header-section-number">6.1</span> Classification</a></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression"> <span class="header-section-number">6.2</span> Regression</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Deep neural networks</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>Deep neural networks, or more precisely here fully connected neural networks, can be flexibly built which makes their application more challenging than other ML algorithms.</p>
+<p>In the following, we use the ‘keras’ (<span class="citation" data-cites="kerasR">Allaire and Chollet (<a href="refs.html#ref-kerasR" role="doc-biblioref">2022</a>)</span>; <span class="citation" data-cites="chollet2015keras">Chollet et al. (<a href="refs.html#ref-chollet2015keras" role="doc-biblioref">2015</a>)</span>) package which is a higher level API on the python ‘tensorflow’ framework (<span class="citation" data-cites="abadi2016tensorflow">Abadi et al. (<a href="refs.html#ref-abadi2016tensorflow" role="doc-biblioref">2016</a>)</span>).</p>
+<section id="classification" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="classification"><span class="header-section-number">6.1</span> Classification</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-1_4f0a1449c6984889e6f2242782ee0809">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(<span class="fu">as.matrix</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> <span class="fu">as.integer</span>(iris<span class="sc">$</span>Species)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to one hot encode our response classes</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>YT <span class="ot">=</span> <span class="fu">k_one_hot</span>(Y<span class="sc">-</span>1L, <span class="at">num_classes =</span> <span class="dv">3</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>DNN <span class="ot">=</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">input_shape =</span> <span class="fu">ncol</span>(X), </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">units =</span> <span class="dv">10</span>, </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"relu"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># second hidden layer with regularization</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">20</span>, </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"relu"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">kernel_regularizer =</span> <span class="fu">regularizer_l1</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># output layer, 3 output neurons for our three classes</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and softmax activation to get quasi probabilities </span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># that sum up to 1 for each observation</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">3</span>, </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"softmax"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># print architecture</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(DNN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential"
+________________________________________________________________________________
+ Layer (type)                       Output Shape                    Param #     
+================================================================================
+ dense_2 (Dense)                    (None, 10)                      50          
+ dense_1 (Dense)                    (None, 20)                      220         
+ dense (Dense)                      (None, 3)                       63          
+================================================================================
+Total params: 333
+Trainable params: 333
+Non-trainable params: 0
+________________________________________________________________________________</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>DNN <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compile</span>(<span class="at">loss =</span> loss_categorical_crossentropy,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">optimizer =</span> <span class="fu">optimizer_adamax</span>(<span class="fl">0.01</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>DNN <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(X, YT, <span class="at">epochs =</span> <span class="dv">50</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Make predictions (class probabilities):</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-2_62f640d2a07ac3aba47c2d3fed4ee785">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(DNN, X), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]        [,2]         [,3]
+[1,] 0.9968244 0.003130971 4.465887e-05
+[2,] 0.9858423 0.013976931 1.807758e-04
+[3,] 0.9960486 0.003893664 5.765830e-05</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-3_a5d8e291c5dc6f2313bea1486666d394">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scale(iris.data)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris.target</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to one hot encode our response classes</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>YT <span class="op">=</span> keras.utils.to_categorical(Y, num_classes <span class="op">=</span> <span class="dv">3</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>DNN <span class="op">=</span> keras.Sequential()</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  input_shape<span class="op">=</span>[X.shape[<span class="dv">1</span>]], </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">10</span>, </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="st">"relu"</span>)) </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># second hidden layer with regularization</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">20</span>, </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="st">"relu"</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  kernel_regularizer <span class="op">=</span> keras.regularizers.l1()))</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># output layer, 3 output neurons for our three classes</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and softmax activation to get quasi probabilities </span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># that sum up to 1 for each observation</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">3</span>, </span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="st">"softmax"</span>))</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co"># print architecture</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>DNN.summary()</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential_1"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense_3 (Dense)             (None, 10)                50        
+                                                                 
+ dense_4 (Dense)             (None, 20)                220       
+                                                                 
+ dense_5 (Dense)             (None, 3)                 63        
+                                                                 
+=================================================================
+Total params: 333
+Trainable params: 333
+Non-trainable params: 0
+_________________________________________________________________</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>DNN.<span class="bu">compile</span>(loss <span class="op">=</span> keras.losses.categorical_crossentropy,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>            optimizer <span class="op">=</span> keras.optimizers.Adamax(<span class="fl">0.01</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>DNN.fit(X, YT, epochs <span class="op">=</span> <span class="dv">50</span>, verbose <span class="op">=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;keras.callbacks.History object at 0x7ff7e648e860&gt;</code></pre>
+</div>
+</div>
+<p>Make predictions:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-4_c14dfac5e1655a1478429ac83ddf8ccd">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>DNN.predict(X)[<span class="dv">0</span>:<span class="dv">10</span>,:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+1/5 [=====&gt;........................] - ETA: 0s
+5/5 [==============================] - 0s 1ms/step
+array([[9.9604118e-01, 3.9030442e-03, 5.5764249e-05],
+       [9.8632067e-01, 1.3529156e-02, 1.5015916e-04],
+       [9.9591041e-01, 4.0376107e-03, 5.2057381e-05],
+       [9.9484915e-01, 5.0889952e-03, 6.1775587e-05],
+       [9.9729079e-01, 2.6730390e-03, 3.6100675e-05],
+       [9.9496955e-01, 4.9541364e-03, 7.6401542e-05],
+       [9.9712002e-01, 2.8428256e-03, 3.7198897e-05],
+       [9.9558902e-01, 4.3485621e-03, 6.2399165e-05],
+       [9.9313205e-01, 6.7970627e-03, 7.0966795e-05],
+       [9.9308324e-01, 6.8320944e-03, 8.4627231e-05]], dtype=float32)</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="regression" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="regression"><span class="header-section-number">6.2</span> Regression</h2>
+<div class="panel.-tabset">
+<section id="r-1" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="r-1"><span class="header-section-number">6.2.1</span> R</h3>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-5_ddda7b33f56558ead683cac19db4e2f1">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(<span class="fu">as.matrix</span>(iris[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> <span class="fu">as.matrix</span>(iris[,<span class="dv">1</span>,<span class="at">drop=</span><span class="cn">FALSE</span>])</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>DNN <span class="ot">=</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">input_shape =</span> <span class="fu">ncol</span>(X), </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">units =</span> <span class="dv">10</span>, </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"relu"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># second hidden layer with regularization</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">20</span>, </span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"relu"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">kernel_regularizer =</span> <span class="fu">regularizer_l1</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># output layer, one output neuron for one response</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and no activation function</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">1</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co"># print architecture</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(DNN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential_2"
+________________________________________________________________________________
+ Layer (type)                       Output Shape                    Param #     
+================================================================================
+ dense_8 (Dense)                    (None, 10)                      40          
+ dense_7 (Dense)                    (None, 20)                      220         
+ dense_6 (Dense)                    (None, 1)                       21          
+================================================================================
+Total params: 281
+Trainable params: 281
+Non-trainable params: 0
+________________________________________________________________________________</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>DNN <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compile</span>(<span class="at">loss =</span> loss_mean_squared_error,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">optimizer =</span> <span class="fu">optimizer_adamax</span>(<span class="fl">0.01</span>))</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>DNN <span class="sc">%&gt;%</span> </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(X, YT, <span class="at">epochs =</span> <span class="dv">50</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Make predictions:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-6_05c6decb1a6c8ad8f2519bc0b33c9601">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(DNN, X), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]
+[1,] 0.3332931
+[2,] 0.3334758
+[3,] 0.3333959</code></pre>
+</div>
+</div>
+</section>
+<section id="python-1" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="python-1"><span class="header-section-number">6.2.2</span> Python</h3>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-7_be34cd7a231eaa6d5fde27776f886286">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris()</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> iris.data</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scale(data[:,<span class="dv">1</span>:<span class="dv">4</span>])</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> data[:,<span class="dv">0</span>]</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>DNN <span class="op">=</span> keras.Sequential()</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  input_shape<span class="op">=</span>[X.shape[<span class="dv">1</span>]], </span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">10</span>, </span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="st">"relu"</span>)) </span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># second hidden layer with regularization</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">20</span>, </span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="st">"relu"</span>,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  kernel_regularizer <span class="op">=</span> keras.regularizers.l1()))</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># output layer, 3 output neurons for our three classes</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and softmax activation to get quasi probabilities </span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># that sum up to 1 for each observation</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">1</span>, </span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="va">None</span>))</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="co"># print architecture</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>DNN.summary()</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential_3"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense_9 (Dense)             (None, 10)                40        
+                                                                 
+ dense_10 (Dense)            (None, 20)                220       
+                                                                 
+ dense_11 (Dense)            (None, 1)                 21        
+                                                                 
+=================================================================
+Total params: 281
+Trainable params: 281
+Non-trainable params: 0
+_________________________________________________________________</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>DNN.<span class="bu">compile</span>(loss <span class="op">=</span> keras.losses.mean_squared_error,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>            optimizer <span class="op">=</span> keras.optimizers.Adamax(<span class="fl">0.01</span>))</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>DNN.fit(X, Y, epochs <span class="op">=</span> <span class="dv">50</span>, verbose <span class="op">=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;keras.callbacks.History object at 0x7ff7e61e5ac8&gt;</code></pre>
+</div>
+</div>
+<p>Make predictions:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-8_58d99fa4db8b8b63e7305cad86886d02">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>DNN.predict(X)[<span class="dv">0</span>:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+1/5 [=====&gt;........................] - ETA: 0s
+5/5 [==============================] - 0s 1ms/step
+array([[5.0288253],
+       [4.8119473],
+       [4.9024477],
+       [4.8307614],
+       [5.158363 ],
+       [5.384384 ],
+       [4.8593917],
+       [4.946008 ],
+       [4.780525 ],
+       [4.9478073]], dtype=float32)</code></pre>
+</div>
+</div>
+</section>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-abadi2016tensorflow" class="csl-entry" role="doc-biblioentry">
+Abadi, Martı́n, Paul Barham, Jianmin Chen, Zhifeng Chen, Andy Davis, Jeffrey Dean, Matthieu Devin, et al. 2016. <span>“Tensorflow: A System for Large-Scale Machine Learning.”</span> In <em>12th <span class="math inline">\(\{\)</span>USENIX<span class="math inline">\(\}\)</span> Symposium on Operating Systems Design and Implementation (<span class="math inline">\(\{\)</span>OSDI<span class="math inline">\(\}\)</span> 16)</em>, 265–83.
+</div>
+<div id="ref-kerasR" class="csl-entry" role="doc-biblioentry">
+Allaire, JJ, and François Chollet. 2022. <em>Keras: R Interface to ’Keras’</em>. <a href="https://CRAN.R-project.org/package=keras">https://CRAN.R-project.org/package=keras</a>.
+</div>
+<div id="ref-chollet2015keras" class="csl-entry" role="doc-biblioentry">
+Chollet, Francois et al. 2015. <span>“Keras.”</span> GitHub. 2015. <a href="https://github.com/fchollet/keras">https://github.com/fchollet/keras</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./brt.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Boosted gradient trees</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./cnn.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Convolutional neural networks</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

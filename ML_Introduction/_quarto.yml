@@ -1,0 +1,33 @@
+project:
+  type: book
+
+book:
+  title: "Introduction to Machine Learning and Deep Learning"
+  author: "Maximilian Pichler and Florian Hartig"
+  date: "10/6/2022"
+  chapters:
+    - index.qmd
+    - elastic_net.qmd
+    - svm.qmd
+    - knn.qmd
+    - rf.qmd
+    - brt.qmd
+    - dnn.qmd
+    - cnn.qmd
+    - rnn.qmd
+    - gnn.qmd
+  appendices: 
+    - refs.qmd
+
+bibliography: references.bib
+google-scholar: true
+
+execute:
+  freeze: auto
+  cache: true
+
+format:
+  html:
+    theme: cosmo
+editor: visual
+

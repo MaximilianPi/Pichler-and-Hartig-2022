@@ -1,0 +1,156 @@
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+reticulate::use_condaenv("r-sjsdm", required = TRUE)
+reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+```
+
+# Ridge, LASSO, and elastic-net regression
+
+We can use the 'glmnet' R package (@glmnet) for Ridge, LASSO, or elastic-net regularization. The 'glmnet' package supports different response families including 'gaussian', 'binomial' and 'Poisson'. The strength of the regularization is set by the 'lambda' argument ($\lambda$) and the weighting between Ridge and LASSO regularization by the 'alpha' parameter ($\alpha$):
+
+$$
+\lambda*[(1 - \alpha)\|\beta\|_1 + \alpha\|\beta||^2]
+$$ Setting alpha = 0 turns off the LASSO and alpha = 1 the Ridge. Alphas between (0,1) will use both regularization types, turning the model into an elastic-net regularization.
+
+When using regularization, it is important to scale all features otherwise effects for features that are on a larger scale are stronger regularized.
+
+## Classification
+
+Build models (for regularization it is important to scale the features):
+
+::: panel-tabset
+### R
+
+```{r, message=FALSE}
+library(glmnet)
+X = scale(iris[,1:4])
+Y = iris$Species
+
+# Ridge:
+ridge = glmnet(X, Y, family = "multinomial", alpha = 0, lambda = 0.01)
+
+# LASSO:
+lasso = glmnet(X, Y, family = "multinomial", alpha = 1, lambda = 0.01)
+
+# Elastic-net:
+elastic = glmnet(X, Y, family = "multinomial", alpha = 0.5, lambda = 0.01)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(lasso, newx = X, type = "response")[,,1], n = 3)
+```
+
+### Python
+
+In the sklearn implementation the regularization strength parameter 'C' corresponds to the lambda parameter from glmnet:
+
+```{r, include=FALSE}
+Sys.setenv(PYTHONWARNINGS="ignore")
+```
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.linear_model import LogisticRegression
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+X = scale(iris.data)
+Y = iris.target
+
+
+# Ridge:
+ridge = LogisticRegression(multi_class='multinomial', 
+                           penalty = "l2", 
+                           C = 0.01, 
+                           solver="saga")
+ridge.fit(X, Y)
+
+# LASSO:
+lasso = LogisticRegression(multi_class='multinomial', 
+                           penalty = "l1", 
+                           C = 0.01, 
+                           solver="saga")
+lasso.fit(X, Y)
+
+# Elastic-net:
+elastic = LogisticRegression(multi_class='multinomial', 
+                             penalty = "elasticnet", 
+                             C = 0.01, 
+                             l1_ratio=0.5, 
+                             solver="saga")
+elastic.fit(X, Y)
+
+# Make predictions (class probabilities):
+
+lasso.predict_proba(X)[0:10,:]
+
+```
+
+### Julia
+
+```{julia}
+1+1
+```
+:::
+
+## Regression
+
+::: panel-tabset
+### R
+
+```{r, message=FALSE}
+X = scale(iris[,2:4])
+Y = iris[,1]
+
+# Ridge:
+ridge = glmnet(X, Y, family = gaussian(), alpha = 0, lambda = 0.01)
+
+# LASSO:
+lasso = glmnet(X, Y, family = gaussian(), alpha = 1, lambda = 0.01)
+
+# Elastic-net:
+elastic = glmnet(X, Y, family = gaussian(), alpha = 0.5, lambda = 0.01)
+```
+
+Make predictions (class probabilities):
+
+```{r, message=FALSE}
+head(predict(lasso, newx = X), n = 3)
+```
+
+### Python
+
+For regressions we can use the ElasticNet model class, here, however, lambda corresponds to alpha and l1_ratio to the alpha parameter.
+
+```{python, warning=FALSE, message=FALSE}
+from sklearn.linear_model import ElasticNet
+from sklearn import datasets
+from sklearn.preprocessing import scale
+iris = datasets.load_iris()
+data = iris.data
+X = scale(data[:,1:4])
+Y = data[:,0]
+
+
+# Ridge:
+ridge = ElasticNet(alpha = 0.01,
+                   l1_ratio = 0.011)
+ridge.fit(X, Y)
+
+# LASSO:
+lasso = ElasticNet(alpha = 0.01,
+                   l1_ratio = 1.0)
+lasso.fit(X, Y)
+
+# Elastic-net:
+elastic = ElasticNet(alpha = 0.01,
+                     l1_ratio = 0.5)
+elastic.fit(X, Y)
+
+# Make predictions:
+
+lasso.predict(X)[0:10]
+
+```
+:::
