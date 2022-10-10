@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.0.36">
+<meta name="generator" content="quarto-1.1.189">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,10 +11,15 @@
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-span.underline{text-decoration: underline;}
-div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -53,7 +58,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -66,7 +71,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -140,24 +145,28 @@ div.csl-indent {
 
 
 <meta name="citation_title" content="[5]{.chapter-number}&nbsp; [Boosted gradient trees]{.chapter-title}">
-<meta name="citation_journal_title" content="undefined">
-<meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;,citation_publication_date=2021;,citation_journal_title=undefined;">
-<meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_publication_date=2008;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
-<meta name="citation_reference" content="citation_title=Wordcloud: Word clouds;,citation_author=Ian Fellows;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud;,citation_publication_date=2018;,citation_journal_title=undefined;">
-<meta name="citation_reference" content="citation_title=wordcloud2: Create word cloud by ’htmlwidget’;,citation_author=Dawei Lang;,citation_author=Guan-tin Chien;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud2;,citation_publication_date=2018;,citation_journal_title=undefined;">
-<meta name="citation_reference" content="citation_title=Regularization paths for cox’s proportional hazards model via coordinate descent;,citation_author=Noah Simon;,citation_author=Jerome Friedman;,citation_author=Trevor Hastie;,citation_author=Rob Tibshirani;,citation_fulltext_html_url=https://www.jstatsoft.org/v39/i05/;,citation_publication_date=2011;,citation_issue=5;,citation_volume=39;,citation_journal_title=Journal of Statistical Software;">
-<meta name="citation_reference" content="citation_title=e1071: Misc functions of the department of statistics, probability theory group (formerly: E1071), TU wien;,citation_author=David Meyer;,citation_author=Evgenia Dimitriadou;,citation_author=Kurt Hornik;,citation_author=Andreas Weingessel;,citation_author=Friedrich Leisch;,citation_fulltext_html_url=https://CRAN.R-project.org/package=e1071;,citation_publication_date=2022;,citation_journal_title=undefined;">
-<meta name="citation_reference" content="citation_title=Kknn: Weighted k-nearest neighbors;,citation_author=Klaus Schliep;,citation_author=Klaus Hechenbichler;,citation_fulltext_html_url=https://CRAN.R-project.org/package=kknn;,citation_publication_date=2016;,citation_journal_title=undefined;">
-<meta name="citation_reference" content="citation_title=ranger: A fast implementation of random forests for high dimensional data in C++ and R;,citation_author=Marvin N. Wright;,citation_author=Andreas Ziegler;,citation_publication_date=2017;,citation_issue=1;,citation_volume=77;,citation_journal_title=Journal of Statistical Software;">
-<meta name="citation_reference" content="citation_title=Xgboost: Extreme gradient boosting;,citation_author=Tianqi Chen;,citation_author=Tong He;,citation_author=Michael Benesty;,citation_author=Vadim Khotilovich;,citation_author=Yuan Tang;,citation_author=Hyunsu Cho;,citation_author=Kailong Chen;,citation_author=Rory Mitchell;,citation_author=Ignacio Cano;,citation_author=Tianyi Zhou;,citation_author=Mu Li;,citation_author=Junyuan Xie;,citation_author=Min Lin;,citation_author=Yifeng Geng;,citation_author=Yutian Li;,citation_author=Jiaming Yuan;,citation_fulltext_html_url=https://CRAN.R-project.org/package=xgboost;,citation_publication_date=2022;,citation_journal_title=undefined;">
-<meta name="citation_reference" content="citation_title=Keras: R interface to ’keras’;,citation_author=JJ Allaire;,citation_author=François Chollet;,citation_fulltext_html_url=https://CRAN.R-project.org/package=keras;,citation_publication_date=2022;,citation_journal_title=undefined;">
-<meta name="citation_reference" content="citation_title=Keras;,citation_author=Francois Chollet;,citation_author=others;,citation_fulltext_html_url=https://github.com/fchollet/keras;,citation_publication_date=2015;,citation_journal_title=undefined;">
-<meta name="citation_reference" content="citation_title=Tensorflow: A system for large-scale machine learning;,citation_author=Martı́n Abadi;,citation_author=Paul Barham;,citation_author=Jianmin Chen;,citation_author=Zhifeng Chen;,citation_author=Andy Davis;,citation_author=Jeffrey Dean;,citation_author=Matthieu Devin;,citation_author=Sanjay Ghemawat;,citation_author=Geoffrey Irving;,citation_author=Michael Isard;,citation_author=others;,citation_publication_date=2016;,citation_conference_title=12th \{USENIX\} symposium on operating systems design and implementation (\{OSDI\} 16);">
-<meta name="citation_reference" content="citation_title=MNIST handwritten digit database;,citation_author=Yann LeCun;,citation_author=Corinna Cortes;,citation_author=CJ Burges;,citation_publication_date=2010;,citation_volume=2;,citation_journal_title=ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist;">
-<meta name="citation_reference" content="citation_title=Deep learning;,citation_author=Yann LeCun;,citation_author=Yoshua Bengio;,citation_author=Geoffrey Hinton;,citation_publication_date=2015;,citation_issue=7553;,citation_volume=521;,citation_journal_title=nature;">
-<meta name="citation_reference" content="citation_title=Reticulate: Interface to ’python’;,citation_author=Kevin Ushey;,citation_author=JJ Allaire;,citation_author=Yuan Tang;,citation_fulltext_html_url=https://CRAN.R-project.org/package=reticulate;,citation_publication_date=2022;,citation_journal_title=undefined;">
-<meta name="citation_reference" content="citation_title=PyTorch: An imperative style, high-performance deep learning library;,citation_author=Adam Paszke;,citation_author=Sam Gross;,citation_author=Francisco Massa;,citation_author=Adam Lerer;,citation_author=James Bradbury;,citation_author=Gregory Chanan;,citation_author=Trevor Killeen;,citation_author=Zeming Lin;,citation_author=Natalia Gimelshein;,citation_author=Luca Antiga;,citation_author=Alban Desmaison;,citation_author=Andreas Kopf;,citation_author=Edward Yang;,citation_author=Zachary DeVito;,citation_author=Martin Raison;,citation_author=Alykhan Tejani;,citation_author=Sasank Chilamkurthy;,citation_author=Benoit Steiner;,citation_author=Lu Fang;,citation_author=Junjie Bai;,citation_author=Soumith Chintala;,citation_fulltext_html_url=http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf;,citation_publication_date=2019;,citation_journal_title=Advances in neural information processing systems 32;">
-<meta name="citation_reference" content="citation_title=Fast graph representation learning with PyTorch Geometric;,citation_author=Matthias Fey;,citation_author=Jan E. Lenssen;,citation_publication_date=2019;,citation_conference_title=ICLR workshop on representation learning on graphs and manifolds;">
+<meta name="citation_language" content="en">
+<meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;">
+<meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=Wordcloud: Word clouds;,citation_author=Ian Fellows;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud;">
+<meta name="citation_reference" content="citation_title=wordcloud2: Create word cloud by ’htmlwidget’;,citation_author=Dawei Lang;,citation_author=Guan-tin Chien;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud2;">
+<meta name="citation_reference" content="citation_title=Regularization paths for cox’s proportional hazards model via coordinate descent;,citation_author=Noah Simon;,citation_author=Jerome Friedman;,citation_author=Trevor Hastie;,citation_author=Rob Tibshirani;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_fulltext_html_url=https://www.jstatsoft.org/v39/i05/;,citation_issue=5;,citation_doi=10.18637/jss.v039.i05;,citation_volume=39;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=e1071: Misc functions of the department of statistics, probability theory group (formerly: E1071), TU wien;,citation_author=David Meyer;,citation_author=Evgenia Dimitriadou;,citation_author=Kurt Hornik;,citation_author=Andreas Weingessel;,citation_author=Friedrich Leisch;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=e1071;">
+<meta name="citation_reference" content="citation_title=Kknn: Weighted k-nearest neighbors;,citation_author=Klaus Schliep;,citation_author=Klaus Hechenbichler;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_fulltext_html_url=https://CRAN.R-project.org/package=kknn;">
+<meta name="citation_reference" content="citation_title=ranger: A fast implementation of random forests for high dimensional data in C++ and R;,citation_author=Marvin N. Wright;,citation_author=Andreas Ziegler;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=1;,citation_doi=10.18637/jss.v077.i01;,citation_volume=77;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=Xgboost: Extreme gradient boosting;,citation_author=Tianqi Chen;,citation_author=Tong He;,citation_author=Michael Benesty;,citation_author=Vadim Khotilovich;,citation_author=Yuan Tang;,citation_author=Hyunsu Cho;,citation_author=Kailong Chen;,citation_author=Rory Mitchell;,citation_author=Ignacio Cano;,citation_author=Tianyi Zhou;,citation_author=Mu Li;,citation_author=Junyuan Xie;,citation_author=Min Lin;,citation_author=Yifeng Geng;,citation_author=Yutian Li;,citation_author=Jiaming Yuan;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=xgboost;">
+<meta name="citation_reference" content="citation_title=Keras: R interface to ’keras’;,citation_author=JJ Allaire;,citation_author=François Chollet;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=keras;">
+<meta name="citation_reference" content="citation_title=Keras;,citation_author=Francois Chollet;,citation_author=others;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_fulltext_html_url=https://github.com/fchollet/keras;,citation_publisher=GitHub;">
+<meta name="citation_reference" content="citation_title=Tensorflow: A system for large-scale machine learning;,citation_author=Martı́n Abadi;,citation_author=Paul Barham;,citation_author=Jianmin Chen;,citation_author=Zhifeng Chen;,citation_author=Andy Davis;,citation_author=Jeffrey Dean;,citation_author=Matthieu Devin;,citation_author=Sanjay Ghemawat;,citation_author=Geoffrey Irving;,citation_author=Michael Isard;,citation_author=others;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_conference_title=12th \{USENIX\} symposium on operating systems design and implementation (\{OSDI\} 16);">
+<meta name="citation_reference" content="citation_title=MNIST handwritten digit database;,citation_author=Yann LeCun;,citation_author=Corinna Cortes;,citation_author=CJ Burges;,citation_publication_date=2010;,citation_cover_date=2010;,citation_year=2010;,citation_volume=2;,citation_journal_title=ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist;">
+<meta name="citation_reference" content="citation_title=Deep learning;,citation_author=Yann LeCun;,citation_author=Yoshua Bengio;,citation_author=Geoffrey Hinton;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_issue=7553;,citation_volume=521;,citation_journal_title=nature;,citation_publisher=Nature Publishing Group;">
+<meta name="citation_reference" content="citation_title=Reticulate: Interface to ’python’;,citation_author=Kevin Ushey;,citation_author=JJ Allaire;,citation_author=Yuan Tang;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=reticulate;">
+<meta name="citation_reference" content="citation_title=PyTorch: An imperative style, high-performance deep learning library;,citation_author=Adam Paszke;,citation_author=Sam Gross;,citation_author=Francisco Massa;,citation_author=Adam Lerer;,citation_author=James Bradbury;,citation_author=Gregory Chanan;,citation_author=Trevor Killeen;,citation_author=Zeming Lin;,citation_author=Natalia Gimelshein;,citation_author=Luca Antiga;,citation_author=Alban Desmaison;,citation_author=Andreas Kopf;,citation_author=Edward Yang;,citation_author=Zachary DeVito;,citation_author=Martin Raison;,citation_author=Alykhan Tejani;,citation_author=Sasank Chilamkurthy;,citation_author=Benoit Steiner;,citation_author=Lu Fang;,citation_author=Junjie Bai;,citation_author=Soumith Chintala;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_fulltext_html_url=http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf;,citation_inbook_title=Advances in neural information processing systems 32;">
+<meta name="citation_reference" content="citation_title=Fast graph representation learning with PyTorch Geometric;,citation_author=Matthias Fey;,citation_author=Jan E. Lenssen;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_conference_title=ICLR workshop on representation learning on graphs and manifolds;">
+<meta name="citation_reference" content="citation_title=Alan-turing-institute/MLJ.jl: v0.5.3;,citation_author=Anthony Blaom;,citation_author=Franz Kiraly;,citation_author=Thibaut Lienart;,citation_author=Sebastian Vollmer;,citation_publication_date=2019-11;,citation_cover_date=2019-11;,citation_year=2019;,citation_fulltext_html_url=https://doi.org/10.5281/zenodo.3541506;,citation_doi=10.5281/zenodo.3541506;">
+<meta name="citation_reference" content="citation_title=Scikit-learn: Machine learning in Python;,citation_author=F. Pedregosa;,citation_author=G. Varoquaux;,citation_author=A. Gramfort;,citation_author=V. Michel;,citation_author=B. Thirion;,citation_author=O. Grisel;,citation_author=M. Blondel;,citation_author=P. Prettenhofer;,citation_author=R. Weiss;,citation_author=V. Dubourg;,citation_author=J. Vanderplas;,citation_author=A. Passos;,citation_author=D. Cournapeau;,citation_author=M. Brucher;,citation_author=M. Perrot;,citation_author=E. Duchesnay;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_volume=12;,citation_journal_title=Journal of Machine Learning Research;">
+<meta name="citation_reference" content="citation_title=Fashionable modelling with flux;,citation_author=Michael Innes;,citation_author=Elliot Saba;,citation_author=Keno Fischer;,citation_author=Dhairya Gandhi;,citation_author=Marco Concetto Rudilosso;,citation_author=Neethu Mariya Joy;,citation_author=Tejan Karmali;,citation_author=Avik Pal;,citation_author=Viral Shah;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://arxiv.org/abs/1811.01457;,citation_volume=abs/1811.01457;,citation_journal_title=CoRR;">
+<meta name="citation_reference" content="citation_title=Flux: Elegant machine learning with julia;,citation_author=Mike Innes;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_doi=10.21105/joss.00602;,citation_journal_title=Journal of Open Source Software;">
 </head>
 
 <body class="nav-sidebar floating">
@@ -259,12 +268,12 @@ div.csl-indent {
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc">
+        <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#classification" id="toc-classification" class="nav-link active" data-scroll-target="#classification"> <span class="header-section-number">5.1</span> Classification</a></li>
-  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression"> <span class="header-section-number">5.2</span> Regression</a></li>
+  <li><a href="#classification" id="toc-classification" class="nav-link active" data-scroll-target="#classification"><span class="toc-section-number">5.1</span>  Classification</a></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression"><span class="toc-section-number">5.2</span>  Regression</a></li>
   </ul>
 </nav>
     </div>
@@ -288,14 +297,14 @@ div.csl-indent {
 </header>
 
 <p>Boosted gradient machines achieve currently state-of-the-art performance for structured (tabular) data which makes them probably one of the most important algorithms for E&amp;E where structured data dominates the field.</p>
-<p>In the following, we use the ‘xgboost’ package (<span class="citation" data-cites="xgboost">Chen et al. (<a href="refs.html#ref-xgboost" role="doc-biblioref">2022</a>)</span>).</p>
+<p>In the following, we use the ‘xgboost’ package (<span class="citation" data-cites="xgboost">Chen et al. (<a href="refs.html#ref-xgboost" role="doc-biblioref">2022</a>)</span>) (Python: ‘xgboost’ (<span class="citation" data-cites="xgboost">Chen et al. (<a href="refs.html#ref-xgboost" role="doc-biblioref">2022</a>)</span>), Julia: ‘MLJ’ (<span class="citation" data-cites="anthony_blaom_2019_3541506">Blaom et al. (<a href="refs.html#ref-anthony_blaom_2019_3541506" role="doc-biblioref">2019</a>)</span>))</p>
 <section id="classification" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="classification"><span class="header-section-number">5.1</span> Classification</h2>
 <div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-1_6c4389d6cfd0ca6b2127f3da8a1bff85">
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-2_ea02bba1c35aa23d56cd4eeaa62c88eb">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xgboost)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">as.matrix</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> <span class="fu">as.integer</span>(iris[,<span class="dv">5</span>]) <span class="sc">-</span> <span class="dv">1</span> <span class="co"># classes must be integers starting from 0</span></span>
@@ -310,7 +319,7 @@ div.csl-indent {
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Show feature importances:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-2_d719ec374fc2683a247daa1d83575949">
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-3_83374468ad0befa2a0f02779fa61fc87">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xgb.importance</span>(<span class="at">model =</span> brt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        Feature        Gain      Cover Frequency
@@ -321,7 +330,7 @@ div.csl-indent {
 </div>
 </div>
 <p>Make predictions (class probabilities):</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-3_206e27fa2a6d544315d06fe9d5d60ef2">
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-4_e0449f4cdad7a5b56e3c1149c6a63d92">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">matrix</span>(<span class="fu">predict</span>(brt, <span class="at">newdata =</span> <span class="fu">xgb.DMatrix</span>(X)), <span class="at">ncol =</span><span class="dv">3</span>), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            [,1]        [,2]        [,3]
@@ -332,7 +341,7 @@ div.csl-indent {
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-4_28712719e6ebe5d8898bfb6bf452e98f">
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-5_4b12e27c7ecbb8437489686c8e301e28">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
@@ -349,21 +358,19 @@ div.csl-indent {
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> xgb.XGBClassifier(param, num_round, verbosity <span class="op">=</span> <span class="dv">0</span>).fit(X, Y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>/home/maxpichler/miniconda3/envs/r-sjsdm/lib/python3.7/site-packages/xgboost/core.py:502: FutureWarning: Pass `objective, use_label_encoder` as keyword args.  Passing these as positional arguments will be considered as error in future releases.
-  format(", ".join(args_msg)), FutureWarning
-/home/maxpichler/miniconda3/envs/r-sjsdm/lib/python3.7/site-packages/xgboost/sklearn.py:1224: UserWarning: The use of label encoder in XGBClassifier is deprecated and will be removed in a future release. To remove this warning, do the following: 1) Pass option use_label_encoder=False when constructing XGBClassifier object; and 2) Encode your labels (y) as integers starting with 0, i.e. 0, 1, 2, ..., [num_class - 1].
-  warnings.warn(label_encoder_deprecation_msg, UserWarning)</code></pre>
+<pre><code>/home/max/miniconda3/envs/r-sjsdm/lib/python3.9/site-packages/xgboost/core.py:568: FutureWarning: Pass `objective, use_label_encoder` as keyword args.  Passing these as positional arguments will be considered as error in future releases.
+  warnings.warn(</code></pre>
 </div>
 </div>
 <p>Feature importance</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-5_4ac43594395affe8df6a3f65b3a0c723">
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-6_ade93e46637bee6f65dd689693440245">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model.feature_importances_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>array([0.00959796, 0.01645038, 0.6765859 , 0.29736578], dtype=float32)</code></pre>
 </div>
 </div>
 <p>Make predictions:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-6_7fd0f6458ab6464a3c2ea3ee6586f686">
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-7_1770c32e3c5eb9a369068e41f8e4f0fb">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model.predict_proba(X)[<span class="dv">0</span>:<span class="dv">10</span>,:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>array([[9.9680281e-01, 2.3831066e-03, 8.1413286e-04],
@@ -379,31 +386,69 @@ div.csl-indent {
 </div>
 </div>
 </div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-8_071f082a41e1b7eba32264f448fb1925">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>BRT_classifier <span class="op">=</span> <span class="pp">@load</span> XGBoostClassifier pkg<span class="op">=</span>XGBoost;</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-9_1b7b6614a05cf661e7047f830de278be">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>]);</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">5</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Models:</p>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-10_48fb4784f33a68dac232b9cc767d7aa7">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">BRT_classifier</span>(), X, Y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>trained Machine; caches model-specific representations of data
+  model: XGBoostClassifier(num_round = 100, …)
+  args: 
+    1:  Source @141 ⏎ Table{AbstractVector{Continuous}}
+    2:  Source @384 ⏎ AbstractVector{Multiclass{3}}</code></pre>
+</div>
+</div>
+<p>Predictions:</p>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-11_7d723065300e81bd07248a7c9b2c64c4">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(model, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>5-element CategoricalDistributions.UnivariateFiniteVector{Multiclass{3}, String, UInt8, Float32}:
+ UnivariateFinite{Multiclass{3}}(setosa=&gt;0.997, versicolor=&gt;0.00238, virginica=&gt;0.000814)
+ UnivariateFinite{Multiclass{3}}(setosa=&gt;0.996, versicolor=&gt;0.00238, virginica=&gt;0.00126)
+ UnivariateFinite{Multiclass{3}}(setosa=&gt;0.997, versicolor=&gt;0.00238, virginica=&gt;0.000814)
+ UnivariateFinite{Multiclass{3}}(setosa=&gt;0.997, versicolor=&gt;0.00238, virginica=&gt;0.000822)
+ UnivariateFinite{Multiclass{3}}(setosa=&gt;0.997, versicolor=&gt;0.00238, virginica=&gt;0.000814)</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
 <section id="regression" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="regression"><span class="header-section-number">5.2</span> Regression</h2>
 <div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-7_fb45fe7c86b579fc51449743c23aae3b">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xgboost)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">as.matrix</span>(iris[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris[,<span class="dv">1</span>]</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>xgdata <span class="ot">=</span> <span class="fu">xgb.DMatrix</span>(X, <span class="at">label =</span> Y)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># nrounds = number of trees in the ensemble</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>brt <span class="ot">=</span> <span class="fu">xgboost</span>(<span class="at">data =</span> xgdata, </span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">objective=</span><span class="st">"reg:squarederror"</span>, </span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">nrounds =</span> <span class="dv">50</span>, </span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-12_2ecf2017a2d9a9e007df2b8273f05e78">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xgboost)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">as.matrix</span>(iris[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris[,<span class="dv">1</span>]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>xgdata <span class="ot">=</span> <span class="fu">xgb.DMatrix</span>(X, <span class="at">label =</span> Y)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># nrounds = number of trees in the ensemble</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>brt <span class="ot">=</span> <span class="fu">xgboost</span>(<span class="at">data =</span> xgdata, </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">objective=</span><span class="st">"reg:squarederror"</span>, </span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">nrounds =</span> <span class="dv">50</span>, </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Show feature importances:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-8_4310c1e6a9065de65b8fc526de88e62a">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xgb.importance</span>(<span class="at">model =</span> brt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-13_d87d2779bb0605a263ed12072ae65832">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xgb.importance</span>(<span class="at">model =</span> brt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        Feature       Gain     Cover Frequency
 1: Petal.Length 0.86781219 0.4789538 0.3789062
@@ -412,10 +457,10 @@ div.csl-indent {
 </div>
 </div>
 <p>Make predictions:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-9_b58025580387ff36670b630d53b67b25">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(brt, <span class="at">newdata =</span> <span class="fu">xgb.DMatrix</span>(X), <span class="at">n =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-14_41d8029dc425d6b78ea26155a6b8c8bc">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(brt, <span class="at">newdata =</span> <span class="fu">xgb.DMatrix</span>(X), <span class="at">n =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[10:50:56] WARNING: amalgamation/../src/c_api/c_api.cc:785: `ntree_limit` is deprecated, use `iteration_range` instead.</code></pre>
+<pre><code>[14:02:44] WARNING: amalgamation/../src/c_api/c_api.cc:785: `ntree_limit` is deprecated, use `iteration_range` instead.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.506606 3.506606 3.506606 3.506606 3.506606 3.506606</code></pre>
@@ -423,35 +468,72 @@ div.csl-indent {
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-10_c45490d0938217cc368a1df78fb9d9a2">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris()</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> iris.data</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scale(data[:,<span class="dv">1</span>:<span class="dv">4</span>])</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> data[:,<span class="dv">0</span>]</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters:</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> xgb.XGBRegressor(</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  objective <span class="op">=</span> <span class="st">'reg:squarederror'</span>,</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  max_depth <span class="op">=</span> <span class="dv">2</span>,  </span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  n_estimators <span class="op">=</span> <span class="dv">50</span>, </span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  verbosity <span class="op">=</span> <span class="dv">0</span>).fit(X, Y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-15_a50d29ed7eeb3fbdb0903581186d4692">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris()</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> iris.data</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scale(data[:,<span class="dv">1</span>:<span class="dv">4</span>])</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> data[:,<span class="dv">0</span>]</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters:</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> xgb.XGBRegressor(</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  objective <span class="op">=</span> <span class="st">'reg:squarederror'</span>,</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  max_depth <span class="op">=</span> <span class="dv">2</span>,  </span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  n_estimators <span class="op">=</span> <span class="dv">50</span>, </span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  verbosity <span class="op">=</span> <span class="dv">0</span>).fit(X, Y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Feature importance:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-11_e7b994104045ae51fa63e97f0dc94c88">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model.feature_importances_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-16_c3fd204935b161683e8d89a0e5193a91">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model.feature_importances_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[0.08471056 0.835755   0.07953447]</code></pre>
 </div>
 </div>
 <p>Make predictions:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-12_ac54bdca11f760968e0bef8d94a6eb1f">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model.predict(X)[<span class="dv">0</span>:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-17_497d97a0f073f3f5468192a73254e608">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>model.predict(X)[<span class="dv">0</span>:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>array([5.0407157, 4.6844926, 4.711238 , 4.917956 , 5.0407157, 5.450946 ,
        4.928966 , 4.986462 , 4.6750975, 4.917956 ], dtype=float32)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-18_80fe9b0762781239dfc38d1975db40f8">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>BRT_regressor <span class="op">=</span>  <span class="pp">@load</span> XGBoostRegressor pkg<span class="op">=</span>XGBoost;</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets;</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-19_8e5966470dd02344e0d1e7744395a7f2">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>]);</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">1</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Model:</p>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-20_45fb03b9c92d8c0f5021fbdc94d2aa2c">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">BRT_regressor</span>(), X, Y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>trained Machine; caches model-specific representations of data
+  model: XGBoostRegressor(num_round = 100, …)
+  args: 
+    1:  Source @935 ⏎ Table{AbstractVector{Continuous}}
+    2:  Source @070 ⏎ AbstractVector{Continuous}</code></pre>
+</div>
+</div>
+<p>Predictions:</p>
+<div class="cell" data-hash="brt_cache/html/unnamed-chunk-21_0c0faa9a282b3bdd33fe4dc1ee8eda0c">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(model, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>5-element Vector{Float32}:
+ 5.1509466
+ 4.8569074
+ 4.551141
+ 4.7587333
+ 4.999504</code></pre>
 </div>
 </div>
 </div>
@@ -460,6 +542,9 @@ div.csl-indent {
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
+<div id="ref-anthony_blaom_2019_3541506" class="csl-entry" role="doc-biblioentry">
+Blaom, Anthony, Franz Kiraly, Thibaut Lienart, and Sebastian Vollmer. 2019. <em>Alan-Turing-Institute/MLJ.jl: V0.5.3</em> (version v0.5.3). Zenodo. <a href="https://doi.org/10.5281/zenodo.3541506">https://doi.org/10.5281/zenodo.3541506</a>.
+</div>
 <div id="ref-xgboost" class="csl-entry" role="doc-biblioentry">
 Chen, Tianqi, Tong He, Michael Benesty, Vadim Khotilovich, Yuan Tang, Hyunsu Cho, Kailong Chen, et al. 2022. <em>Xgboost: Extreme Gradient Boosting</em>. <a href="https://CRAN.R-project.org/package=xgboost">https://CRAN.R-project.org/package=xgboost</a>.
 </div>
@@ -536,7 +621,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   for (var i=0; i<noterefs.length; i++) {
     const ref = noterefs[i];
     tippyHover(ref, function() {
-      let href = ref.getAttribute('href');
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);

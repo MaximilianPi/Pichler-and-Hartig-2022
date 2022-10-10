@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to Machine Learning and Deep Learning - 2&nbsp; Support Vector Machines</title>
+<title>Introduction to Machine Learning and Deep Learning - 8&nbsp; Recurrent neural networks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -112,8 +112,8 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./knn.html" rel="next">
-<link href="./elastic_net.html" rel="prev">
+<link href="./gnn.html" rel="next">
+<link href="./cnn.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -144,7 +144,7 @@ div.csl-indent {
 }</script>
 
 
-<meta name="citation_title" content="[2]{.chapter-number}&nbsp; [Support Vector Machines]{.chapter-title}">
+<meta name="citation_title" content="[8]{.chapter-number}&nbsp; [Recurrent neural networks]{.chapter-title}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;">
 <meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
@@ -175,7 +175,7 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></h1>
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -210,7 +210,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./svm.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></a>
+  <a href="./svm.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -240,7 +240,7 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./rnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></a>
+  <a href="./rnn.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -268,21 +268,14 @@ div.csl-indent {
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#classification" id="toc-classification" class="nav-link active" data-scroll-target="#classification"><span class="toc-section-number">2.1</span>  Classification</a></li>
-  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression"><span class="toc-section-number">2.2</span>  Regression</a></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></h1>
+<h1 class="title d-none d-lg-block"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></h1>
 </div>
 
 
@@ -296,216 +289,203 @@ div.csl-indent {
 
 </header>
 
-<p>The support vector machine (SVM) algorithm estimates hyper-planes to separate our response species. In the following we use the ‘e1071’ package which supports a variety of different SVM algorithms (<span class="citation" data-cites="e1071">Meyer et al. (<a href="refs.html#ref-e1071" role="doc-biblioref">2022</a>)</span>) (Python: ‘scikit-learn’ (<span class="citation" data-cites="scikit-learn">Pedregosa et al. (<a href="refs.html#ref-scikit-learn" role="doc-biblioref">2011</a>)</span>), Julia: ‘MLJ’ (<span class="citation" data-cites="anthony_blaom_2019_3541506">Blaom et al. (<a href="refs.html#ref-anthony_blaom_2019_3541506" role="doc-biblioref">2019</a>)</span>)).</p>
-<section id="classification" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="classification"><span class="header-section-number">2.1</span> Classification</h2>
+<p>Recurrent neural networks are also deep neural networks but use layers specialized to handle time-series. In the following, we will use again the ‘keras’ package (Python: ‘keras’ (<span class="citation" data-cites="chollet2015keras">Chollet et al. (<a href="refs.html#ref-chollet2015keras" role="doc-biblioref">2015</a>)</span>); Julia: ‘Flux’ (<span class="citation" data-cites="Flux">Innes et al. (<a href="refs.html#ref-Flux" role="doc-biblioref">2018</a>)</span>)) but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section ‘Deep neural networks’).</p>
+<p>About the data, we simulated in the following one time series from a simple ARIMA process, using the ‘arima.sim’ function. Our goal is to train a net which is able to predict the next 10 time points based on the previous 10 time points.</p>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-2_a0a5d78124e292263a9e4e7dc21b5d43">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris<span class="sc">$</span>Species</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>sv <span class="ot">=</span> <span class="fu">svm</span>(X, Y, <span class="at">probability =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-svm.default(x = X, y = Y, probability = TRUE)
-
-
-Parameters:
-   SVM-Type:  C-classification 
- SVM-Kernel:  radial 
-       cost:  1 
-
-Number of Support Vectors:  51
-
- ( 8 22 21 )
-
-
-Number of Classes:  3 
-
-Levels: 
- setosa versicolor virginica</code></pre>
+<div class="cell" data-hash="rnn_cache/html/unnamed-chunk-2_6fa735d59a642407e2ff7125db39ad3c">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## RNNs</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">as.matrix</span>(<span class="fu">arima.sim</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="fu">list</span>(<span class="at">ar =</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="sc">-</span><span class="fl">0.7</span>)) ))</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># We use here a simplified way to create X and Y </span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># since the focus is on creating the RNNs</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">matrix</span>(data, <span class="at">ncol =</span> 10L, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">array</span>(data[<span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">100</span>, <span class="at">by =</span> <span class="dv">2</span>), ], <span class="at">dim =</span> <span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">10</span>, <span class="dv">1</span>))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> data[<span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">100</span>, <span class="at">by =</span> <span class="dv">2</span>), ]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>RNN <span class="ot">=</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_gru</span>(<span class="at">input_shape =</span> <span class="fu">list</span>(10L, 1L),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">units =</span> <span class="dv">50</span>, </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">activation =</span> <span class="st">"relu"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># we want to predict the next 10 time steps</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loaded Tensorflow version 2.10.0</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>RNN <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compile</span>(<span class="at">loss =</span> loss_mean_squared_error,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">optimizer =</span> <span class="fu">optimizer_adamax</span>(<span class="fl">0.01</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>RNN <span class="sc">%&gt;%</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(X, Y, <span class="at">epochs =</span> <span class="dv">5</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Make predictions (class probabilities):</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-3_481e40ca9190f6ea7a3114288cf5d6aa">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">attr</span>(<span class="fu">predict</span>(sv, <span class="at">newdata =</span> X, <span class="at">probability =</span> <span class="cn">TRUE</span>), <span class="st">"probabilities"</span>), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Make predictions:</p>
+<div class="cell" data-hash="rnn_cache/html/unnamed-chunk-3_1c771a78f2badfa852734b96b45a338c">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(RNN, X), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     setosa versicolor   virginica
-1 0.9805061 0.01078548 0.008708392
-2 0.9733815 0.01726277 0.009355782
-3 0.9792178 0.01138534 0.009396853</code></pre>
+<pre><code>          [,1]       [,2]       [,3]       [,4]       [,5]       [,6]
+[1,] 0.4800752  0.2515826 -0.1871746 -0.5251560 0.02715888  0.2110344
+[2,] 0.2533702 -0.5832934 -0.3672795  0.2838775 0.53607899 -0.2003853
+[3,] 0.4985844  0.2491744 -0.2287293 -0.5281581 0.04576387  0.1937918
+            [,7]       [,8]       [,9]      [,10]
+[1,] -0.03789480 -0.5814861 -0.4529335 0.08699021
+[2,] -0.23894967 -0.1293640  0.1142473 0.01777250
+[3,] -0.05073898 -0.5958483 -0.4544795 0.06178066</code></pre>
 </div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-4_7fb7e4b71e456ca5484ba0149e3b3986">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> svm</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris()</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scale(iris.data)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris.target</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> svm.SVC(probability<span class="op">=</span><span class="va">True</span>).fit(X, Y)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions (class probabilities):</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>model.predict_proba(X)[<span class="dv">0</span>:<span class="dv">10</span>,:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="rnn_cache/html/unnamed-chunk-4_c7ab51d3b044aa8ec43a6ca131219697">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> r.X <span class="co"># get data from R</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> r.Y </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>RNN <span class="op">=</span> keras.Sequential()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>RNN.add(GRU(input_shape <span class="op">=</span> [<span class="dv">10</span>, <span class="dv">1</span>],units <span class="op">=</span> <span class="dv">50</span>, activation <span class="op">=</span> <span class="st">"relu"</span>))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>RNN.add(Dense(units <span class="op">=</span> <span class="dv">10</span>))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>RNN.summary()</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>array([[0.98010734, 0.01119254, 0.00870012],
-       [0.97290852, 0.01775589, 0.00933559],
-       [0.97887363, 0.01174829, 0.00937808],
-       [0.97488338, 0.01505638, 0.01006024],
-       [0.97925052, 0.01154893, 0.00920055],
-       [0.97383204, 0.01661416, 0.00955379],
-       [0.97548544, 0.0133769 , 0.01113766],
-       [0.98001151, 0.01129966, 0.00868883],
-       [0.96617856, 0.02211025, 0.01171119],
-       [0.97667451, 0.01385397, 0.00947152]])</code></pre>
+<pre><code>Model: "sequential_1"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ gru_1 (GRU)                 (None, 50)                7950      
+                                                                 
+ dense_1 (Dense)             (None, 10)                510       
+                                                                 
+=================================================================
+Total params: 8,460
+Trainable params: 8,460
+Non-trainable params: 0
+_________________________________________________________________</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>RNN.<span class="bu">compile</span>(loss <span class="op">=</span> keras.losses.mean_squared_error,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>            optimizer <span class="op">=</span> keras.optimizers.Adamax(<span class="fl">0.01</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>RNN.fit(X, Y, epochs <span class="op">=</span> <span class="dv">5</span>, verbose <span class="op">=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;keras.callbacks.History object at 0x7f91380e4670&gt;</code></pre>
+</div>
+</div>
+<p>Make predictions:</p>
+<div class="cell" data-hash="rnn_cache/html/unnamed-chunk-5_8ff8b39fdb3ef9f294015d7bec4c0929">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>RNN.predict(X)[<span class="dv">0</span>:<span class="dv">10</span>,:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+1/2 [==============&gt;...............] - ETA: 0s
+2/2 [==============================] - 0s 2ms/step
+array([[ 0.42014763, -0.18803373, -0.49838978, -0.23084594,  0.16043243,
+         0.09836911,  0.05774919, -0.6397091 , -0.17642473,  0.23359524],
+       [ 0.24713348, -0.5150123 , -0.41040528,  0.35002753,  0.5223741 ,
+        -0.25475818, -0.2640479 , -0.3793788 ,  0.28173554,  0.06628139],
+       [ 0.42807055, -0.23126799, -0.5387223 , -0.21818314,  0.17583738,
+         0.09494507,  0.04807471, -0.66506076, -0.17101239,  0.22419289],
+       [ 0.19364469, -0.16822672, -0.35907426, -0.05538802,  0.09245294,
+         0.09220832,  0.03405145, -0.39754653, -0.08505453,  0.07975613],
+       [ 0.5740196 , -0.04543666, -0.7570797 , -0.8942825 , -0.19053774,
+         0.56847376,  0.420092  , -0.9900241 , -0.62275285,  0.3780856 ],
+       [ 0.2136533 , -0.3909836 , -0.39041203,  0.27481425,  0.34575748,
+        -0.11220238, -0.15177974, -0.36721054,  0.15575731,  0.03337399],
+       [ 0.30640042, -0.04427434, -0.4467045 , -0.35476726, -0.06164659,
+         0.24404266,  0.19626519, -0.5636717 , -0.29490072,  0.18287963],
+       [ 0.26979104, -0.5362462 , -0.39888373,  0.36888862,  0.58633494,
+        -0.32184407, -0.3478408 , -0.33489403,  0.36450946,  0.10723882],
+       [ 0.41119274, -0.26509812, -0.5204819 , -0.14221832,  0.2413957 ,
+         0.00485324, -0.00819756, -0.6338831 , -0.0883438 ,  0.22701262],
+       [ 0.2998161 ,  0.01500335, -0.41577554, -0.41534966, -0.12229332,
+         0.30252767,  0.2377799 , -0.54849315, -0.35903308,  0.1939047 ]],
+      dtype=float32)</code></pre>
 </div>
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-5_0c7e64ba6e65aafa501cf56c41f9d046">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>SVM_classifier <span class="op">=</span> <span class="pp">@load</span> NuSVC pkg<span class="op">=</span>LIBSVM;</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets;</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="rnn_cache/html/unnamed-chunk-6_205446bab38e9884ffa297967f221cb8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">MLJBase.int;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>, <span class="bu">Statistics;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux.Losses</span>: mse;</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">ARFIMA;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-6_061746d4f068f266a3d706dac295eeb8">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>]);</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">5</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Data preparation:</p>
+<div class="cell" data-hash="rnn_cache/html/unnamed-chunk-7_5ffd98d9c42209adf879facbb866bcbb">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">transpose</span>(<span class="fu">reshape</span>(<span class="fu">convert</span>(<span class="dt">Vector</span>{<span class="dt">Float32</span>}, <span class="fu">arfima</span>(<span class="fl">1000</span>,<span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fu">SVector</span>(<span class="op">-</span><span class="fl">0.7</span>))), <span class="fl">100</span>, <span class="fl">10</span>));</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>xtrain <span class="op">=</span> X[<span class="op">:</span>, <span class="fu">collect</span>(<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">:</span><span class="fl">100</span>)];</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>ytrain <span class="op">=</span> X[<span class="op">:</span>, <span class="fu">collect</span>(<span class="fl">2</span><span class="op">:</span><span class="fl">2</span><span class="op">:</span><span class="fl">100</span>)];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Models:</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-7_9dc5c1d9351bbb7e1229d0b4072569ca">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">SVM_classifier</span>(), X, Y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Create model (similar to Keras):</p>
+<div class="cell" data-hash="rnn_cache/html/unnamed-chunk-8_e547111b47fbcd4f2ac92eb63f870866">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">Chain</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">GRU</span>(<span class="fl">10</span><span class="op">=&gt;</span><span class="fl">50</span>),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Dense</span>(<span class="fl">50</span>, <span class="fl">10</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>trained Machine; caches model-specific representations of data
-  model: NuSVC(kernel = RadialBasis, …)
-  args: 
-    1:  Source @942 ⏎ Table{AbstractVector{Continuous}}
-    2:  Source @621 ⏎ AbstractVector{Multiclass{3}}</code></pre>
+<pre><code>Chain(
+  Recur(
+    GRUCell(10 =&gt; 50),                  # 9_200 parameters
+  ),
+  Dense(50 =&gt; 10),                      # 510 parameters
+)         # Total: 6 trainable arrays, 9_710 parameters,
+          # plus 1 non-trainable, 50 parameters, summarysize 38.297 KiB.</code></pre>
+</div>
+</div>
+<p>Train/optimize Model:</p>
+<div class="cell" data-hash="rnn_cache/html/unnamed-chunk-9_92ff3129b03974245bd29719b77cbcef">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>parameters <span class="op">=</span> Flux.<span class="fu">params</span>(model);</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> <span class="fu">ADAM</span>(<span class="fl">0.01</span>);</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    Flux.<span class="fu">reset!</span>(model); </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    grads <span class="op">=</span> <span class="fu">gradient</span>(parameters) <span class="cf">do</span> </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        Pred <span class="op">=</span> [<span class="fu">model</span>( xtrain[<span class="op">:</span>,i]) for i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">50</span>];</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>        loss <span class="op">=</span> <span class="fu">mean</span>([<span class="fu">mse</span>(Pred[i], ytrain[<span class="op">:</span>,i]) for i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">50</span>]);</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>        <span class="fu">println</span>(loss);</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>        loss</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    Flux.<span class="fu">update!</span>(optimizer, parameters, grads);</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.5030231
+0.40875202
+0.34945393
+0.31208286
+0.28855073
+0.27399114
+0.2656516
+0.2610054
+0.25678155
+0.25014922</code></pre>
 </div>
 </div>
 <p>Predictions:</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-8_18d42cb29b163ee6963b6b68af63780d">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(model, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="rnn_cache/html/unnamed-chunk-10_fe5af368978b17ddb9d1d1e517625fa5">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Pred <span class="op">=</span> [<span class="fu">model</span>( xtrain[<span class="op">:</span>,i]) for i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">50</span>];</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>Pred[<span class="fl">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>5-element CategoricalArrays.CategoricalArray{String,1,UInt8}:
- "setosa"
- "setosa"
- "setosa"
- "setosa"
- "setosa"</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="regression" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="regression"><span class="header-section-number">2.2</span> Regression</h2>
-<div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Julia</a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-9_94030cacdfb2f351be95e7fa9933d1d1">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(iris[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris[,<span class="dv">1</span>]</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>sv <span class="ot">=</span> <span class="fu">svm</span>(X, Y) </span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-svm.default(x = X, y = Y)
-
-
-Parameters:
-   SVM-Type:  eps-regression 
- SVM-Kernel:  radial 
-       cost:  1 
-      gamma:  0.3333333 
-    epsilon:  0.1 
-
-
-Number of Support Vectors:  124</code></pre>
-</div>
-</div>
-<p>Make predictions (class probabilities):</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-10_ba3ef86da6d364b58d7fd7440e9d2b68">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(sv, <span class="at">newdata =</span> X), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>       1        2        3 
-5.042085 4.711768 4.836291 </code></pre>
-</div>
-</div>
-</div>
-<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-11_91546ebb902e64437c6643520de57998">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> svm</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris()</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> iris.data</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scale(data[:,<span class="dv">1</span>:<span class="dv">4</span>])</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> data[:,<span class="dv">0</span>]</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> svm.SVR().fit(X, Y)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Make predictions:</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>model.predict(X)[<span class="dv">0</span>:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>array([5.03583855, 4.69496586, 4.81438855, 4.77951854, 5.10018373,
-       5.29981857, 4.97308737, 4.98199033, 4.63701656, 4.78431078])</code></pre>
-</div>
-</div>
-</div>
-<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-12_6791954748ed4ef27199d391d0df7b2b">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>SVM_regressor <span class="op">=</span>  <span class="pp">@load</span> NuSVR pkg<span class="op">=</span>LIBSVM;</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets;</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-13_40134eceebefd803b420025863acd9ff">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>]);</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">1</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Model:</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-14_d3f0d825b594402fd5ece189a77f4a04">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">SVM_regressor</span>(), X, Y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>trained Machine; caches model-specific representations of data
-  model: NuSVR(kernel = RadialBasis, …)
-  args: 
-    1:  Source @875 ⏎ Table{AbstractVector{Continuous}}
-    2:  Source @099 ⏎ AbstractVector{Continuous}</code></pre>
-</div>
-</div>
-<p>Predictions:</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-15_c2dadd12158141924f59a974dc655070">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(model, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>5-element Vector{Float64}:
- 5.058471741834634
- 4.6717512552719604
- 4.799641470830148
- 4.75734816087994
- 5.133728219775252</code></pre>
+<pre><code>10-element Vector{Float32}:
+ -0.15317366
+  0.6826891
+  0.10764982
+  1.342341
+  0.4174205
+ -0.35652244
+ -0.5429363
+ -0.72320706
+  0.1646748
+  0.08904388</code></pre>
 </div>
 </div>
 </div>
@@ -514,17 +494,13 @@ Number of Support Vectors:  124</code></pre>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
-<div id="ref-anthony_blaom_2019_3541506" class="csl-entry" role="doc-biblioentry">
-Blaom, Anthony, Franz Kiraly, Thibaut Lienart, and Sebastian Vollmer. 2019. <em>Alan-Turing-Institute/MLJ.jl: V0.5.3</em> (version v0.5.3). Zenodo. <a href="https://doi.org/10.5281/zenodo.3541506">https://doi.org/10.5281/zenodo.3541506</a>.
+<div id="ref-chollet2015keras" class="csl-entry" role="doc-biblioentry">
+Chollet, Francois et al. 2015. <span>“Keras.”</span> GitHub. 2015. <a href="https://github.com/fchollet/keras">https://github.com/fchollet/keras</a>.
 </div>
-<div id="ref-e1071" class="csl-entry" role="doc-biblioentry">
-Meyer, David, Evgenia Dimitriadou, Kurt Hornik, Andreas Weingessel, and Friedrich Leisch. 2022. <em>E1071: Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien</em>. <a href="https://CRAN.R-project.org/package=e1071">https://CRAN.R-project.org/package=e1071</a>.
-</div>
-<div id="ref-scikit-learn" class="csl-entry" role="doc-biblioentry">
-Pedregosa, F., G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, et al. 2011. <span>“Scikit-Learn: Machine Learning in <span>P</span>ython.”</span> <em>Journal of Machine Learning Research</em> 12: 2825–30.
+<div id="ref-Flux" class="csl-entry" role="doc-biblioentry">
+Innes, Michael, Elliot Saba, Keno Fischer, Dhairya Gandhi, Marco Concetto Rudilosso, Neethu Mariya Joy, Tejan Karmali, Avik Pal, and Viral Shah. 2018. <span>“Fashionable Modelling with Flux.”</span> <em>CoRR</em> abs/1811.01457. <a href="https://arxiv.org/abs/1811.01457">https://arxiv.org/abs/1811.01457</a>.
 </div>
 </div>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -627,13 +603,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./elastic_net.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></span>
+      <a href="./cnn.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Convolutional neural networks</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./knn.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./gnn.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Graph (convolutional) neural networks</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

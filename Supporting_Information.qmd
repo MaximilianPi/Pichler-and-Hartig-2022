@@ -13,7 +13,7 @@ bibliography: references.bib
 ```{r setup2, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 reticulate::use_condaenv("r-sjsdm", required = TRUE)
-reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+#reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
 ```
 
 **Summary:** This document provides supporting information on Pichler & Hartig -- Machine Learning and Deep Learning -- A review for ecologists. The first section describes the methods for the trend analysis and the word clouds, the second section demnstrates the application of common supervised Machine learning and Deep learning algorithms in the R programming languages based on code examples.
@@ -22,9 +22,9 @@ reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", re
 
 For the global trend analysis in Figure 1, we used the R package 'europepmc' (v0.4.1, @jahn_europepmc_2021) to search from 1920 to 2021 the PubMed and Medline NLM databases. We used the following queries 'deep learning', ('machine learning' OR 'machine-learning'), and ('p value' OR 'p-value' OR 'statistically significant) as representatives for Deep Learning, Machine Learning, and classical statistical approaches. The number of hits were normalized by total hits in each year. For the stream charts in Figure 2, we used the search queries Table S1 and added them to the query' AND ("ecology" OR "ecolog\*" OR "evolution") to restrict the queries to hits from the ecology and evolution field.
 
-```{r, echo=FALSE}
-library(flextable)
-set_flextable_defaults(fonts_ignore=TRUE)
+```{r, echo=FALSE, fig.cap="Search queries and their corresponding ML and DL algorithm."}
+#library(flextable)
+#set_flextable_defaults(fonts_ignore=TRUE)
 queries = c(
   '("artificial neural network" OR "deep neural network" OR 
   "multi-layer perceptron" OR "fully connected neural network")',
@@ -52,11 +52,12 @@ algorithms = c(
 )
 data = data.frame(cbind(queries, algorithms))
 colnames(data) = c("Queries", "ML and DL algorithm")
-fl = flextable(data)
-fl = set_caption(fl, caption = "Search queries and their corresponding ML and DL algorithm.")
-fl = theme_zebra(fl)
-fl = set_table_properties(fl, width = .3, layout = "autofit")
-fl
+#fl = flextable(data)
+#fl = set_caption(fl, caption = "Search queries and their corresponding ML and DL algorithm.")
+#fl = theme_zebra(fl)
+#fl = set_table_properties(fl, width = .3, layout = "autofit")
+#fl
+knitr::kable(data)
 ```
 
 For the word clouds in Table 1, we used again the 'europepmc' R package to search abstracts and titles within the ML and DL algorithm specific queries (Table 1) for the following ecological keywords: species distribution, species interaction, mortality, remote sensing, invasive, decision making, ecosystem, species identification, species detection, extinction, functional trait, ecological network, biodiversity, and camera trap.
@@ -78,3 +79,4 @@ The goal of this chapter is to provide short code examples for all common superv
 {{< include ML_Introduction/rnn.qmd >}}
 {{< include ML_Introduction/gnn.qmd >}}
 {{< include ML_Introduction/refs.qmd >}}
+

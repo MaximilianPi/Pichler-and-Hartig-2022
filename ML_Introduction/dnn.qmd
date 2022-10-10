@@ -1,14 +1,15 @@
+# Deep neural networks
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 reticulate::use_condaenv("r-sjsdm", required = TRUE)
-reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+#reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
 ```
 
-# Deep neural networks
 
 Deep neural networks, or more precisely here fully connected neural networks, can be flexibly built which makes their application more challenging than other ML algorithms.
 
-In the following, we use the 'keras' (@kerasR; @chollet2015keras) package which is a higher level API on the python 'tensorflow' framework (@abadi2016tensorflow).
+In the following, we use the 'keras' (@kerasR; @chollet2015keras) (Python: 'keras' (@chollet2015keras); Julia: 'Flux' (@Flux)) package which is a higher level API on the python 'tensorflow' framework (@abadi2016tensorflow).
 
 ## Classification
 
@@ -106,11 +107,71 @@ Make predictions:
 ```{python, eval=TRUE}
 DNN.predict(X)[0:10,:]
 ```
+
+### Julia
+
+```{julia}
+import StatsBase
+using RDatasets
+using StatsBase
+using DataFrames
+import MLJBase.int
+using Flux, Statistics
+using Flux.Data: DataLoader
+using Flux: onehotbatch, onecold, @epochs
+using Flux.Losses: logitcrossentropy
+```
+
+Data preparation:
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = transpose(Matrix(mapcols(StatsBase.zscore, iris[:, 1:4])));
+Y = int(iris[:, 5], type = Int);
+classes = sort(unique(Y));
+YT = onehotbatch(Y, classes);
+data_loader = DataLoader((X, YT), batchsize=10, shuffle=true);
+```
+
+Create model (similar to Keras):
+
+```{julia}
+model = Chain(
+  Dense(4, 20, relu),
+  Dense(20, 20, relu),
+  Dense(20, 3)
+)
+```
+
+Train/optimize Model:
+
+```{julia}
+parameters = Flux.params(model);
+optimizer = ADAM(0.01);
+
+# Help functions
+loss(x, y) = logitcrossentropy(model(x), y);
+
+get_loss() = @show sum(logitcrossentropy(model(X), YT));
+
+## Training
+for epoch in 1:20
+  Flux.train!(loss, parameters, data_loader, optimizer, cb = Flux.throttle(get_loss, 5))
+end
+```
+
+Predictions:
+
+```{julia}
+transpose(softmax(model(X)))[1:5,:]
+```
+
+
 :::
 
 ## Regression
 
-::: panel.-tabset
+::: panel-tabset
 ### R
 
 ```{r, message=FALSE,eval=TRUE}
@@ -196,4 +257,66 @@ Make predictions:
 ```{python, eval=TRUE}
 DNN.predict(X)[0:10]
 ```
+
+
+### Julia
+
+
+```{julia}
+import StatsBase
+using RDatasets
+using StatsBase
+using DataFrames
+import MLJBase.int
+using Flux, Statistics
+using Flux.Data: DataLoader
+using Flux: onehotbatch, onecold, @epochs
+using Flux.Losses: mse
+```
+
+Data preparation:
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = transpose(Matrix(mapcols(StatsBase.zscore, iris[:, 2:4])));
+YT = iris[:, 1];
+YT = reshape(YT, 1, length(YT));
+
+data_loader = DataLoader((X, YT), batchsize=10, shuffle=true);
+```
+
+Create model (similar to Keras):
+
+```{julia}
+model = Chain(
+  Dense(3, 20, relu),
+  Dense(20, 20, relu),
+  Dense(20, 1)
+)
+```
+
+Train/optimize Model:
+
+```{julia}
+parameters = Flux.params(model);
+optimizer = ADAM(0.01);
+
+# Help functions
+loss(x, y) = mse(model(x), y);
+
+get_loss() = @show sum(mse(model(X), YT));
+
+## Training
+for epoch in 1:20
+  Flux.train!(loss, parameters, data_loader, optimizer, cb = Flux.throttle(get_loss, 5))
+end
+```
+
+Predictions:
+
+```{julia}
+transpose(model(X))[1:5]
+```
+
+
 :::

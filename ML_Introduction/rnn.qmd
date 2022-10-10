@@ -1,12 +1,14 @@
-```{r, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
-reticulate::use_condaenv("r-sjsdm", required = TRUE)
-reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
-```
 
 # Recurrent neural networks
 
-Recurrent neural networks are also deep neural networks but use layers specialized to handle time-series. In the following, we will use again the 'keras' package but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section 'Deep neural networks').
+```{r, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
+reticulate::use_condaenv("r-sjsdm", required = TRUE)
+#reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+```
+
+
+Recurrent neural networks are also deep neural networks but use layers specialized to handle time-series. In the following, we will use again the 'keras' package (Python: 'keras' (@chollet2015keras); Julia: 'Flux' (@Flux)) but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section 'Deep neural networks').
 
 About the data, we simulated in the following one time series from a simple ARIMA process, using the 'arima.sim' function. Our goal is to train a net which is able to predict the next 10 time points based on the previous 10 time points.
 
@@ -78,4 +80,61 @@ Make predictions:
 ```{python, eval=TRUE}
 RNN.predict(X)[0:10,:]
 ```
+
+### Julia
+
+```{julia}
+import StatsBase;
+using RDatasets;
+using StatsBase;
+using DataFrames;
+import MLJBase.int;
+using Flux, Statistics;
+using Flux.Losses: mse;
+using ARFIMA;
+```
+
+Data preparation:
+
+```{julia}
+X = transpose(reshape(convert(Vector{Float32}, arfima(1000,0.5, 0.3, SVector(-0.7))), 100, 10));
+xtrain = X[:, collect(1:2:100)];
+ytrain = X[:, collect(2:2:100)];
+```
+
+Create model (similar to Keras):
+
+```{julia}
+model = Chain(
+  GRU(10=>50),
+  Dense(50, 10)
+)
+```
+
+Train/optimize Model:
+
+```{julia}
+parameters = Flux.params(model);
+optimizer = ADAM(0.01);
+
+for epoch in 1:10
+    Flux.reset!(model); 
+    grads = gradient(parameters) do 
+        Pred = [model( xtrain[:,i]) for i in 1:50];
+        loss = mean([mse(Pred[i], ytrain[:,i]) for i in 1:50]);
+        println(loss);
+        loss
+    end
+    Flux.update!(optimizer, parameters, grads);
+end
+```
+
+Predictions:
+
+```{julia}
+Pred = [model( xtrain[:,i]) for i in 1:50];
+Pred[1]
+```
+
+
 :::

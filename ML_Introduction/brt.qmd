@@ -1,14 +1,15 @@
+# Boosted gradient trees
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 reticulate::use_condaenv("r-sjsdm", required = TRUE)
-reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+#reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
 ```
 
-# Boosted gradient trees
 
 Boosted gradient machines achieve currently state-of-the-art performance for structured (tabular) data which makes them probably one of the most important algorithms for E&E where structured data dominates the field.
 
-In the following, we use the 'xgboost' package (@xgboost).
+In the following, we use the 'xgboost' package (@xgboost) (Python: 'xgboost' (@xgboost), Julia: 'MLJ' (@anthony_blaom_2019_3541506))
 
 ## Classification
 
@@ -75,6 +76,39 @@ Make predictions:
 model.predict_proba(X)[0:10,:]
 
 ```
+
+### Julia
+
+```{julia}
+import StatsBase;
+using MLJ;
+BRT_classifier = @load XGBoostClassifier pkg=XGBoost;
+using RDatasets;
+using StatsBase;
+using DataFrames;
+```
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = mapcols(StatsBase.zscore, iris[:, 1:4]);
+Y = iris[:, 5];
+
+```
+
+Models:
+
+```{julia}
+model = fit!(machine(BRT_classifier(), X, Y))
+```
+
+
+Predictions:
+
+```{julia}
+MLJ.predict(model, X)[1:5]
+```
+
+
 :::
 
 ## Regression
@@ -139,4 +173,35 @@ Make predictions:
 model.predict(X)[0:10]
 
 ```
+
+### Julia
+
+```{julia}
+import StatsBase;
+using MLJ;
+BRT_regressor =  @load XGBoostRegressor pkg=XGBoost;
+using RDatasets;
+using DataFrames;
+```
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = mapcols(StatsBase.zscore, iris[:, 2:4]);
+Y = iris[:, 1];
+```
+
+Model:
+
+```{julia}
+model = fit!(machine(BRT_regressor(), X, Y))
+```
+
+
+Predictions:
+
+```{julia}
+MLJ.predict(model, X)[1:5]
+```
+
+
 :::

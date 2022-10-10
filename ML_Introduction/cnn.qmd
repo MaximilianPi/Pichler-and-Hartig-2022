@@ -1,14 +1,15 @@
+# Convolutional neural networks
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 reticulate::use_condaenv("r-sjsdm", required = TRUE)
-reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+#reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
 ```
 
-# Convolutional neural networks
 
 Convolutional neural networks (CNN) are also deep neural networks but they are based on convolutional layers, which is a biologically inspired variation optimized to process image-based data (@lecun2015deep). CNNs consist of two stages, in the first, the images are passed through convolutional layers and the models learns to detect edges and shapes in the images. In the second stage, the dimensions are dropped and fully-connected layers are used to classify the previously identified shapes.
 
-In the following, we will use again the 'keras' package but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section 'Deep neural networks').
+In the following, we will use again the 'keras' package (Python: 'keras' (@chollet2015keras); Julia: 'Flux' (@Flux)) but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section 'Deep neural networks').
 
 We will demonstrate the application of CNNs with the MNIST dataset which consists of handwritten digits. The objective of the CNNs is to classify the images. The MNIST dataset is one of the most famous benchmark dataset for image-based tasks (@lecun_mnist_2010).
 
@@ -119,4 +120,71 @@ Make predictions:
 ```{python, eval=TRUE}
 CNN.predict(train[0:10,:,:])
 ```
+
+## Julia
+
+```{julia}
+import StatsBase
+using RDatasets
+using StatsBase
+using DataFrames
+import MLJBase.int
+using MLDatasets: MNIST
+using Flux, Statistics
+using Flux.Data: DataLoader
+using Flux: onehotbatch, onecold, @epochs
+using Flux.Losses: logitcrossentropy
+```
+
+Data preparation:
+
+```{julia}
+ENV["DATADEPS_ALWAYS_ACCEPT"] = "true"
+
+xtrain, ytrain = MNIST(:train)[:];
+xtrain = reshape(xtrain/255., 28, 28, 1, 60000);
+ytrain = onehotbatch(ytrain, 0:9);
+
+data_loader = DataLoader((xtrain, ytrain), batchsize=100, shuffle=true);
+
+```
+
+Create model (similar to Keras):
+
+```{julia}
+model = Chain(
+  Conv((2, 2), 1=>16, pad = (1, 1), relu),
+  MeanPool((2, 2)),
+  Conv((2, 2), 16=>8, pad = (1, 1), relu),
+  MeanPool((2, 2)),
+  Flux.flatten,
+  Dense(392, 20, relu),
+  Dense(20, 10)
+)
+```
+
+Train/optimize Model:
+
+```{julia}
+parameters = Flux.params(model);
+optimizer = ADAM(0.01);
+
+# Help functions
+loss(x, y) = logitcrossentropy(model(x), y);
+
+get_loss() = @show sum(logitcrossentropy(model(xtrain[:,:,:,1:100]), ytrain[:,1:100]));
+
+## Training
+for epoch in 1:1
+  Flux.train!(loss, parameters, data_loader, optimizer, cb = Flux.throttle(get_loss, 6000))
+end
+```
+
+Predictions:
+
+```{julia}
+softmax(model(xtrain[:,:,:,1:5]))[:,1]
+```
+
+
 :::

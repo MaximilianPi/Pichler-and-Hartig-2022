@@ -1,10 +1,11 @@
+
+# Graph (convolutional) neural networks
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 reticulate::use_condaenv("r-sjsdm", required = TRUE)
-reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+#reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
 ```
-
-# Graph (convolutional) neural networks
 
 Graph neural networks (GNN) is a young representative of the deep neural network family but is receiving more and more attention in the last years because of their ability to process non-Euclidean data such as graphs.
 
@@ -13,6 +14,9 @@ Currently there is no R package for GNNs available. However, we can use the 'ret
 The following example was mostly adapted from the 'Node Classification with Graph Neural Networks' example from the torch_geometric documentation (<https://pytorch-geometric.readthedocs.io/en/latest/notes/colabs.html>).
 
 The dataset is also provided by the 'torch_geometric' package and consists of molecules presented as graphs and the task is to predict whether HIV virus replication is inhibited by the molecule or not (classification, binary classification).
+
+We have not implemented this example in Julia because there is not yet a well-established library for GNNs.
+
 
 ::: panel-tabset
 ### R

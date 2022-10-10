@@ -1,14 +1,15 @@
+# Random forest
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 reticulate::use_condaenv("r-sjsdm", required = TRUE)
-reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+#reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
 ```
 
-# Random forest
 
 The random forest (RF) algorithm is probably one of the most famous ML algorithms, and not without reason. Compared to other well performing algorithms, the RF algorithm has only a few hyper-parameters and because of the bagging and the random sampling of available variables in for the node splits, it has a well working internal complexity adaption.
 
-In the following, we use the 'ranger' package (@ranger).
+In the following, we use the 'ranger' package (@ranger) (Python: 'scikit-learn' (@scikit-learn), Julia: 'MLJ' (@anthony_blaom_2019_3541506)).
 
 ## Classification
 
@@ -62,6 +63,44 @@ Make predictions:
 model.predict_proba(X)[0:10,:]
 
 ```
+
+### Julia
+
+```{julia}
+import StatsBase;
+using MLJ;
+RF_classifier = @load RandomForestClassifier pkg=DecisionTree;
+using RDatasets;
+using StatsBase;
+using DataFrames;
+```
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = mapcols(StatsBase.zscore, iris[:, 1:4]);
+Y = iris[:, 5];
+
+```
+
+Models:
+
+```{julia}
+model = fit!(machine(RF_classifier(), X, Y))
+```
+
+Feature importance:
+
+```{julia}
+feature_importances(model)
+```
+
+
+Predictions:
+
+```{julia}
+MLJ.predict(model, X)[1:5]
+```
+
 :::
 
 ## Regression
@@ -115,4 +154,41 @@ Make predictions:
 model.predict(X)[0:10]
 
 ```
+
+### Julia
+
+```{julia}
+import StatsBase;
+using MLJ;
+RF_regressor = @load RandomForestRegressor pkg=DecisionTree;
+using RDatasets;
+using DataFrames;
+```
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = mapcols(StatsBase.zscore, iris[:, 2:4]);
+Y = iris[:, 1];
+```
+
+Model:
+
+```{julia}
+model = fit!(machine(RF_regressor(), X, Y))
+```
+
+Feature importance:
+
+```{julia}
+feature_importances(model)
+```
+
+
+Predictions:
+
+```{julia}
+MLJ.predict(model, X)[1:5]
+```
+
+
 :::

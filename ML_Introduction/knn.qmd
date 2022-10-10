@@ -1,14 +1,15 @@
+# k-nearest-neighbor
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 reticulate::use_condaenv("r-sjsdm", required = TRUE)
-reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+#reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
 ```
 
-# k-nearest-neighbor
 
 The k-nearest-neighbor algorithm doesn't really learn from the data, predictions for new observations are made based on the class affiliation (or response value) of the nearest neighbors, e.g. by majority voting or averaging. The nearest neighbors are found by calculating the distance of the new observation to all observations in the train dataset.
 
-In the following we use the 'kknn' package (@kknn). Different to other ML packages we can provide here already the test dataset in the fit function.
+In the following we use the 'kknn' package (@kknn) (Python: 'scikit-learn' (@scikit-learn), Julia: 'MLJ' (@anthony_blaom_2019_3541506)). Different to other ML packages we can provide here already the test dataset in the fit function.
 
 ## Classification
 
@@ -47,6 +48,39 @@ model = KNeighborsClassifier().fit(X, Y)
 model.predict_proba(X)[0:10,:]
 
 ```
+
+
+### Julia
+
+```{julia}
+import StatsBase;
+using MLJ;
+kNN_classifier = @load KNNClassifier pkg=NearestNeighborModels;
+using RDatasets;
+using StatsBase;
+using DataFrames;
+```
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = mapcols(StatsBase.zscore, iris[:, 1:4]);
+Y = iris[:, 5];
+
+```
+
+Models:
+
+```{julia}
+model = fit!(machine(kNN_classifier(), X, Y))
+```
+
+Predictions:
+
+```{julia}
+MLJ.predict(model, X)[1:5]
+```
+
+
 :::
 
 ## Regression
@@ -86,4 +120,33 @@ model = KNeighborsRegressor().fit(X, Y)
 model.predict(X)[0:10]
 
 ```
+
+### Julia
+
+```{julia}
+import StatsBase;
+using MLJ;
+kNN_regressor =  @load KNNRegressor pkg=NearestNeighborModels;
+using RDatasets;
+using DataFrames;
+```
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = mapcols(StatsBase.zscore, iris[:, 2:4]);
+Y = iris[:, 1];
+```
+
+Model:
+
+```{julia}
+model = fit!(machine(kNN_regressor(), X, Y))
+```
+
+Predictions:
+
+```{julia}
+MLJ.predict(model, X)[1:5]
+```
+
 :::

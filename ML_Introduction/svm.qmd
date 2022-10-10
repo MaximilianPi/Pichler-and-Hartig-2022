@@ -1,12 +1,12 @@
+# Support Vector Machines
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 reticulate::use_condaenv("r-sjsdm", required = TRUE)
-reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+#reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
 ```
 
-# Support Vector Machines
-
-The support vector machine (SVM) algorithm estimates hyper-planes to separate our response species. In the following we use the 'e1071' package which supports a variety of different SVM algorithms (@e1071).
+The support vector machine (SVM) algorithm estimates hyper-planes to separate our response species. In the following we use the 'e1071' package which supports a variety of different SVM algorithms (@e1071) (Python: 'scikit-learn' (@scikit-learn), Julia: 'MLJ' (@anthony_blaom_2019_3541506)).
 
 ## Classification
 
@@ -44,6 +44,36 @@ model = svm.SVC(probability=True).fit(X, Y)
 
 model.predict_proba(X)[0:10,:]
 
+```
+
+### Julia
+
+```{julia}
+import StatsBase;
+using MLJ;
+SVM_classifier = @load NuSVC pkg=LIBSVM;
+using RDatasets;
+using StatsBase;
+using DataFrames;
+```
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = mapcols(StatsBase.zscore, iris[:, 1:4]);
+Y = iris[:, 5];
+
+```
+
+Models:
+
+```{julia}
+model = fit!(machine(SVM_classifier(), X, Y))
+```
+
+Predictions:
+
+```{julia}
+MLJ.predict(model, X)[1:5]
 ```
 :::
 
@@ -84,5 +114,33 @@ model = svm.SVR().fit(X, Y)
 
 model.predict(X)[0:10]
 
+```
+
+### Julia
+
+```{julia}
+import StatsBase;
+using MLJ;
+SVM_regressor =  @load NuSVR pkg=LIBSVM;
+using RDatasets;
+using DataFrames;
+```
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = mapcols(StatsBase.zscore, iris[:, 2:4]);
+Y = iris[:, 1];
+```
+
+Model:
+
+```{julia}
+model = fit!(machine(SVM_regressor(), X, Y))
+```
+
+Predictions:
+
+```{julia}
+MLJ.predict(model, X)[1:5]
 ```
 :::

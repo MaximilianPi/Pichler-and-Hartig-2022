@@ -1,10 +1,11 @@
+# Ridge, LASSO, and elastic-net regression
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, cache=TRUE)
 reticulate::use_condaenv("r-sjsdm", required = TRUE)
-reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
+#reticulate::use_python("/home/maxpichler/miniconda3/envs/r-sjsdm/bin/python", required = TRUE)
 ```
 
-# Ridge, LASSO, and elastic-net regression
 
 We can use the 'glmnet' R package (@glmnet) for Ridge, LASSO, or elastic-net regularization. The 'glmnet' package supports different response families including 'gaussian', 'binomial' and 'Poisson'. The strength of the regularization is set by the 'lambda' argument ($\lambda$) and the weighting between Ridge and LASSO regularization by the 'alpha' parameter ($\alpha$):
 
@@ -13,6 +14,12 @@ $$
 $$ Setting alpha = 0 turns off the LASSO and alpha = 1 the Ridge. Alphas between (0,1) will use both regularization types, turning the model into an elastic-net regularization.
 
 When using regularization, it is important to scale all features otherwise effects for features that are on a larger scale are stronger regularized.
+
+
+In python, the 'scikit-learn' package provides an interface for many different ML algorithms, including elastic-net regression models (@scikit-learn).
+
+The 'MLJ' package provides a generic interface for different ML algorithms (@anthony_blaom_2019_3541506). Elastic-net regression models can be accessed via the 'MLJLinearModels' package within MLJ.
+
 
 ## Classification
 
@@ -58,6 +65,11 @@ iris = datasets.load_iris()
 X = scale(iris.data)
 Y = iris.target
 
+```
+
+Models:
+
+```{python}
 
 # Ridge:
 ridge = LogisticRegression(multi_class='multinomial', 
@@ -81,17 +93,60 @@ elastic = LogisticRegression(multi_class='multinomial',
                              solver="saga")
 elastic.fit(X, Y)
 
-# Make predictions (class probabilities):
+```
 
-lasso.predict_proba(X)[0:10,:]
+Predictions (probabilities):
+
+```{python}
+
+lasso.predict_proba(X)[0:5,:]
 
 ```
 
 ### Julia
 
+
 ```{julia}
-1+1
+import StatsBase;
+using MLJ;
+using MLJLinearModels;
+@load MultinomialClassifier pkg=MLJLinearModels;
+using RDatasets;
+using StatsBase;
+using DataFrames;
 ```
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = mapcols(StatsBase.zscore, iris[:, 1:4]);
+Y = iris[:, 5];
+
+```
+
+Models:
+
+```{julia}
+
+# Ridge
+ridge = fit!(machine(MultinomialClassifier(lambda = 0.01, penalty = "l2"), X, Y));
+
+# Lasso
+lasso = fit!(machine(MultinomialClassifier(lambda = 0.01, penalty = "l1"), X, Y));
+
+
+# Elastic-net
+elastic = fit!(machine(MultinomialClassifier(lambda = 0.01, gamma = 0.01, penalty = "en"), X, Y));
+
+
+```
+
+Predictions:
+
+```{julia}
+MLJ.predict(lasso, X)[1:5]
+```
+
+
 :::
 
 ## Regression
@@ -153,4 +208,45 @@ elastic.fit(X, Y)
 lasso.predict(X)[0:10]
 
 ```
+
+### Julia
+
+```{julia}
+import StatsBase;
+using MLJ;
+using MLJLinearModels;
+@load LassoRegressor pkg=MLJLinearModels;
+@load RidgeRegressor pkg=MLJLinearModels;
+@load ElasticNetRegressor pkg=MLJLinearModels;
+using RDatasets;
+using DataFrames;
+```
+
+```{julia}
+iris = dataset("datasets", "iris");
+X = mapcols(StatsBase.zscore, iris[:, 2:4]);
+Y = iris[:, 1];
+```
+
+Models:
+
+```{julia}
+# Ridge
+ridge = fit!(machine(RidgeRegressor(lambda = 0.01), X, Y));
+
+# Lasso
+lasso = fit!(machine(LassoRegressor(lambda = 0.01), X, Y));
+
+
+# Elastic-net
+elastic = fit!(machine(ElasticNetRegressor(lambda = 0.01, gamma = 0.01), X, Y));
+```
+
+Predictions (probabilities):
+
+```{julia}
+MLJ.predict(lasso, X)[1:5]
+```
+
+
 :::
