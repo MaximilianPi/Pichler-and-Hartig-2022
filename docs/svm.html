@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>svm</title>
+<title>Introduction to Machine Learning and Deep Learning - 2&nbsp; Support Vector Machines</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,11 +106,14 @@ div.csl-indent {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./knn.html" rel="next">
+<link href="./elastic_net.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -141,6 +144,7 @@ div.csl-indent {
 }</script>
 
 
+<meta name="citation_title" content="[2]{.chapter-number}&nbsp; [Support Vector Machines]{.chapter-title}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;">
 <meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
@@ -165,29 +169,144 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=Flux: Elegant machine learning with julia;,citation_author=Mike Innes;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_doi=10.21105/joss.00602;,citation_journal_title=Journal of Open Source Software;">
 </head>
 
-<body class="fullcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to Machine Learning and Deep Learning</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/MaximilianPi/Pichler-and-Hartig-2022" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./elastic_net.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./svm.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rf.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random forest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./brt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Boosted gradient trees</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Deep neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Convolutional neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Graph (convolutional) neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Appendices</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./refs.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#classification" id="toc-classification" class="nav-link active" data-scroll-target="#classification"><span class="toc-section-number">2.1</span>  Classification</a></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression"><span class="toc-section-number">2.2</span>  Regression</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MaximilianPi/Pichler-and-Hartig-2022/edit/master/svm.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></h1>
+</div>
 
 
-<section id="support-vector-machines" class="level1">
-<h1>Support Vector Machines</h1>
-<p>The support vector machine (SVM) algorithm estimates hyper-planes to separate our response species. In the following we use the ‘e1071’ package which supports a variety of different SVM algorithms (<span class="citation" data-cites="e1071">Meyer et al. (<a href="#ref-e1071" role="doc-biblioref">2022</a>)</span>) (Python: ‘scikit-learn’ (<span class="citation" data-cites="scikit-learn">Pedregosa et al. (<a href="#ref-scikit-learn" role="doc-biblioref">2011</a>)</span>), Julia: ‘MLJ’ (<span class="citation" data-cites="anthony_blaom_2019_3541506">Blaom et al. (<a href="#ref-anthony_blaom_2019_3541506" role="doc-biblioref">2019</a>)</span>)).</p>
-<section id="classification" class="level2">
-<h2 class="anchored" data-anchor-id="classification">Classification</h2>
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>The support vector machine (SVM) algorithm estimates hyper-planes to separate our response species. In the following we use the ‘e1071’ package which supports a variety of different SVM algorithms (<span class="citation" data-cites="e1071">Meyer et al. (<a href="refs.html#ref-e1071" role="doc-biblioref">2022</a>)</span>) (Python: ‘scikit-learn’ (<span class="citation" data-cites="scikit-learn">Pedregosa et al. (<a href="refs.html#ref-scikit-learn" role="doc-biblioref">2011</a>)</span>), Julia: ‘MLJ’ (<span class="citation" data-cites="anthony_blaom_2019_3541506">Blaom et al. (<a href="refs.html#ref-anthony_blaom_2019_3541506" role="doc-biblioref">2019</a>)</span>)).</p>
+<section id="classification" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="classification"><span class="header-section-number">2.1</span> Classification</h2>
 <div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-2_a0a5d78124e292263a9e4e7dc21b5d43">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris<span class="sc">$</span>Species</span>
@@ -217,18 +336,18 @@ Levels:
 </div>
 </div>
 <p>Make predictions (class probabilities):</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-3_481e40ca9190f6ea7a3114288cf5d6aa">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">attr</span>(<span class="fu">predict</span>(sv, <span class="at">newdata =</span> X, <span class="at">probability =</span> <span class="cn">TRUE</span>), <span class="st">"probabilities"</span>), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     setosa versicolor   virginica
-1 0.9805061 0.01078548 0.008708392
-2 0.9733815 0.01726277 0.009355782
-3 0.9792178 0.01138534 0.009396853</code></pre>
+<pre><code>     setosa versicolor  virginica
+1 0.9791731 0.01135581 0.00947110
+2 0.9716762 0.01816135 0.01016248
+3 0.9777791 0.01198490 0.01023600</code></pre>
 </div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-4_7fb7e4b71e456ca5484ba0149e3b3986">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> svm</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
@@ -242,21 +361,21 @@ Levels:
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>model.predict_proba(X)[<span class="dv">0</span>:<span class="dv">10</span>,:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>array([[0.98010734, 0.01119254, 0.00870012],
-       [0.97290852, 0.01775589, 0.00933559],
-       [0.97887363, 0.01174829, 0.00937808],
-       [0.97488338, 0.01505638, 0.01006024],
-       [0.97925052, 0.01154893, 0.00920055],
-       [0.97383204, 0.01661416, 0.00955379],
-       [0.97548544, 0.0133769 , 0.01113766],
-       [0.98001151, 0.01129966, 0.00868883],
-       [0.96617856, 0.02211025, 0.01171119],
-       [0.97667451, 0.01385397, 0.00947152]])</code></pre>
+<pre><code>array([[0.97956765, 0.01168732, 0.00874504],
+       [0.97215052, 0.01844973, 0.00939975],
+       [0.9783134 , 0.01226308, 0.00942351],
+       [0.9742125 , 0.01567632, 0.01011118],
+       [0.97870322, 0.01206444, 0.00923234],
+       [0.97312428, 0.01729716, 0.00957855],
+       [0.97486896, 0.01395157, 0.01117947],
+       [0.97946381, 0.01179526, 0.00874092],
+       [0.96530784, 0.02294644, 0.01174573],
+       [0.97603545, 0.01443107, 0.00953347]])</code></pre>
 </div>
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-5_0c7e64ba6e65aafa501cf56c41f9d046">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>SVM_classifier <span class="op">=</span> <span class="pp">@load</span> NuSVC pkg<span class="op">=</span>LIBSVM;</span>
@@ -264,24 +383,24 @@ Levels:
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase;</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-6_061746d4f068f266a3d706dac295eeb8">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>]);</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">5</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Models:</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-7_9dc5c1d9351bbb7e1229d0b4072569ca">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">SVM_classifier</span>(), X, Y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>trained Machine; caches model-specific representations of data
   model: NuSVC(kernel = RadialBasis, …)
   args: 
-    1:  Source @942 ⏎ Table{AbstractVector{Continuous}}
-    2:  Source @621 ⏎ AbstractVector{Multiclass{3}}</code></pre>
+    1:  Source @424 ⏎ Table{AbstractVector{Continuous}}
+    2:  Source @132 ⏎ AbstractVector{Multiclass{3}}</code></pre>
 </div>
 </div>
 <p>Predictions:</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-8_18d42cb29b163ee6963b6b68af63780d">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(model, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5-element CategoricalArrays.CategoricalArray{String,1,UInt8}:
@@ -296,13 +415,13 @@ Levels:
 </div>
 </div>
 </section>
-<section id="regression" class="level2">
-<h2 class="anchored" data-anchor-id="regression">Regression</h2>
+<section id="regression" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="regression"><span class="header-section-number">2.2</span> Regression</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-9_94030cacdfb2f351be95e7fa9933d1d1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(iris[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris[,<span class="dv">1</span>]</span>
@@ -327,7 +446,7 @@ Number of Support Vectors:  124</code></pre>
 </div>
 </div>
 <p>Make predictions (class probabilities):</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-10_ba3ef86da6d364b58d7fd7440e9d2b68">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(sv, <span class="at">newdata =</span> X), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       1        2        3 
@@ -336,7 +455,7 @@ Number of Support Vectors:  124</code></pre>
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-11_91546ebb902e64437c6643520de57998">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> svm</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
@@ -357,31 +476,31 @@ Number of Support Vectors:  124</code></pre>
 </div>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-12_6791954748ed4ef27199d391d0df7b2b">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>SVM_regressor <span class="op">=</span>  <span class="pp">@load</span> NuSVR pkg<span class="op">=</span>LIBSVM;</span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets;</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-13_40134eceebefd803b420025863acd9ff">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>]);</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">1</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Model:</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-14_d3f0d825b594402fd5ece189a77f4a04">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">SVM_regressor</span>(), X, Y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>trained Machine; caches model-specific representations of data
   model: NuSVR(kernel = RadialBasis, …)
   args: 
-    1:  Source @875 ⏎ Table{AbstractVector{Continuous}}
-    2:  Source @099 ⏎ AbstractVector{Continuous}</code></pre>
+    1:  Source @758 ⏎ Table{AbstractVector{Continuous}}
+    2:  Source @893 ⏎ AbstractVector{Continuous}</code></pre>
 </div>
 </div>
 <p>Predictions:</p>
-<div class="cell" data-hash="svm_cache/html/unnamed-chunk-15_c2dadd12158141924f59a974dc655070">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(model, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5-element Vector{Float64}:
@@ -397,7 +516,7 @@ Number of Support Vectors:  124</code></pre>
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
 <div id="ref-anthony_blaom_2019_3541506" class="csl-entry" role="doc-biblioentry">
 Blaom, Anthony, Franz Kiraly, Thibaut Lienart, and Sebastian Vollmer. 2019. <em>Alan-Turing-Institute/MLJ.jl: V0.5.3</em> (version v0.5.3). Zenodo. <a href="https://doi.org/10.5281/zenodo.3541506">https://doi.org/10.5281/zenodo.3541506</a>.
 </div>
@@ -408,7 +527,6 @@ Meyer, David, Evgenia Dimitriadou, Kurt Hornik, Andreas Weingessel, and Friedric
 Pedregosa, F., G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, et al. 2011. <span>“Scikit-Learn: Machine Learning in <span>P</span>ython.”</span> <em>Journal of Machine Learning Research</em> 12: 2825–30.
 </div>
 </div>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -510,6 +628,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./elastic_net.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./knn.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

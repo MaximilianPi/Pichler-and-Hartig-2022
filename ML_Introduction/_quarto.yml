@@ -1,11 +1,14 @@
 project:
-  type: website
+  type: book
   output-dir: ../docs
 
 book:
   title: "Introduction to Machine Learning and Deep Learning"
   author: "Maximilian Pichler and Florian Hartig"
-  date: "10/6/2022"
+  date: "Oct 2022"
+  repo-url: https://github.com/MaximilianPi/Pichler-and-Hartig-2022
+  repo-branch: master
+  repo-actions: [edit]
   chapters:
     - index.qmd
     - elastic_net.qmd
@@ -25,10 +28,9 @@ google-scholar: true
 
 execute:
   freeze: auto
-  cache: true
+  cache: false
 
 format:
   html:
     theme: cosmo
 editor: visual
-

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>knn</title>
+<title>Introduction to Machine Learning and Deep Learning - 3&nbsp; k-nearest-neighbor</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,11 +106,14 @@ div.csl-indent {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./rf.html" rel="next">
+<link href="./svm.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -141,6 +144,7 @@ div.csl-indent {
 }</script>
 
 
+<meta name="citation_title" content="[3]{.chapter-number}&nbsp; [k-nearest-neighbor]{.chapter-title}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;">
 <meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
@@ -165,30 +169,145 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=Flux: Elegant machine learning with julia;,citation_author=Mike Innes;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_doi=10.21105/joss.00602;,citation_journal_title=Journal of Open Source Software;">
 </head>
 
-<body class="fullcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to Machine Learning and Deep Learning</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/MaximilianPi/Pichler-and-Hartig-2022" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./elastic_net.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./svm.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rf.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random forest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./brt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Boosted gradient trees</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Deep neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Convolutional neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Graph (convolutional) neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Appendices</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./refs.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#classification" id="toc-classification" class="nav-link active" data-scroll-target="#classification"><span class="toc-section-number">3.1</span>  Classification</a></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression"><span class="toc-section-number">3.2</span>  Regression</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MaximilianPi/Pichler-and-Hartig-2022/edit/master/knn.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></h1>
+</div>
 
 
-<section id="k-nearest-neighbor" class="level1">
-<h1>k-nearest-neighbor</h1>
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
 <p>The k-nearest-neighbor algorithm doesn’t really learn from the data, predictions for new observations are made based on the class affiliation (or response value) of the nearest neighbors, e.g.&nbsp;by majority voting or averaging. The nearest neighbors are found by calculating the distance of the new observation to all observations in the train dataset.</p>
-<p>In the following we use the ‘kknn’ package (<span class="citation" data-cites="kknn">Schliep and Hechenbichler (<a href="#ref-kknn" role="doc-biblioref">2016</a>)</span>) (Python: ‘scikit-learn’ (<span class="citation" data-cites="scikit-learn">Pedregosa et al. (<a href="#ref-scikit-learn" role="doc-biblioref">2011</a>)</span>), Julia: ‘MLJ’ (<span class="citation" data-cites="anthony_blaom_2019_3541506">Blaom et al. (<a href="#ref-anthony_blaom_2019_3541506" role="doc-biblioref">2019</a>)</span>)). Different to other ML packages we can provide here already the test dataset in the fit function.</p>
-<section id="classification" class="level2">
-<h2 class="anchored" data-anchor-id="classification">Classification</h2>
+<p>In the following we use the ‘kknn’ package (<span class="citation" data-cites="kknn">Schliep and Hechenbichler (<a href="refs.html#ref-kknn" role="doc-biblioref">2016</a>)</span>) (Python: ‘scikit-learn’ (<span class="citation" data-cites="scikit-learn">Pedregosa et al. (<a href="refs.html#ref-scikit-learn" role="doc-biblioref">2011</a>)</span>), Julia: ‘MLJ’ (<span class="citation" data-cites="anthony_blaom_2019_3541506">Blaom et al. (<a href="refs.html#ref-anthony_blaom_2019_3541506" role="doc-biblioref">2019</a>)</span>)). Different to other ML packages we can provide here already the test dataset in the fit function.</p>
+<section id="classification" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="classification"><span class="header-section-number">3.1</span> Classification</h2>
 <div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-2_4fb0b73c2b221d9c2ec0684da43eac92">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kknn)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris[,<span class="dv">5</span>,drop<span class="ot">=</span><span class="cn">FALSE</span>]</span>
@@ -197,7 +316,7 @@ div.csl-indent {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>knn <span class="ot">=</span> <span class="fu">kknn</span>(Species<span class="sc">~</span>., <span class="at">train =</span> data, <span class="at">test =</span> data) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Make predictions (class probabilities):</p>
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-3_e269963aad949e40c3c42a2853ff2b94">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(knn<span class="sc">$</span>prob, <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     setosa versicolor virginica
@@ -208,7 +327,7 @@ div.csl-indent {
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-4_3499bd0e54ae77adf9f09a1e44fcf1c5">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
@@ -236,7 +355,7 @@ div.csl-indent {
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-5_d39f2e9184fe0d2e566bb6c66fad18ee">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>kNN_classifier <span class="op">=</span> <span class="pp">@load</span> KNNClassifier pkg<span class="op">=</span>NearestNeighborModels;</span>
@@ -244,24 +363,24 @@ div.csl-indent {
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase;</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-6_2e155941c4bdeb2db114f490cf05259a">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>]);</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">5</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Models:</p>
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-7_49c2ddc508c055aea2b842cac2478d30">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">kNN_classifier</span>(), X, Y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>trained Machine; caches model-specific representations of data
   model: KNNClassifier(K = 5, …)
   args: 
-    1:  Source @082 ⏎ Table{AbstractVector{Continuous}}
-    2:  Source @399 ⏎ AbstractVector{Multiclass{3}}</code></pre>
+    1:  Source @749 ⏎ Table{AbstractVector{Continuous}}
+    2:  Source @020 ⏎ AbstractVector{Multiclass{3}}</code></pre>
 </div>
 </div>
 <p>Predictions:</p>
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-8_4c8a5837cacd63d133bb77af2eb7c262">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(model, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5-element CategoricalDistributions.UnivariateFiniteVector{Multiclass{3}, String, UInt8, Float64}:
@@ -276,13 +395,13 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="regression" class="level2">
-<h2 class="anchored" data-anchor-id="regression">Regression</h2>
+<section id="regression" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="regression"><span class="header-section-number">3.2</span> Regression</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-9_de5b28c582489c6a574473524e73a91a">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(iris[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> <span class="fu">cbind</span>(iris[,<span class="dv">1</span>,<span class="at">drop=</span><span class="cn">FALSE</span>], X)</span>
@@ -290,7 +409,7 @@ div.csl-indent {
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>knn <span class="ot">=</span> <span class="fu">kknn</span>(Sepal.Length<span class="sc">~</span>., <span class="at">train =</span> data, <span class="at">test =</span> data) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Make predictions (class probabilities):</p>
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-10_c031f24542d24400dcbc0e6ddc073f54">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(knn), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.188492 4.739986 4.685332</code></pre>
@@ -298,7 +417,7 @@ div.csl-indent {
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-11_bacb08fbac24654b5d627d5b402bb7cb">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsRegressor</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
@@ -318,31 +437,31 @@ div.csl-indent {
 </div>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-12_5c92bbbfaa8e47c9c0df8dc48a406a01">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>kNN_regressor <span class="op">=</span>  <span class="pp">@load</span> KNNRegressor pkg<span class="op">=</span>NearestNeighborModels;</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets;</span></span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-13_87a7c581e877b89fbab95b6a131fc295">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>]);</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">1</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Model:</p>
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-14_e23bfbd4b08917605697044efdc637fb">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">kNN_regressor</span>(), X, Y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>trained Machine; caches model-specific representations of data
   model: KNNRegressor(K = 5, …)
   args: 
-    1:  Source @112 ⏎ Table{AbstractVector{Continuous}}
-    2:  Source @138 ⏎ AbstractVector{Continuous}</code></pre>
+    1:  Source @797 ⏎ Table{AbstractVector{Continuous}}
+    2:  Source @974 ⏎ AbstractVector{Continuous}</code></pre>
 </div>
 </div>
 <p>Predictions:</p>
-<div class="cell" data-hash="knn_cache/html/unnamed-chunk-15_d797fc3bb36ac721bad40de3872d4f2b">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(model, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5-element Vector{Float64}:
@@ -358,7 +477,7 @@ div.csl-indent {
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
 <div id="ref-anthony_blaom_2019_3541506" class="csl-entry" role="doc-biblioentry">
 Blaom, Anthony, Franz Kiraly, Thibaut Lienart, and Sebastian Vollmer. 2019. <em>Alan-Turing-Institute/MLJ.jl: V0.5.3</em> (version v0.5.3). Zenodo. <a href="https://doi.org/10.5281/zenodo.3541506">https://doi.org/10.5281/zenodo.3541506</a>.
 </div>
@@ -369,7 +488,6 @@ Pedregosa, F., G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. B
 Schliep, Klaus, and Klaus Hechenbichler. 2016. <em>Kknn: Weighted k-Nearest Neighbors</em>. <a href="https://CRAN.R-project.org/package=kknn">https://CRAN.R-project.org/package=kknn</a>.
 </div>
 </div>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -471,6 +589,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./svm.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./rf.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random forest</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

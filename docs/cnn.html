@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>cnn</title>
+<title>Introduction to Machine Learning and Deep Learning - 7&nbsp; Convolutional neural networks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,11 +106,14 @@ div.csl-indent {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./rnn.html" rel="next">
+<link href="./dnn.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -141,6 +144,7 @@ div.csl-indent {
 }</script>
 
 
+<meta name="citation_title" content="[7]{.chapter-number}&nbsp; [Convolutional neural networks]{.chapter-title}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;">
 <meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
@@ -165,29 +169,137 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=Flux: Elegant machine learning with julia;,citation_author=Mike Innes;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_doi=10.21105/joss.00602;,citation_journal_title=Journal of Open Source Software;">
 </head>
 
-<body class="fullcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Convolutional neural networks</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to Machine Learning and Deep Learning</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/MaximilianPi/Pichler-and-Hartig-2022" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./elastic_net.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./svm.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rf.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random forest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./brt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Boosted gradient trees</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Deep neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cnn.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Convolutional neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Graph (convolutional) neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Appendices</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./refs.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Convolutional neural networks</span></h1>
+</div>
 
 
-<section id="convolutional-neural-networks" class="level1">
-<h1>Convolutional neural networks</h1>
-<p>Convolutional neural networks (CNN) are also deep neural networks but they are based on convolutional layers, which is a biologically inspired variation optimized to process image-based data (<span class="citation" data-cites="lecun2015deep">LeCun, Bengio, and Hinton (<a href="#ref-lecun2015deep" role="doc-biblioref">2015</a>)</span>). CNNs consist of two stages, in the first, the images are passed through convolutional layers and the models learns to detect edges and shapes in the images. In the second stage, the dimensions are dropped and fully-connected layers are used to classify the previously identified shapes.</p>
-<p>In the following, we will use again the ‘keras’ package (Python: ‘keras’ (<span class="citation" data-cites="chollet2015keras">Chollet et al. (<a href="#ref-chollet2015keras" role="doc-biblioref">2015</a>)</span>); Julia: ‘Flux’ (<span class="citation" data-cites="Flux">Innes et al. (<a href="#ref-Flux" role="doc-biblioref">2018</a>)</span>)) but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section ‘Deep neural networks’).</p>
-<p>We will demonstrate the application of CNNs with the MNIST dataset which consists of handwritten digits. The objective of the CNNs is to classify the images. The MNIST dataset is one of the most famous benchmark dataset for image-based tasks (<span class="citation" data-cites="lecun_mnist_2010">LeCun, Cortes, and Burges (<a href="#ref-lecun_mnist_2010" role="doc-biblioref">2010</a>)</span>).</p>
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>Convolutional neural networks (CNN) are also deep neural networks but they are based on convolutional layers, which is a biologically inspired variation optimized to process image-based data (<span class="citation" data-cites="lecun2015deep">LeCun, Bengio, and Hinton (<a href="refs.html#ref-lecun2015deep" role="doc-biblioref">2015</a>)</span>). CNNs consist of two stages, in the first, the images are passed through convolutional layers and the models learns to detect edges and shapes in the images. In the second stage, the dimensions are dropped and fully-connected layers are used to classify the previously identified shapes.</p>
+<p>In the following, we will use again the ‘keras’ package (Python: ‘keras’ (<span class="citation" data-cites="chollet2015keras">Chollet et al. (<a href="refs.html#ref-chollet2015keras" role="doc-biblioref">2015</a>)</span>); Julia: ‘Flux’ (<span class="citation" data-cites="Flux">Innes et al. (<a href="refs.html#ref-Flux" role="doc-biblioref">2018</a>)</span>)) but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section ‘Deep neural networks’).</p>
+<p>We will demonstrate the application of CNNs with the MNIST dataset which consists of handwritten digits. The objective of the CNNs is to classify the images. The MNIST dataset is one of the most famous benchmark dataset for image-based tasks (<span class="citation" data-cites="lecun_mnist_2010">LeCun, Cortes, and Burges (<a href="refs.html#ref-lecun_mnist_2010" role="doc-biblioref">2010</a>)</span>).</p>
 <div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-2_94c34259ac1244597c8e9d4eeb3cce82">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> keras<span class="sc">::</span><span class="fu">dataset_mnist</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -254,22 +366,22 @@ ________________________________________________________________________________
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(X, YT, <span class="at">epochs =</span> <span class="dv">3</span>, <span class="at">batch_size =</span> <span class="dv">125</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Make predictions (class probabilites):</p>
-<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-3_9d62ce6aa87994dc173ada719e10921d">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(CNN, X[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,,,,<span class="at">drop=</span><span class="cn">FALSE</span>]), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             [,1]         [,2]         [,3]         [,4]         [,5]
-[1,] 2.425084e-08 2.880918e-07 4.143541e-08 9.217440e-02 5.395139e-10
-[2,] 9.999260e-01 5.911451e-09 5.907062e-05 2.765627e-08 1.134630e-08
-[3,] 6.202117e-08 1.781751e-06 7.806528e-07 6.182400e-06 9.959503e-01
+[1,] 1.965090e-08 4.356115e-06 1.122467e-04 3.643005e-01 1.273639e-10
+[2,] 9.999302e-01 2.228819e-09 6.124400e-05 3.962018e-08 2.638534e-07
+[3,] 2.012695e-12 1.291264e-07 3.332906e-08 3.386993e-06 9.999701e-01
              [,6]         [,7]         [,8]         [,9]        [,10]
-[1,] 9.077224e-01 5.556984e-08 5.069603e-08 7.870004e-05 2.408227e-05
-[2,] 7.944796e-09 2.350163e-06 1.962552e-07 4.941584e-06 7.313301e-06
-[3,] 1.674008e-07 1.992673e-08 1.871501e-05 1.647718e-03 2.374151e-03</code></pre>
+[1,] 6.353825e-01 6.928099e-09 1.841055e-05 1.732095e-04 8.759488e-06
+[2,] 1.047530e-08 1.649719e-06 6.396242e-06 7.546749e-08 4.506550e-08
+[3,] 2.200649e-11 4.529752e-10 7.846268e-06 1.812190e-06 1.660780e-05</code></pre>
 </div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-4_1549ddb0ce34d5bec00e3fb4ca420183">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> keras.datasets.mnist.load_data()</span>
@@ -332,51 +444,51 @@ _________________________________________________________________</code></pre>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>CNN.fit(train, YT, epochs <span class="op">=</span> <span class="dv">5</span>, verbose <span class="op">=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;keras.callbacks.History object at 0x7f0b44785c70&gt;</code></pre>
+<pre><code>&lt;keras.callbacks.History object at 0x7f41f81cabe0&gt;</code></pre>
 </div>
 </div>
 <p>Make predictions:</p>
-<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-5_88b67efdbe997e3108dabfac5e4256cb">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>CNN.predict(train[<span class="dv">0</span>:<span class="dv">10</span>,:,:])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 1/1 [==============================] - ETA: 0s
-1/1 [==============================] - 0s 39ms/step
-array([[1.1181537e-09, 2.2871836e-10, 8.1618259e-09, 1.0941692e-02,
-        1.2186857e-12, 9.8905164e-01, 7.4941531e-10, 3.2881280e-06,
-        2.9509465e-06, 4.6295472e-07],
-       [9.9913085e-01, 5.6235383e-08, 7.3662569e-04, 3.6811846e-07,
-        3.6626862e-08, 6.4597992e-07, 7.8866004e-05, 1.0132234e-10,
-        3.3926879e-06, 4.9185153e-05],
-       [7.7702627e-12, 5.6763956e-06, 4.4048205e-09, 1.5371381e-07,
-        9.9968910e-01, 4.1317495e-08, 5.5084448e-10, 7.7227251e-06,
-        8.8550350e-06, 2.8850837e-04],
-       [6.7505084e-08, 9.9908459e-01, 6.0488185e-04, 3.7413037e-07,
-        5.9135229e-05, 1.0721207e-08, 2.4258597e-08, 1.6805495e-04,
-        8.2748382e-05, 1.2584145e-07],
-       [1.6376575e-10, 1.8257330e-07, 1.0599615e-07, 2.1357984e-04,
-        2.0651119e-04, 4.6220787e-08, 3.0120306e-11, 6.0984075e-05,
-        5.0008623e-08, 9.9951857e-01],
-       [8.1270095e-08, 1.7270331e-08, 9.9999934e-01, 3.6143469e-08,
-        3.9866994e-09, 3.2378559e-14, 8.1235237e-15, 2.5397111e-07,
-        9.8850762e-08, 3.6428407e-08],
-       [8.8377601e-07, 9.9956709e-01, 6.9225271e-06, 1.0397793e-05,
-        4.9456748e-06, 3.5048351e-06, 2.2041748e-05, 1.1251929e-07,
-        3.7966701e-04, 4.5567990e-06],
-       [2.7390620e-12, 6.8532867e-11, 2.4177119e-08, 9.9999791e-01,
-        9.8699826e-17, 8.3391809e-09, 6.0832223e-18, 1.5824456e-10,
-        3.4807883e-08, 1.9520967e-06],
-       [6.6492216e-06, 9.9919182e-01, 2.7197627e-06, 2.3677121e-06,
-        5.3769606e-04, 2.3768218e-05, 2.7554268e-05, 1.1666738e-04,
-        8.4651707e-05, 6.0710104e-06],
-       [1.6910246e-08, 2.0487221e-07, 1.0832826e-07, 1.6800383e-09,
-        9.9999189e-01, 1.1831921e-08, 1.7606248e-09, 7.0846800e-06,
-        7.0496088e-07, 5.9994800e-12]], dtype=float32)</code></pre>
+1/1 [==============================] - 0s 40ms/step
+array([[2.73058399e-11, 5.12852705e-10, 6.08049167e-10, 2.43562553e-02,
+        4.99432336e-11, 9.75430012e-01, 1.32788358e-09, 1.10361043e-09,
+        2.33132232e-05, 1.90236795e-04],
+       [9.99909341e-01, 4.28194667e-11, 2.47524281e-06, 3.22915097e-11,
+        3.69686504e-10, 3.31575795e-10, 8.78980791e-05, 1.30885678e-12,
+        1.75022961e-07, 2.92207769e-08],
+       [1.86242036e-10, 3.31999718e-06, 3.40689681e-08, 2.78217680e-08,
+        9.99971926e-01, 2.22715540e-10, 4.35771081e-12, 2.72133593e-06,
+        8.05194304e-07, 2.11609149e-05],
+       [1.04308064e-07, 9.99899924e-01, 2.12908731e-06, 9.57279056e-09,
+        1.54249974e-05, 6.92280056e-09, 1.16389579e-07, 4.02882006e-06,
+        7.77568057e-05, 4.73492236e-07],
+       [6.86259725e-08, 3.67166734e-07, 1.25773326e-07, 6.08295522e-07,
+        1.08382816e-03, 1.26706354e-07, 3.40244521e-12, 1.83549821e-02,
+        4.74471017e-06, 9.80555177e-01],
+       [2.71790706e-12, 7.43156381e-09, 9.99988377e-01, 1.16067767e-07,
+        3.00915337e-09, 1.63208232e-11, 5.44445999e-12, 1.09075728e-07,
+        1.12213984e-05, 1.28492715e-07],
+       [7.45668160e-07, 9.98325646e-01, 8.54519240e-05, 8.99816951e-06,
+        5.18015120e-04, 7.52458902e-07, 1.64569755e-07, 4.39679582e-07,
+        1.05933694e-03, 5.20451124e-07],
+       [6.69499386e-11, 8.18687201e-11, 3.74586136e-07, 9.99990761e-01,
+        9.71549975e-14, 1.62581344e-07, 5.61215510e-17, 2.27084040e-09,
+        3.95518327e-06, 4.80054996e-06],
+       [8.22694020e-08, 9.99639750e-01, 1.82648796e-06, 4.38489496e-06,
+        2.37529792e-04, 7.21763058e-07, 2.96431665e-07, 8.08423101e-06,
+        7.77193782e-05, 2.94992296e-05],
+       [4.26150208e-08, 9.40309963e-09, 5.55570452e-08, 2.99561909e-09,
+        9.99997020e-01, 7.58271113e-10, 6.39962194e-10, 5.68171856e-08,
+        2.87104945e-06, 1.34309447e-11]], dtype=float32)</code></pre>
 </div>
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-6_b0a0990e688c549f205a486cf65e8012">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
@@ -389,7 +501,7 @@ array([[1.1181537e-09, 2.2871836e-10, 8.1618259e-09, 1.0941692e-02,
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux.Losses</span>: logitcrossentropy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Data preparation:</p>
-<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-7_6e5f18e6f0217007a7cfdf29179fbb66">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cn">ENV</span>[<span class="st">"DATADEPS_ALWAYS_ACCEPT"</span>] <span class="op">=</span> <span class="st">"true"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>"true"</code></pre>
@@ -402,7 +514,7 @@ array([[1.1181537e-09, 2.2871836e-10, 8.1618259e-09, 1.0941692e-02,
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>data_loader <span class="op">=</span> <span class="fu">DataLoader</span>((xtrain, ytrain), batchsize<span class="op">=</span><span class="fl">100</span>, shuffle<span class="op">=</span><span class="cn">true</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Create model (similar to Keras):</p>
-<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-8_03e481ba155c21a5ba3f0e262fc0133f">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">Chain</span>(</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Conv</span>((<span class="fl">2</span>, <span class="fl">2</span>), <span class="fl">1</span><span class="op">=&gt;</span><span class="fl">16</span>, pad <span class="op">=</span> (<span class="fl">1</span>, <span class="fl">1</span>), relu),</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">MeanPool</span>((<span class="fl">2</span>, <span class="fl">2</span>)),</span>
@@ -425,7 +537,7 @@ array([[1.1181537e-09, 2.2871836e-10, 8.1618259e-09, 1.0941692e-02,
 </div>
 </div>
 <p>Train/optimize Model:</p>
-<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-9_a9cbe3b60d4874aef3b0756be18eca8b">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>parameters <span class="op">=</span> Flux.<span class="fu">params</span>(model);</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> <span class="fu">ADAM</span>(<span class="fl">0.01</span>);</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -439,24 +551,24 @@ array([[1.1181537e-09, 2.2871836e-10, 8.1618259e-09, 1.0941692e-02,
 <span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  Flux.<span class="fu">train!</span>(loss, parameters, data_loader, optimizer, cb <span class="op">=</span> Flux.<span class="fu">throttle</span>(get_loss, <span class="fl">6000</span>))</span>
 <span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>sum(logitcrossentropy(model(xtrain[:, :, :, 1:100]), ytrain[:, 1:100])) = 2.301290467968534</code></pre>
+<pre><code>sum(logitcrossentropy(model(xtrain[:, :, :, 1:100]), ytrain[:, 1:100])) = 2.3016892844159544</code></pre>
 </div>
 </div>
 <p>Predictions:</p>
-<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-10_9ffdf755f40901d02331e1ea4c56cca6">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">softmax</span>(<span class="fu">model</span>(xtrain[<span class="op">:</span>,<span class="op">:</span>,<span class="op">:</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]))[<span class="op">:</span>,<span class="fl">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>10-element Vector{Float64}:
- 0.10213041258365503
- 0.11425505318257256
- 0.09493333518971231
- 0.10597267878754779
- 0.09368559004328189
- 0.0916453414163753
- 0.10353605754913195
- 0.09766811239812598
- 0.09657222751232929
- 0.09960119133726789</code></pre>
+ 0.0949596365926727
+ 0.11319646009727474
+ 0.09622221648932856
+ 0.1105004159927897
+ 0.09568476487396564
+ 0.08534299720248913
+ 0.10008107419393342
+ 0.10874953336990927
+ 0.10192039819733163
+ 0.09334250299030501</code></pre>
 </div>
 </div>
 </div>
@@ -464,7 +576,7 @@ array([[1.1181537e-09, 2.2871836e-10, 8.1618259e-09, 1.0941692e-02,
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
 <div id="ref-chollet2015keras" class="csl-entry" role="doc-biblioentry">
 Chollet, Francois et al. 2015. <span>“Keras.”</span> GitHub. 2015. <a href="https://github.com/fchollet/keras">https://github.com/fchollet/keras</a>.
 </div>
@@ -478,7 +590,6 @@ LeCun, Yann, Yoshua Bengio, and Geoffrey Hinton. 2015. <span>“Deep Learning.�
 LeCun, Yann, Corinna Cortes, and CJ Burges. 2010. <span>“<span>MNIST</span> Handwritten Digit Database.”</span> <em>ATT Labs [Online]. Available: Http://Yann.lecun.com/Exdb/Mnist</em> 2.
 </div>
 </div>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -579,6 +690,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./dnn.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Deep neural networks</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./rnn.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

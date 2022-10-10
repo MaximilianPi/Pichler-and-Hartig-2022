@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>brt</title>
+<title>Introduction to Machine Learning and Deep Learning - 5&nbsp; Boosted gradient trees</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,11 +106,14 @@ div.csl-indent {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./dnn.html" rel="next">
+<link href="./rf.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -141,6 +144,7 @@ div.csl-indent {
 }</script>
 
 
+<meta name="citation_title" content="[5]{.chapter-number}&nbsp; [Boosted gradient trees]{.chapter-title}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;">
 <meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
@@ -165,30 +169,145 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=Flux: Elegant machine learning with julia;,citation_author=Mike Innes;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_doi=10.21105/joss.00602;,citation_journal_title=Journal of Open Source Software;">
 </head>
 
-<body class="fullcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Boosted gradient trees</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to Machine Learning and Deep Learning</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/MaximilianPi/Pichler-and-Hartig-2022" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./elastic_net.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./svm.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rf.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random forest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./brt.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Boosted gradient trees</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Deep neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Convolutional neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Graph (convolutional) neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Appendices</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./refs.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#classification" id="toc-classification" class="nav-link active" data-scroll-target="#classification"><span class="toc-section-number">5.1</span>  Classification</a></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression"><span class="toc-section-number">5.2</span>  Regression</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MaximilianPi/Pichler-and-Hartig-2022/edit/master/brt.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Boosted gradient trees</span></h1>
+</div>
 
 
-<section id="boosted-gradient-trees" class="level1">
-<h1>Boosted gradient trees</h1>
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
 <p>Boosted gradient machines achieve currently state-of-the-art performance for structured (tabular) data which makes them probably one of the most important algorithms for E&amp;E where structured data dominates the field.</p>
-<p>In the following, we use the ‘xgboost’ package (<span class="citation" data-cites="xgboost">Chen et al. (<a href="#ref-xgboost" role="doc-biblioref">2022</a>)</span>) (Python: ‘xgboost’ (<span class="citation" data-cites="xgboost">Chen et al. (<a href="#ref-xgboost" role="doc-biblioref">2022</a>)</span>), Julia: ‘MLJ’ (<span class="citation" data-cites="anthony_blaom_2019_3541506">Blaom et al. (<a href="#ref-anthony_blaom_2019_3541506" role="doc-biblioref">2019</a>)</span>))</p>
-<section id="classification" class="level2">
-<h2 class="anchored" data-anchor-id="classification">Classification</h2>
+<p>In the following, we use the ‘xgboost’ package (<span class="citation" data-cites="xgboost">Chen et al. (<a href="refs.html#ref-xgboost" role="doc-biblioref">2022</a>)</span>) (Python: ‘xgboost’ (<span class="citation" data-cites="xgboost">Chen et al. (<a href="refs.html#ref-xgboost" role="doc-biblioref">2022</a>)</span>), Julia: ‘MLJ’ (<span class="citation" data-cites="anthony_blaom_2019_3541506">Blaom et al. (<a href="refs.html#ref-anthony_blaom_2019_3541506" role="doc-biblioref">2019</a>)</span>))</p>
+<section id="classification" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="classification"><span class="header-section-number">5.1</span> Classification</h2>
 <div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-2_ea02bba1c35aa23d56cd4eeaa62c88eb">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xgboost)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">as.matrix</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> <span class="fu">as.integer</span>(iris[,<span class="dv">5</span>]) <span class="sc">-</span> <span class="dv">1</span> <span class="co"># classes must be integers starting from 0</span></span>
@@ -203,7 +322,7 @@ div.csl-indent {
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Show feature importances:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-3_83374468ad0befa2a0f02779fa61fc87">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xgb.importance</span>(<span class="at">model =</span> brt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        Feature        Gain      Cover Frequency
@@ -214,7 +333,7 @@ div.csl-indent {
 </div>
 </div>
 <p>Make predictions (class probabilities):</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-4_e0449f4cdad7a5b56e3c1149c6a63d92">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">matrix</span>(<span class="fu">predict</span>(brt, <span class="at">newdata =</span> <span class="fu">xgb.DMatrix</span>(X)), <span class="at">ncol =</span><span class="dv">3</span>), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            [,1]        [,2]        [,3]
@@ -225,7 +344,7 @@ div.csl-indent {
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-5_4b12e27c7ecbb8437489686c8e301e28">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
@@ -247,14 +366,14 @@ div.csl-indent {
 </div>
 </div>
 <p>Feature importance</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-6_ade93e46637bee6f65dd689693440245">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model.feature_importances_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>array([0.00959796, 0.01645038, 0.6765859 , 0.29736578], dtype=float32)</code></pre>
 </div>
 </div>
 <p>Make predictions:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-7_1770c32e3c5eb9a369068e41f8e4f0fb">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model.predict_proba(X)[<span class="dv">0</span>:<span class="dv">10</span>,:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>array([[9.9680281e-01, 2.3831066e-03, 8.1413286e-04],
@@ -271,7 +390,7 @@ div.csl-indent {
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-8_071f082a41e1b7eba32264f448fb1925">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>BRT_classifier <span class="op">=</span> <span class="pp">@load</span> XGBoostClassifier pkg<span class="op">=</span>XGBoost;</span>
@@ -279,24 +398,24 @@ div.csl-indent {
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase;</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-9_1b7b6614a05cf661e7047f830de278be">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>]);</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">5</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Models:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-10_48fb4784f33a68dac232b9cc767d7aa7">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">BRT_classifier</span>(), X, Y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>trained Machine; caches model-specific representations of data
   model: XGBoostClassifier(num_round = 100, …)
   args: 
-    1:  Source @141 ⏎ Table{AbstractVector{Continuous}}
-    2:  Source @384 ⏎ AbstractVector{Multiclass{3}}</code></pre>
+    1:  Source @086 ⏎ Table{AbstractVector{Continuous}}
+    2:  Source @683 ⏎ AbstractVector{Multiclass{3}}</code></pre>
 </div>
 </div>
 <p>Predictions:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-11_7d723065300e81bd07248a7c9b2c64c4">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(model, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5-element CategoricalDistributions.UnivariateFiniteVector{Multiclass{3}, String, UInt8, Float32}:
@@ -311,13 +430,13 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="regression" class="level2">
-<h2 class="anchored" data-anchor-id="regression">Regression</h2>
+<section id="regression" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="regression"><span class="header-section-number">5.2</span> Regression</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-12_2ecf2017a2d9a9e007df2b8273f05e78">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(xgboost)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">as.matrix</span>(iris[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris[,<span class="dv">1</span>]</span>
@@ -331,7 +450,7 @@ div.csl-indent {
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Show feature importances:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-13_d87d2779bb0605a263ed12072ae65832">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">xgb.importance</span>(<span class="at">model =</span> brt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        Feature       Gain     Cover Frequency
@@ -341,10 +460,10 @@ div.csl-indent {
 </div>
 </div>
 <p>Make predictions:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-14_41d8029dc425d6b78ea26155a6b8c8bc">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(brt, <span class="at">newdata =</span> <span class="fu">xgb.DMatrix</span>(X), <span class="at">n =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[14:02:44] WARNING: amalgamation/../src/c_api/c_api.cc:785: `ntree_limit` is deprecated, use `iteration_range` instead.</code></pre>
+<pre><code>[15:06:18] WARNING: amalgamation/../src/c_api/c_api.cc:785: `ntree_limit` is deprecated, use `iteration_range` instead.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.506606 3.506606 3.506606 3.506606 3.506606 3.506606</code></pre>
@@ -352,7 +471,7 @@ div.csl-indent {
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-15_a50d29ed7eeb3fbdb0903581186d4692">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
@@ -369,14 +488,14 @@ div.csl-indent {
 <span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  verbosity <span class="op">=</span> <span class="dv">0</span>).fit(X, Y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Feature importance:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-16_c3fd204935b161683e8d89a0e5193a91">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model.feature_importances_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[0.08471056 0.835755   0.07953447]</code></pre>
 </div>
 </div>
 <p>Make predictions:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-17_497d97a0f073f3f5468192a73254e608">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>model.predict(X)[<span class="dv">0</span>:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>array([5.0407157, 4.6844926, 4.711238 , 4.917956 , 5.0407157, 5.450946 ,
@@ -385,31 +504,31 @@ div.csl-indent {
 </div>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-18_80fe9b0762781239dfc38d1975db40f8">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>BRT_regressor <span class="op">=</span>  <span class="pp">@load</span> XGBoostRegressor pkg<span class="op">=</span>XGBoost;</span>
 <span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets;</span></span>
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-19_8e5966470dd02344e0d1e7744395a7f2">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>]);</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">1</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Model:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-20_45fb03b9c92d8c0f5021fbdc94d2aa2c">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">BRT_regressor</span>(), X, Y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>trained Machine; caches model-specific representations of data
   model: XGBoostRegressor(num_round = 100, …)
   args: 
-    1:  Source @935 ⏎ Table{AbstractVector{Continuous}}
-    2:  Source @070 ⏎ AbstractVector{Continuous}</code></pre>
+    1:  Source @893 ⏎ Table{AbstractVector{Continuous}}
+    2:  Source @522 ⏎ AbstractVector{Continuous}</code></pre>
 </div>
 </div>
 <p>Predictions:</p>
-<div class="cell" data-hash="brt_cache/html/unnamed-chunk-21_0c0faa9a282b3bdd33fe4dc1ee8eda0c">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(model, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5-element Vector{Float32}:
@@ -425,7 +544,7 @@ div.csl-indent {
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
 <div id="ref-anthony_blaom_2019_3541506" class="csl-entry" role="doc-biblioentry">
 Blaom, Anthony, Franz Kiraly, Thibaut Lienart, and Sebastian Vollmer. 2019. <em>Alan-Turing-Institute/MLJ.jl: V0.5.3</em> (version v0.5.3). Zenodo. <a href="https://doi.org/10.5281/zenodo.3541506">https://doi.org/10.5281/zenodo.3541506</a>.
 </div>
@@ -433,7 +552,6 @@ Blaom, Anthony, Franz Kiraly, Thibaut Lienart, and Sebastian Vollmer. 2019. <em>
 Chen, Tianqi, Tong He, Michael Benesty, Vadim Khotilovich, Yuan Tang, Hyunsu Cho, Kailong Chen, et al. 2022. <em>Xgboost: Extreme Gradient Boosting</em>. <a href="https://CRAN.R-project.org/package=xgboost">https://CRAN.R-project.org/package=xgboost</a>.
 </div>
 </div>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -535,6 +653,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./rf.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random forest</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./dnn.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Deep neural networks</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 

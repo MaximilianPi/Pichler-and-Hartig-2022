@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>elastic_net</title>
+<title>Introduction to Machine Learning and Deep Learning - 1&nbsp; Ridge, LASSO, and elastic-net regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -106,11 +106,14 @@ div.csl-indent {
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./svm.html" rel="next">
+<link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -142,6 +145,7 @@ div.csl-indent {
 
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<meta name="citation_title" content="[1]{.chapter-number}&nbsp; [Ridge, LASSO, and elastic-net regression]{.chapter-title}">
 <meta name="citation_language" content="en">
 <meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;">
 <meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
@@ -166,36 +170,151 @@ div.csl-indent {
 <meta name="citation_reference" content="citation_title=Flux: Elegant machine learning with julia;,citation_author=Mike Innes;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_doi=10.21105/joss.00602;,citation_journal_title=Journal of Open Source Software;">
 </head>
 
-<body class="fullcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to Machine Learning and Deep Learning</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/MaximilianPi/Pichler-and-Hartig-2022" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Preface</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./elastic_net.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./svm.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./knn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">k-nearest-neighbor</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rf.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Random forest</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./brt.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Boosted gradient trees</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Deep neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Convolutional neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recurrent neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gnn.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Graph (convolutional) neural networks</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Appendices</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./refs.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#classification" id="toc-classification" class="nav-link active" data-scroll-target="#classification"><span class="toc-section-number">1.1</span>  Classification</a></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression"><span class="toc-section-number">1.2</span>  Regression</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/MaximilianPi/Pichler-and-Hartig-2022/edit/master/elastic_net.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Ridge, LASSO, and elastic-net regression</span></h1>
+</div>
 
 
-<section id="ridge-lasso-and-elastic-net-regression" class="level1">
-<h1>Ridge, LASSO, and elastic-net regression</h1>
-<p>We can use the ‘glmnet’ R package (<span class="citation" data-cites="glmnet">Simon et al. (<a href="#ref-glmnet" role="doc-biblioref">2011</a>)</span>) for Ridge, LASSO, or elastic-net regularization. The ‘glmnet’ package supports different response families including ‘gaussian’, ‘binomial’ and ‘Poisson’. The strength of the regularization is set by the ‘lambda’ argument (<span class="math inline">\(\lambda\)</span>) and the weighting between Ridge and LASSO regularization by the ‘alpha’ parameter (<span class="math inline">\(\alpha\)</span>):</p>
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<p>We can use the ‘glmnet’ R package (<span class="citation" data-cites="glmnet">Simon et al. (<a href="refs.html#ref-glmnet" role="doc-biblioref">2011</a>)</span>) for Ridge, LASSO, or elastic-net regularization. The ‘glmnet’ package supports different response families including ‘gaussian’, ‘binomial’ and ‘Poisson’. The strength of the regularization is set by the ‘lambda’ argument (<span class="math inline">\(\lambda\)</span>) and the weighting between Ridge and LASSO regularization by the ‘alpha’ parameter (<span class="math inline">\(\alpha\)</span>):</p>
 <p><span class="math display">\[
 \lambda*[(1 - \alpha)\|\beta\|_1 + \alpha\|\beta||^2]
 \]</span> Setting alpha = 0 turns off the LASSO and alpha = 1 the Ridge. Alphas between (0,1) will use both regularization types, turning the model into an elastic-net regularization.</p>
 <p>When using regularization, it is important to scale all features otherwise effects for features that are on a larger scale are stronger regularized.</p>
-<p>In python, the ‘scikit-learn’ package provides an interface for many different ML algorithms, including elastic-net regression models (<span class="citation" data-cites="scikit-learn">Pedregosa et al. (<a href="#ref-scikit-learn" role="doc-biblioref">2011</a>)</span>).</p>
-<p>The ‘MLJ’ package provides a generic interface for different ML algorithms (<span class="citation" data-cites="anthony_blaom_2019_3541506">Blaom et al. (<a href="#ref-anthony_blaom_2019_3541506" role="doc-biblioref">2019</a>)</span>). Elastic-net regression models can be accessed via the ‘MLJLinearModels’ package within MLJ.</p>
-<section id="classification" class="level2">
-<h2 class="anchored" data-anchor-id="classification">Classification</h2>
+<p>In python, the ‘scikit-learn’ package provides an interface for many different ML algorithms, including elastic-net regression models (<span class="citation" data-cites="scikit-learn">Pedregosa et al. (<a href="refs.html#ref-scikit-learn" role="doc-biblioref">2011</a>)</span>).</p>
+<p>The ‘MLJ’ package provides a generic interface for different ML algorithms (<span class="citation" data-cites="anthony_blaom_2019_3541506">Blaom et al. (<a href="refs.html#ref-anthony_blaom_2019_3541506" role="doc-biblioref">2019</a>)</span>). Elastic-net regression models can be accessed via the ‘MLJLinearModels’ package within MLJ.</p>
+<section id="classification" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="classification"><span class="header-section-number">1.1</span> Classification</h2>
 <p>Build models (for regularization it is important to scale the features):</p>
 <div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-2_819f326468c61febb59929feea5a974e">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glmnet)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris<span class="sc">$</span>Species</span>
@@ -210,7 +329,7 @@ div.csl-indent {
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>elastic <span class="ot">=</span> <span class="fu">glmnet</span>(X, Y, <span class="at">family =</span> <span class="st">"multinomial"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">lambda =</span> <span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Make predictions (class probabilities):</p>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-3_6319cb138a2492d5456da899c840524d">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(lasso, <span class="at">newx =</span> X, <span class="at">type =</span> <span class="st">"response"</span>)[,,<span class="dv">1</span>], <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        setosa versicolor    virginica
@@ -222,7 +341,7 @@ div.csl-indent {
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <p>In the sklearn implementation the regularization strength parameter ‘C’ corresponds to the lambda parameter from glmnet:</p>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-5_60b85a878346d51137b98f42e8d8c383">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
@@ -231,7 +350,7 @@ div.csl-indent {
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris.target</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Models:</p>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-6_75d8c803619aada848e1ba01bbb9b6d1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Ridge:</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ridge <span class="op">=</span> LogisticRegression(multi_class<span class="op">=</span><span class="st">'multinomial'</span>, </span>
@@ -269,20 +388,20 @@ div.csl-indent {
 </div>
 </div>
 <p>Predictions (probabilities):</p>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-7_c969822c94e020abec974b682bebb206">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>lasso.predict_proba(X)[<span class="dv">0</span>:<span class="dv">5</span>,:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>array([[0.34946216, 0.33816677, 0.31237106],
-       [0.34946216, 0.33816677, 0.31237106],
-       [0.34946216, 0.33816677, 0.31237106],
-       [0.34946216, 0.33816677, 0.31237106],
-       [0.34946216, 0.33816677, 0.31237106]])</code></pre>
+<pre><code>array([[0.27313906, 0.3878848 , 0.33897614],
+       [0.27313906, 0.3878848 , 0.33897614],
+       [0.27313906, 0.3878848 , 0.33897614],
+       [0.27313906, 0.3878848 , 0.33897614],
+       [0.27313906, 0.3878848 , 0.33897614]])</code></pre>
 </div>
 </div>
 </div>
 <div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-8_71188bac3ee7e410f93ceb98548ab698">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJLinearModels;</span></span>
@@ -291,13 +410,13 @@ div.csl-indent {
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase;</span></span>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-9_ba2f6dea2baa2eb655f62044f1291f2d">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>]);</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">5</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Models:</p>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-10_396ad714e7b3ebb67fd581818016babe">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Ridge</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>ridge <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">MultinomialClassifier</span>(lambda <span class="op">=</span> <span class="fl">0.01</span>, penalty <span class="op">=</span> <span class="st">"l2"</span>), X, Y));</span>
@@ -310,7 +429,7 @@ div.csl-indent {
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>elastic <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">MultinomialClassifier</span>(lambda <span class="op">=</span> <span class="fl">0.01</span>, gamma <span class="op">=</span> <span class="fl">0.01</span>, penalty <span class="op">=</span> <span class="st">"en"</span>), X, Y));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Predictions:</p>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-11_52f09d39406ec90b83ea0cacbdc5d00f">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(lasso, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5-element CategoricalDistributions.UnivariateFiniteVector{Multiclass{3}, String, UInt8, Float64}:
@@ -325,13 +444,13 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="regression" class="level2">
-<h2 class="anchored" data-anchor-id="regression">Regression</h2>
+<section id="regression" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="regression"><span class="header-section-number">1.2</span> Regression</h2>
 <div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Julia</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-12_bb3f948903decdd39546f4e79e57a12c">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(iris[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>])</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> iris[,<span class="dv">1</span>]</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -345,7 +464,7 @@ div.csl-indent {
 <span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>elastic <span class="ot">=</span> <span class="fu">glmnet</span>(X, Y, <span class="at">family =</span> <span class="fu">gaussian</span>(), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">lambda =</span> <span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Make predictions (class probabilities):</p>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-13_d15e67bafecc60ab760f67da3815e12e">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(lasso, <span class="at">newx =</span> X), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           s0
@@ -357,7 +476,7 @@ div.csl-indent {
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
 <p>For regressions we can use the ElasticNet model class, here, however, lambda corresponds to alpha and l1_ratio to the alpha parameter.</p>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-14_3c180fe8f76950df83072bde449dd445">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> ElasticNet</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
@@ -400,7 +519,7 @@ div.csl-indent {
 </div>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-15_3a332f066727734a61be04e0a6a5f631">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase;</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJ;</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLJLinearModels;</span></span>
@@ -410,13 +529,13 @@ div.csl-indent {
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets;</span></span>
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-16_2b99ecc865a52a6e21f4b0146b852df9">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>]);</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">1</span>];</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Models:</p>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-17_8bf43d6bb85d94cb4e569ef8b855c359">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ridge</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>ridge <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">RidgeRegressor</span>(lambda <span class="op">=</span> <span class="fl">0.01</span>), X, Y));</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -428,7 +547,7 @@ div.csl-indent {
 <span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>elastic <span class="op">=</span> <span class="fu">fit!</span>(<span class="fu">machine</span>(<span class="fu">ElasticNetRegressor</span>(lambda <span class="op">=</span> <span class="fl">0.01</span>, gamma <span class="op">=</span> <span class="fl">0.01</span>), X, Y));</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Predictions (probabilities):</p>
-<div class="cell" data-hash="elastic_net_cache/html/unnamed-chunk-18_7430bb698b142f93fbd4ee85d9c96a1f">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>MLJ.<span class="fu">predict</span>(lasso, X)[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5-element Vector{Float64}:
@@ -444,7 +563,7 @@ div.csl-indent {
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography" style="display: none">
 <div id="ref-anthony_blaom_2019_3541506" class="csl-entry" role="doc-biblioentry">
 Blaom, Anthony, Franz Kiraly, Thibaut Lienart, and Sebastian Vollmer. 2019. <em>Alan-Turing-Institute/MLJ.jl: V0.5.3</em> (version v0.5.3). Zenodo. <a href="https://doi.org/10.5281/zenodo.3541506">https://doi.org/10.5281/zenodo.3541506</a>.
 </div>
@@ -455,7 +574,6 @@ Pedregosa, F., G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. B
 Simon, Noah, Jerome Friedman, Trevor Hastie, and Rob Tibshirani. 2011. <span>“Regularization Paths for Cox’s Proportional Hazards Model via Coordinate Descent.”</span> <em>Journal of Statistical Software</em> 39 (5): 1–13. <a href="https://doi.org/10.18637/jss.v039.i05">https://doi.org/10.18637/jss.v039.i05</a>.
 </div>
 </div>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -557,6 +675,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./svm.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Support Vector Machines</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 
 
