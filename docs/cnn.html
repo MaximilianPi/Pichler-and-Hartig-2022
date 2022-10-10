@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>cnn</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<meta name="citation_language" content="en">
+<meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;">
+<meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=Wordcloud: Word clouds;,citation_author=Ian Fellows;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud;">
+<meta name="citation_reference" content="citation_title=wordcloud2: Create word cloud by ’htmlwidget’;,citation_author=Dawei Lang;,citation_author=Guan-tin Chien;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud2;">
+<meta name="citation_reference" content="citation_title=Regularization paths for cox’s proportional hazards model via coordinate descent;,citation_author=Noah Simon;,citation_author=Jerome Friedman;,citation_author=Trevor Hastie;,citation_author=Rob Tibshirani;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_fulltext_html_url=https://www.jstatsoft.org/v39/i05/;,citation_issue=5;,citation_doi=10.18637/jss.v039.i05;,citation_volume=39;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=e1071: Misc functions of the department of statistics, probability theory group (formerly: E1071), TU wien;,citation_author=David Meyer;,citation_author=Evgenia Dimitriadou;,citation_author=Kurt Hornik;,citation_author=Andreas Weingessel;,citation_author=Friedrich Leisch;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=e1071;">
+<meta name="citation_reference" content="citation_title=Kknn: Weighted k-nearest neighbors;,citation_author=Klaus Schliep;,citation_author=Klaus Hechenbichler;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_fulltext_html_url=https://CRAN.R-project.org/package=kknn;">
+<meta name="citation_reference" content="citation_title=ranger: A fast implementation of random forests for high dimensional data in C++ and R;,citation_author=Marvin N. Wright;,citation_author=Andreas Ziegler;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=1;,citation_doi=10.18637/jss.v077.i01;,citation_volume=77;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=Xgboost: Extreme gradient boosting;,citation_author=Tianqi Chen;,citation_author=Tong He;,citation_author=Michael Benesty;,citation_author=Vadim Khotilovich;,citation_author=Yuan Tang;,citation_author=Hyunsu Cho;,citation_author=Kailong Chen;,citation_author=Rory Mitchell;,citation_author=Ignacio Cano;,citation_author=Tianyi Zhou;,citation_author=Mu Li;,citation_author=Junyuan Xie;,citation_author=Min Lin;,citation_author=Yifeng Geng;,citation_author=Yutian Li;,citation_author=Jiaming Yuan;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=xgboost;">
+<meta name="citation_reference" content="citation_title=Keras: R interface to ’keras’;,citation_author=JJ Allaire;,citation_author=François Chollet;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=keras;">
+<meta name="citation_reference" content="citation_title=Keras;,citation_author=Francois Chollet;,citation_author=others;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_fulltext_html_url=https://github.com/fchollet/keras;,citation_publisher=GitHub;">
+<meta name="citation_reference" content="citation_title=Tensorflow: A system for large-scale machine learning;,citation_author=Martı́n Abadi;,citation_author=Paul Barham;,citation_author=Jianmin Chen;,citation_author=Zhifeng Chen;,citation_author=Andy Davis;,citation_author=Jeffrey Dean;,citation_author=Matthieu Devin;,citation_author=Sanjay Ghemawat;,citation_author=Geoffrey Irving;,citation_author=Michael Isard;,citation_author=others;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_conference_title=12th \{USENIX\} symposium on operating systems design and implementation (\{OSDI\} 16);">
+<meta name="citation_reference" content="citation_title=MNIST handwritten digit database;,citation_author=Yann LeCun;,citation_author=Corinna Cortes;,citation_author=CJ Burges;,citation_publication_date=2010;,citation_cover_date=2010;,citation_year=2010;,citation_volume=2;,citation_journal_title=ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist;">
+<meta name="citation_reference" content="citation_title=Deep learning;,citation_author=Yann LeCun;,citation_author=Yoshua Bengio;,citation_author=Geoffrey Hinton;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_issue=7553;,citation_volume=521;,citation_journal_title=nature;,citation_publisher=Nature Publishing Group;">
+<meta name="citation_reference" content="citation_title=Reticulate: Interface to ’python’;,citation_author=Kevin Ushey;,citation_author=JJ Allaire;,citation_author=Yuan Tang;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=reticulate;">
+<meta name="citation_reference" content="citation_title=PyTorch: An imperative style, high-performance deep learning library;,citation_author=Adam Paszke;,citation_author=Sam Gross;,citation_author=Francisco Massa;,citation_author=Adam Lerer;,citation_author=James Bradbury;,citation_author=Gregory Chanan;,citation_author=Trevor Killeen;,citation_author=Zeming Lin;,citation_author=Natalia Gimelshein;,citation_author=Luca Antiga;,citation_author=Alban Desmaison;,citation_author=Andreas Kopf;,citation_author=Edward Yang;,citation_author=Zachary DeVito;,citation_author=Martin Raison;,citation_author=Alykhan Tejani;,citation_author=Sasank Chilamkurthy;,citation_author=Benoit Steiner;,citation_author=Lu Fang;,citation_author=Junjie Bai;,citation_author=Soumith Chintala;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_fulltext_html_url=http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf;,citation_inbook_title=Advances in neural information processing systems 32;">
+<meta name="citation_reference" content="citation_title=Fast graph representation learning with PyTorch Geometric;,citation_author=Matthias Fey;,citation_author=Jan E. Lenssen;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_conference_title=ICLR workshop on representation learning on graphs and manifolds;">
+<meta name="citation_reference" content="citation_title=Alan-turing-institute/MLJ.jl: v0.5.3;,citation_author=Anthony Blaom;,citation_author=Franz Kiraly;,citation_author=Thibaut Lienart;,citation_author=Sebastian Vollmer;,citation_publication_date=2019-11;,citation_cover_date=2019-11;,citation_year=2019;,citation_fulltext_html_url=https://doi.org/10.5281/zenodo.3541506;,citation_doi=10.5281/zenodo.3541506;">
+<meta name="citation_reference" content="citation_title=Scikit-learn: Machine learning in Python;,citation_author=F. Pedregosa;,citation_author=G. Varoquaux;,citation_author=A. Gramfort;,citation_author=V. Michel;,citation_author=B. Thirion;,citation_author=O. Grisel;,citation_author=M. Blondel;,citation_author=P. Prettenhofer;,citation_author=R. Weiss;,citation_author=V. Dubourg;,citation_author=J. Vanderplas;,citation_author=A. Passos;,citation_author=D. Cournapeau;,citation_author=M. Brucher;,citation_author=M. Perrot;,citation_author=E. Duchesnay;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_volume=12;,citation_journal_title=Journal of Machine Learning Research;">
+<meta name="citation_reference" content="citation_title=Fashionable modelling with flux;,citation_author=Michael Innes;,citation_author=Elliot Saba;,citation_author=Keno Fischer;,citation_author=Dhairya Gandhi;,citation_author=Marco Concetto Rudilosso;,citation_author=Neethu Mariya Joy;,citation_author=Tejan Karmali;,citation_author=Avik Pal;,citation_author=Viral Shah;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://arxiv.org/abs/1811.01457;,citation_volume=abs/1811.01457;,citation_journal_title=CoRR;">
+<meta name="citation_reference" content="citation_title=Flux: Elegant machine learning with julia;,citation_author=Mike Innes;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_doi=10.21105/joss.00602;,citation_journal_title=Journal of Open Source Software;">
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="convolutional-neural-networks" class="level1">
+<h1>Convolutional neural networks</h1>
+<p>Convolutional neural networks (CNN) are also deep neural networks but they are based on convolutional layers, which is a biologically inspired variation optimized to process image-based data (<span class="citation" data-cites="lecun2015deep">LeCun, Bengio, and Hinton (<a href="#ref-lecun2015deep" role="doc-biblioref">2015</a>)</span>). CNNs consist of two stages, in the first, the images are passed through convolutional layers and the models learns to detect edges and shapes in the images. In the second stage, the dimensions are dropped and fully-connected layers are used to classify the previously identified shapes.</p>
+<p>In the following, we will use again the ‘keras’ package (Python: ‘keras’ (<span class="citation" data-cites="chollet2015keras">Chollet et al. (<a href="#ref-chollet2015keras" role="doc-biblioref">2015</a>)</span>); Julia: ‘Flux’ (<span class="citation" data-cites="Flux">Innes et al. (<a href="#ref-Flux" role="doc-biblioref">2018</a>)</span>)) but we will not differentiate between classification and regression because the only difference would be to change the last layer and the loss function (see section ‘Deep neural networks’).</p>
+<p>We will demonstrate the application of CNNs with the MNIST dataset which consists of handwritten digits. The objective of the CNNs is to classify the images. The MNIST dataset is one of the most famous benchmark dataset for image-based tasks (<span class="citation" data-cites="lecun_mnist_2010">LeCun, Cortes, and Burges (<a href="#ref-lecun_mnist_2010" role="doc-biblioref">2010</a>)</span>).</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-2_94c34259ac1244597c8e9d4eeb3cce82">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">=</span> keras<span class="sc">::</span><span class="fu">dataset_mnist</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loaded Tensorflow version 2.10.0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>train <span class="ot">=</span> data<span class="sc">$</span>train</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> train<span class="sc">$</span>x<span class="sc">/</span><span class="dv">255</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># we have to add a dimension that </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># informs the network about the channels</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># of the images</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">array</span>(X, <span class="at">dim =</span> <span class="fu">c</span>(<span class="fu">dim</span>(X), <span class="dv">1</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>YT <span class="ot">=</span> <span class="fu">k_one_hot</span>(train<span class="sc">$</span>y, <span class="at">num_classes =</span> <span class="dv">10</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>CNN <span class="ot">=</span> </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_conv_2d</span>(<span class="at">input_shape =</span> <span class="fu">list</span>(<span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">1</span>), </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">filters =</span> <span class="dv">16</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">kernel_size =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">activation =</span> <span class="st">"relu"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_average_pooling_2d</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_conv_2d</span>(<span class="at">filters =</span> <span class="dv">8</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>                <span class="at">kernel_size =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>                <span class="at">activation =</span> <span class="st">"relu"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># we use a normal DNN on top of the CNN:</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the layer flatten will remove the additional </span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># dimensions</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_flatten</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">20</span>, </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"relu"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 10 output neurons for 10 classes</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">10</span>, </span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"softmax"</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="co"># print architecture</span></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(CNN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential"
+________________________________________________________________________________
+ Layer (type)                       Output Shape                    Param #     
+================================================================================
+ conv2d_1 (Conv2D)                  (None, 27, 27, 16)              80          
+ average_pooling2d (AveragePooling2  (None, 13, 13, 16)             0           
+ D)                                                                             
+ conv2d (Conv2D)                    (None, 12, 12, 8)               520         
+ flatten (Flatten)                  (None, 1152)                    0           
+ dense_1 (Dense)                    (None, 20)                      23060       
+ dense (Dense)                      (None, 10)                      210         
+================================================================================
+Total params: 23,870
+Trainable params: 23,870
+Non-trainable params: 0
+________________________________________________________________________________</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>CNN <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compile</span>(<span class="at">loss =</span> loss_categorical_crossentropy,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">optimizer =</span> <span class="fu">optimizer_adamax</span>(<span class="fl">0.01</span>))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>CNN <span class="sc">%&gt;%</span> </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(X, YT, <span class="at">epochs =</span> <span class="dv">3</span>, <span class="at">batch_size =</span> <span class="dv">125</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Make predictions (class probabilites):</p>
+<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-3_9d62ce6aa87994dc173ada719e10921d">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(CNN, X[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>,,,,<span class="at">drop=</span><span class="cn">FALSE</span>]), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             [,1]         [,2]         [,3]         [,4]         [,5]
+[1,] 2.425084e-08 2.880918e-07 4.143541e-08 9.217440e-02 5.395139e-10
+[2,] 9.999260e-01 5.911451e-09 5.907062e-05 2.765627e-08 1.134630e-08
+[3,] 6.202117e-08 1.781751e-06 7.806528e-07 6.182400e-06 9.959503e-01
+             [,6]         [,7]         [,8]         [,9]        [,10]
+[1,] 9.077224e-01 5.556984e-08 5.069603e-08 7.870004e-05 2.408227e-05
+[2,] 7.944796e-09 2.350163e-06 1.962552e-07 4.941584e-06 7.313301e-06
+[3,] 1.674008e-07 1.992673e-08 1.871501e-05 1.647718e-03 2.374151e-03</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-4_1549ddb0ce34d5bec00e3fb4ca420183">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> keras.datasets.mnist.load_data()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>train <span class="op">=</span> data[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> data[<span class="dv">0</span>][<span class="dv">1</span>]</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to one hot encode our response classes</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>YT <span class="op">=</span> keras.utils.to_categorical(labels, num_classes <span class="op">=</span> <span class="dv">10</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>CNN <span class="op">=</span> keras.Sequential()</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>CNN.add(Conv2D(input_shape <span class="op">=</span> [<span class="dv">28</span>, <span class="dv">28</span>, <span class="dv">1</span>], </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                filters <span class="op">=</span> <span class="dv">16</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>                kernel_size <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                activation <span class="op">=</span> <span class="st">"relu"</span>))</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>CNN.add(AveragePooling2D())</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>CNN.add(Conv2D(filters <span class="op">=</span> <span class="dv">8</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>                kernel_size <span class="op">=</span> (<span class="dv">2</span>, <span class="dv">2</span>),</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>                activation <span class="op">=</span> <span class="st">"relu"</span>))</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># we use a normal DNN on top of the CNN:</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the layer flatten will remove the additional </span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># dimensions</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>CNN.add(Flatten())</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># output layer, 3 output neurons for our three classes</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and softmax activation to get quasi probabilities </span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># that sum up to 1 for each observation</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>CNN.add(Dense(</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">10</span>, </span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="st">"softmax"</span>))</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="co"># print architecture</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>CNN.summary()</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential_1"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ conv2d_2 (Conv2D)           (None, 27, 27, 16)        80        
+                                                                 
+ average_pooling2d_1 (Averag  (None, 13, 13, 16)       0         
+ ePooling2D)                                                     
+                                                                 
+ conv2d_3 (Conv2D)           (None, 12, 12, 8)         520       
+                                                                 
+ flatten_1 (Flatten)         (None, 1152)              0         
+                                                                 
+ dense_2 (Dense)             (None, 10)                11530     
+                                                                 
+=================================================================
+Total params: 12,130
+Trainable params: 12,130
+Non-trainable params: 0
+_________________________________________________________________</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>CNN.<span class="bu">compile</span>(loss <span class="op">=</span> keras.losses.categorical_crossentropy,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>            optimizer <span class="op">=</span> keras.optimizers.Adamax(<span class="fl">0.01</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>CNN.fit(train, YT, epochs <span class="op">=</span> <span class="dv">5</span>, verbose <span class="op">=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;keras.callbacks.History object at 0x7f0b44785c70&gt;</code></pre>
+</div>
+</div>
+<p>Make predictions:</p>
+<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-5_88b67efdbe997e3108dabfac5e4256cb">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>CNN.predict(train[<span class="dv">0</span>:<span class="dv">10</span>,:,:])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+1/1 [==============================] - ETA: 0s
+1/1 [==============================] - 0s 39ms/step
+array([[1.1181537e-09, 2.2871836e-10, 8.1618259e-09, 1.0941692e-02,
+        1.2186857e-12, 9.8905164e-01, 7.4941531e-10, 3.2881280e-06,
+        2.9509465e-06, 4.6295472e-07],
+       [9.9913085e-01, 5.6235383e-08, 7.3662569e-04, 3.6811846e-07,
+        3.6626862e-08, 6.4597992e-07, 7.8866004e-05, 1.0132234e-10,
+        3.3926879e-06, 4.9185153e-05],
+       [7.7702627e-12, 5.6763956e-06, 4.4048205e-09, 1.5371381e-07,
+        9.9968910e-01, 4.1317495e-08, 5.5084448e-10, 7.7227251e-06,
+        8.8550350e-06, 2.8850837e-04],
+       [6.7505084e-08, 9.9908459e-01, 6.0488185e-04, 3.7413037e-07,
+        5.9135229e-05, 1.0721207e-08, 2.4258597e-08, 1.6805495e-04,
+        8.2748382e-05, 1.2584145e-07],
+       [1.6376575e-10, 1.8257330e-07, 1.0599615e-07, 2.1357984e-04,
+        2.0651119e-04, 4.6220787e-08, 3.0120306e-11, 6.0984075e-05,
+        5.0008623e-08, 9.9951857e-01],
+       [8.1270095e-08, 1.7270331e-08, 9.9999934e-01, 3.6143469e-08,
+        3.9866994e-09, 3.2378559e-14, 8.1235237e-15, 2.5397111e-07,
+        9.8850762e-08, 3.6428407e-08],
+       [8.8377601e-07, 9.9956709e-01, 6.9225271e-06, 1.0397793e-05,
+        4.9456748e-06, 3.5048351e-06, 2.2041748e-05, 1.1251929e-07,
+        3.7966701e-04, 4.5567990e-06],
+       [2.7390620e-12, 6.8532867e-11, 2.4177119e-08, 9.9999791e-01,
+        9.8699826e-17, 8.3391809e-09, 6.0832223e-18, 1.5824456e-10,
+        3.4807883e-08, 1.9520967e-06],
+       [6.6492216e-06, 9.9919182e-01, 2.7197627e-06, 2.3677121e-06,
+        5.3769606e-04, 2.3768218e-05, 2.7554268e-05, 1.1666738e-04,
+        8.4651707e-05, 6.0710104e-06],
+       [1.6910246e-08, 2.0487221e-07, 1.0832826e-07, 1.6800383e-09,
+        9.9999189e-01, 1.1831921e-08, 1.7606248e-09, 7.0846800e-06,
+        7.0496088e-07, 5.9994800e-12]], dtype=float32)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-6_b0a0990e688c549f205a486cf65e8012">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">MLJBase.int</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">MLDatasets</span>: MNIST</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>, <span class="bu">Statistics</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux.Data</span>: DataLoader</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>: onehotbatch, onecold, @epochs</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux.Losses</span>: logitcrossentropy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Data preparation:</p>
+<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-7_6e5f18e6f0217007a7cfdf29179fbb66">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cn">ENV</span>[<span class="st">"DATADEPS_ALWAYS_ACCEPT"</span>] <span class="op">=</span> <span class="st">"true"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>"true"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>xtrain, ytrain <span class="op">=</span> <span class="fu">MNIST</span>(<span class="op">:</span>train)[<span class="op">:</span>];</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>xtrain <span class="op">=</span> <span class="fu">reshape</span>(xtrain<span class="op">/</span><span class="fl">255</span>., <span class="fl">28</span>, <span class="fl">28</span>, <span class="fl">1</span>, <span class="fl">60000</span>);</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>ytrain <span class="op">=</span> <span class="fu">onehotbatch</span>(ytrain, <span class="fl">0</span><span class="op">:</span><span class="fl">9</span>);</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>data_loader <span class="op">=</span> <span class="fu">DataLoader</span>((xtrain, ytrain), batchsize<span class="op">=</span><span class="fl">100</span>, shuffle<span class="op">=</span><span class="cn">true</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Create model (similar to Keras):</p>
+<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-8_03e481ba155c21a5ba3f0e262fc0133f">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">Chain</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Conv</span>((<span class="fl">2</span>, <span class="fl">2</span>), <span class="fl">1</span><span class="op">=&gt;</span><span class="fl">16</span>, pad <span class="op">=</span> (<span class="fl">1</span>, <span class="fl">1</span>), relu),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">MeanPool</span>((<span class="fl">2</span>, <span class="fl">2</span>)),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Conv</span>((<span class="fl">2</span>, <span class="fl">2</span>), <span class="fl">16</span><span class="op">=&gt;</span><span class="fl">8</span>, pad <span class="op">=</span> (<span class="fl">1</span>, <span class="fl">1</span>), relu),</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">MeanPool</span>((<span class="fl">2</span>, <span class="fl">2</span>)),</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  Flux.flatten,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Dense</span>(<span class="fl">392</span>, <span class="fl">20</span>, relu),</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Dense</span>(<span class="fl">20</span>, <span class="fl">10</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Chain(
+  Conv((2, 2), 1 =&gt; 16, relu, pad=1),   # 80 parameters
+  MeanPool((2, 2)),
+  Conv((2, 2), 16 =&gt; 8, relu, pad=1),   # 520 parameters
+  MeanPool((2, 2)),
+  Flux.flatten,
+  Dense(392 =&gt; 20, relu),               # 7_860 parameters
+  Dense(20 =&gt; 10),                      # 210 parameters
+)                   # Total: 8 arrays, 8_670 parameters, 34.977 KiB.</code></pre>
+</div>
+</div>
+<p>Train/optimize Model:</p>
+<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-9_a9cbe3b60d4874aef3b0756be18eca8b">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>parameters <span class="op">=</span> Flux.<span class="fu">params</span>(model);</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> <span class="fu">ADAM</span>(<span class="fl">0.01</span>);</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Help functions</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">loss</span>(x, y) <span class="op">=</span> <span class="fu">logitcrossentropy</span>(<span class="fu">model</span>(x), y);</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_loss</span>() <span class="op">=</span> <span class="pp">@show</span> <span class="fu">sum</span>(<span class="fu">logitcrossentropy</span>(<span class="fu">model</span>(xtrain[<span class="op">:</span>,<span class="op">:</span>,<span class="op">:</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">100</span>]), ytrain[<span class="op">:</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">100</span>]));</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="co">## Training</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">1</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  Flux.<span class="fu">train!</span>(loss, parameters, data_loader, optimizer, cb <span class="op">=</span> Flux.<span class="fu">throttle</span>(get_loss, <span class="fl">6000</span>))</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sum(logitcrossentropy(model(xtrain[:, :, :, 1:100]), ytrain[:, 1:100])) = 2.301290467968534</code></pre>
+</div>
+</div>
+<p>Predictions:</p>
+<div class="cell" data-hash="cnn_cache/html/unnamed-chunk-10_9ffdf755f40901d02331e1ea4c56cca6">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">softmax</span>(<span class="fu">model</span>(xtrain[<span class="op">:</span>,<span class="op">:</span>,<span class="op">:</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]))[<span class="op">:</span>,<span class="fl">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>10-element Vector{Float64}:
+ 0.10213041258365503
+ 0.11425505318257256
+ 0.09493333518971231
+ 0.10597267878754779
+ 0.09368559004328189
+ 0.0916453414163753
+ 0.10353605754913195
+ 0.09766811239812598
+ 0.09657222751232929
+ 0.09960119133726789</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-chollet2015keras" class="csl-entry" role="doc-biblioentry">
+Chollet, Francois et al. 2015. <span>“Keras.”</span> GitHub. 2015. <a href="https://github.com/fchollet/keras">https://github.com/fchollet/keras</a>.
+</div>
+<div id="ref-Flux" class="csl-entry" role="doc-biblioentry">
+Innes, Michael, Elliot Saba, Keno Fischer, Dhairya Gandhi, Marco Concetto Rudilosso, Neethu Mariya Joy, Tejan Karmali, Avik Pal, and Viral Shah. 2018. <span>“Fashionable Modelling with Flux.”</span> <em>CoRR</em> abs/1811.01457. <a href="https://arxiv.org/abs/1811.01457">https://arxiv.org/abs/1811.01457</a>.
+</div>
+<div id="ref-lecun2015deep" class="csl-entry" role="doc-biblioentry">
+LeCun, Yann, Yoshua Bengio, and Geoffrey Hinton. 2015. <span>“Deep Learning.”</span> <em>Nature</em> 521 (7553): 436–44.
+</div>
+<div id="ref-lecun_mnist_2010" class="csl-entry" role="doc-biblioentry">
+LeCun, Yann, Corinna Cortes, and CJ Burges. 2010. <span>“<span>MNIST</span> Handwritten Digit Database.”</span> <em>ATT Labs [Online]. Available: Http://Yann.lecun.com/Exdb/Mnist</em> 2.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

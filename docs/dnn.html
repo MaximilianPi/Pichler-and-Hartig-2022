@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>dnn</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta name="citation_language" content="en">
+<meta name="citation_reference" content="citation_title=Europepmc: R Interface to the Europe PubMed Central RESTful Web Service;,citation_author=Najko Jahn;,citation_publication_date=2021;,citation_cover_date=2021;,citation_year=2021;,citation_fulltext_html_url=https://CRAN.R-project.org/package=europepmc;">
+<meta name="citation_reference" content="citation_title=Text mining infrastructure in r;,citation_author=Ingo Feinerer;,citation_author=Kurt Hornik;,citation_author=David Meyer;,citation_publication_date=2008;,citation_cover_date=2008;,citation_year=2008;,citation_fulltext_html_url=https://www.jstatsoft.org/v25/i05/;,citation_issue=5;,citation_volume=25;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=Wordcloud: Word clouds;,citation_author=Ian Fellows;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud;">
+<meta name="citation_reference" content="citation_title=wordcloud2: Create word cloud by ’htmlwidget’;,citation_author=Dawei Lang;,citation_author=Guan-tin Chien;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://CRAN.R-project.org/package=wordcloud2;">
+<meta name="citation_reference" content="citation_title=Regularization paths for cox’s proportional hazards model via coordinate descent;,citation_author=Noah Simon;,citation_author=Jerome Friedman;,citation_author=Trevor Hastie;,citation_author=Rob Tibshirani;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_fulltext_html_url=https://www.jstatsoft.org/v39/i05/;,citation_issue=5;,citation_doi=10.18637/jss.v039.i05;,citation_volume=39;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=e1071: Misc functions of the department of statistics, probability theory group (formerly: E1071), TU wien;,citation_author=David Meyer;,citation_author=Evgenia Dimitriadou;,citation_author=Kurt Hornik;,citation_author=Andreas Weingessel;,citation_author=Friedrich Leisch;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=e1071;">
+<meta name="citation_reference" content="citation_title=Kknn: Weighted k-nearest neighbors;,citation_author=Klaus Schliep;,citation_author=Klaus Hechenbichler;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_fulltext_html_url=https://CRAN.R-project.org/package=kknn;">
+<meta name="citation_reference" content="citation_title=ranger: A fast implementation of random forests for high dimensional data in C++ and R;,citation_author=Marvin N. Wright;,citation_author=Andreas Ziegler;,citation_publication_date=2017;,citation_cover_date=2017;,citation_year=2017;,citation_issue=1;,citation_doi=10.18637/jss.v077.i01;,citation_volume=77;,citation_journal_title=Journal of Statistical Software;">
+<meta name="citation_reference" content="citation_title=Xgboost: Extreme gradient boosting;,citation_author=Tianqi Chen;,citation_author=Tong He;,citation_author=Michael Benesty;,citation_author=Vadim Khotilovich;,citation_author=Yuan Tang;,citation_author=Hyunsu Cho;,citation_author=Kailong Chen;,citation_author=Rory Mitchell;,citation_author=Ignacio Cano;,citation_author=Tianyi Zhou;,citation_author=Mu Li;,citation_author=Junyuan Xie;,citation_author=Min Lin;,citation_author=Yifeng Geng;,citation_author=Yutian Li;,citation_author=Jiaming Yuan;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=xgboost;">
+<meta name="citation_reference" content="citation_title=Keras: R interface to ’keras’;,citation_author=JJ Allaire;,citation_author=François Chollet;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=keras;">
+<meta name="citation_reference" content="citation_title=Keras;,citation_author=Francois Chollet;,citation_author=others;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_fulltext_html_url=https://github.com/fchollet/keras;,citation_publisher=GitHub;">
+<meta name="citation_reference" content="citation_title=Tensorflow: A system for large-scale machine learning;,citation_author=Martı́n Abadi;,citation_author=Paul Barham;,citation_author=Jianmin Chen;,citation_author=Zhifeng Chen;,citation_author=Andy Davis;,citation_author=Jeffrey Dean;,citation_author=Matthieu Devin;,citation_author=Sanjay Ghemawat;,citation_author=Geoffrey Irving;,citation_author=Michael Isard;,citation_author=others;,citation_publication_date=2016;,citation_cover_date=2016;,citation_year=2016;,citation_conference_title=12th \{USENIX\} symposium on operating systems design and implementation (\{OSDI\} 16);">
+<meta name="citation_reference" content="citation_title=MNIST handwritten digit database;,citation_author=Yann LeCun;,citation_author=Corinna Cortes;,citation_author=CJ Burges;,citation_publication_date=2010;,citation_cover_date=2010;,citation_year=2010;,citation_volume=2;,citation_journal_title=ATT Labs [Online]. Available: http://yann.lecun.com/exdb/mnist;">
+<meta name="citation_reference" content="citation_title=Deep learning;,citation_author=Yann LeCun;,citation_author=Yoshua Bengio;,citation_author=Geoffrey Hinton;,citation_publication_date=2015;,citation_cover_date=2015;,citation_year=2015;,citation_issue=7553;,citation_volume=521;,citation_journal_title=nature;,citation_publisher=Nature Publishing Group;">
+<meta name="citation_reference" content="citation_title=Reticulate: Interface to ’python’;,citation_author=Kevin Ushey;,citation_author=JJ Allaire;,citation_author=Yuan Tang;,citation_publication_date=2022;,citation_cover_date=2022;,citation_year=2022;,citation_fulltext_html_url=https://CRAN.R-project.org/package=reticulate;">
+<meta name="citation_reference" content="citation_title=PyTorch: An imperative style, high-performance deep learning library;,citation_author=Adam Paszke;,citation_author=Sam Gross;,citation_author=Francisco Massa;,citation_author=Adam Lerer;,citation_author=James Bradbury;,citation_author=Gregory Chanan;,citation_author=Trevor Killeen;,citation_author=Zeming Lin;,citation_author=Natalia Gimelshein;,citation_author=Luca Antiga;,citation_author=Alban Desmaison;,citation_author=Andreas Kopf;,citation_author=Edward Yang;,citation_author=Zachary DeVito;,citation_author=Martin Raison;,citation_author=Alykhan Tejani;,citation_author=Sasank Chilamkurthy;,citation_author=Benoit Steiner;,citation_author=Lu Fang;,citation_author=Junjie Bai;,citation_author=Soumith Chintala;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_fulltext_html_url=http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf;,citation_inbook_title=Advances in neural information processing systems 32;">
+<meta name="citation_reference" content="citation_title=Fast graph representation learning with PyTorch Geometric;,citation_author=Matthias Fey;,citation_author=Jan E. Lenssen;,citation_publication_date=2019;,citation_cover_date=2019;,citation_year=2019;,citation_conference_title=ICLR workshop on representation learning on graphs and manifolds;">
+<meta name="citation_reference" content="citation_title=Alan-turing-institute/MLJ.jl: v0.5.3;,citation_author=Anthony Blaom;,citation_author=Franz Kiraly;,citation_author=Thibaut Lienart;,citation_author=Sebastian Vollmer;,citation_publication_date=2019-11;,citation_cover_date=2019-11;,citation_year=2019;,citation_fulltext_html_url=https://doi.org/10.5281/zenodo.3541506;,citation_doi=10.5281/zenodo.3541506;">
+<meta name="citation_reference" content="citation_title=Scikit-learn: Machine learning in Python;,citation_author=F. Pedregosa;,citation_author=G. Varoquaux;,citation_author=A. Gramfort;,citation_author=V. Michel;,citation_author=B. Thirion;,citation_author=O. Grisel;,citation_author=M. Blondel;,citation_author=P. Prettenhofer;,citation_author=R. Weiss;,citation_author=V. Dubourg;,citation_author=J. Vanderplas;,citation_author=A. Passos;,citation_author=D. Cournapeau;,citation_author=M. Brucher;,citation_author=M. Perrot;,citation_author=E. Duchesnay;,citation_publication_date=2011;,citation_cover_date=2011;,citation_year=2011;,citation_volume=12;,citation_journal_title=Journal of Machine Learning Research;">
+<meta name="citation_reference" content="citation_title=Fashionable modelling with flux;,citation_author=Michael Innes;,citation_author=Elliot Saba;,citation_author=Keno Fischer;,citation_author=Dhairya Gandhi;,citation_author=Marco Concetto Rudilosso;,citation_author=Neethu Mariya Joy;,citation_author=Tejan Karmali;,citation_author=Avik Pal;,citation_author=Viral Shah;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_fulltext_html_url=https://arxiv.org/abs/1811.01457;,citation_volume=abs/1811.01457;,citation_journal_title=CoRR;">
+<meta name="citation_reference" content="citation_title=Flux: Elegant machine learning with julia;,citation_author=Mike Innes;,citation_publication_date=2018;,citation_cover_date=2018;,citation_year=2018;,citation_doi=10.21105/joss.00602;,citation_journal_title=Journal of Open Source Software;">
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="deep-neural-networks" class="level1">
+<h1>Deep neural networks</h1>
+<p>Deep neural networks, or more precisely here fully connected neural networks, can be flexibly built which makes their application more challenging than other ML algorithms.</p>
+<p>In the following, we use the ‘keras’ (<span class="citation" data-cites="kerasR">Allaire and Chollet (<a href="#ref-kerasR" role="doc-biblioref">2022</a>)</span>; <span class="citation" data-cites="chollet2015keras">Chollet et al. (<a href="#ref-chollet2015keras" role="doc-biblioref">2015</a>)</span>) (Python: ‘keras’ (<span class="citation" data-cites="chollet2015keras">Chollet et al. (<a href="#ref-chollet2015keras" role="doc-biblioref">2015</a>)</span>); Julia: ‘Flux’ (<span class="citation" data-cites="Flux">Innes et al. (<a href="#ref-Flux" role="doc-biblioref">2018</a>)</span>)) package which is a higher level API on the python ‘tensorflow’ framework (<span class="citation" data-cites="abadi2016tensorflow">Abadi et al. (<a href="#ref-abadi2016tensorflow" role="doc-biblioref">2016</a>)</span>).</p>
+<section id="classification" class="level2">
+<h2 class="anchored" data-anchor-id="classification">Classification</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Julia</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-2_bdcaff32021054a807f3abadc0f2b2c9">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(<span class="fu">as.matrix</span>(iris[,<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> <span class="fu">as.integer</span>(iris<span class="sc">$</span>Species)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to one hot encode our response classes</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>YT <span class="ot">=</span> <span class="fu">k_one_hot</span>(Y<span class="sc">-</span>1L, <span class="at">num_classes =</span> <span class="dv">3</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>DNN <span class="ot">=</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">input_shape =</span> <span class="fu">ncol</span>(X), </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">units =</span> <span class="dv">10</span>, </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"relu"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># second hidden layer with regularization</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">20</span>, </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"relu"</span>,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">kernel_regularizer =</span> <span class="fu">regularizer_l1</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># output layer, 3 output neurons for our three classes</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and softmax activation to get quasi probabilities </span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># that sum up to 1 for each observation</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">3</span>, </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"softmax"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># print architecture</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(DNN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential"
+________________________________________________________________________________
+ Layer (type)                       Output Shape                    Param #     
+================================================================================
+ dense_2 (Dense)                    (None, 10)                      50          
+ dense_1 (Dense)                    (None, 20)                      220         
+ dense (Dense)                      (None, 3)                       63          
+================================================================================
+Total params: 333
+Trainable params: 333
+Non-trainable params: 0
+________________________________________________________________________________</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>DNN <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compile</span>(<span class="at">loss =</span> loss_categorical_crossentropy,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">optimizer =</span> <span class="fu">optimizer_adamax</span>(<span class="fl">0.01</span>))</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>DNN <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(X, YT, <span class="at">epochs =</span> <span class="dv">50</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Make predictions (class probabilities):</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-3_f818dc2714c7ba77323ce62630e1ba9d">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(DNN, X), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]        [,2]         [,3]
+[1,] 0.9943717 0.004811807 0.0008164378
+[2,] 0.9866450 0.011190814 0.0021641329
+[3,] 0.9952909 0.003913700 0.0007954266</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-4_df8289051237c9f7e024872ae18390e3">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scale(iris.data)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> iris.target</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to one hot encode our response classes</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>YT <span class="op">=</span> keras.utils.to_categorical(Y, num_classes <span class="op">=</span> <span class="dv">3</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>DNN <span class="op">=</span> keras.Sequential()</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  input_shape<span class="op">=</span>[X.shape[<span class="dv">1</span>]], </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">10</span>, </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="st">"relu"</span>)) </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># second hidden layer with regularization</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">20</span>, </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="st">"relu"</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  kernel_regularizer <span class="op">=</span> keras.regularizers.l1()))</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># output layer, 3 output neurons for our three classes</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and softmax activation to get quasi probabilities </span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># that sum up to 1 for each observation</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">3</span>, </span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="st">"softmax"</span>))</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co"># print architecture</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>DNN.summary()</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential_1"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense_3 (Dense)             (None, 10)                50        
+                                                                 
+ dense_4 (Dense)             (None, 20)                220       
+                                                                 
+ dense_5 (Dense)             (None, 3)                 63        
+                                                                 
+=================================================================
+Total params: 333
+Trainable params: 333
+Non-trainable params: 0
+_________________________________________________________________</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>DNN.<span class="bu">compile</span>(loss <span class="op">=</span> keras.losses.categorical_crossentropy,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>            optimizer <span class="op">=</span> keras.optimizers.Adamax(<span class="fl">0.01</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>DNN.fit(X, YT, epochs <span class="op">=</span> <span class="dv">50</span>, verbose <span class="op">=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;keras.callbacks.History object at 0x7fb0896b0850&gt;</code></pre>
+</div>
+</div>
+<p>Make predictions:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-5_cb8ecdf04ca5c9aec17796088f6a7a9c">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>DNN.predict(X)[<span class="dv">0</span>:<span class="dv">10</span>,:]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+1/5 [=====&gt;........................] - ETA: 0s
+5/5 [==============================] - 0s 680us/step
+array([[9.9583131e-01, 4.1106688e-03, 5.8080172e-05],
+       [9.8362643e-01, 1.6319780e-02, 5.3694650e-05],
+       [9.9434531e-01, 5.6184102e-03, 3.6299647e-05],
+       [9.9109250e-01, 8.8622421e-03, 4.5296307e-05],
+       [9.9725479e-01, 2.6933698e-03, 5.1819748e-05],
+       [9.9600965e-01, 3.8014781e-03, 1.8886165e-04],
+       [9.9641293e-01, 3.5384791e-03, 4.8511523e-05],
+       [9.9425328e-01, 5.6840330e-03, 6.2594314e-05],
+       [9.8860162e-01, 1.1364626e-02, 3.3743974e-05],
+       [9.8900944e-01, 1.0945212e-02, 4.5381825e-05]], dtype=float32)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-6_e71920c76a09487951dc7c59b5694814">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">MLJBase.int</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>, <span class="bu">Statistics</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux.Data</span>: DataLoader</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>: onehotbatch, onecold, @epochs</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux.Losses</span>: logitcrossentropy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Data preparation:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-7_a9b35f0cc181e23e333fb9d1a23718de">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">transpose</span>(<span class="fu">Matrix</span>(<span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>])));</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> <span class="fu">int</span>(iris[<span class="op">:</span>, <span class="fl">5</span>], <span class="kw">type</span> <span class="op">=</span> <span class="dt">Int</span>);</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>classes <span class="op">=</span> <span class="fu">sort</span>(<span class="fu">unique</span>(Y));</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>YT <span class="op">=</span> <span class="fu">onehotbatch</span>(Y, classes);</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>data_loader <span class="op">=</span> <span class="fu">DataLoader</span>((X, YT), batchsize<span class="op">=</span><span class="fl">10</span>, shuffle<span class="op">=</span><span class="cn">true</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Create model (similar to Keras):</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-8_0bb2311dfdfaa6ddf3d81ca0bb937ff1">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">Chain</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Dense</span>(<span class="fl">4</span>, <span class="fl">20</span>, relu),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Dense</span>(<span class="fl">20</span>, <span class="fl">20</span>, relu),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Dense</span>(<span class="fl">20</span>, <span class="fl">3</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Chain(
+  Dense(4 =&gt; 20, relu),                 # 100 parameters
+  Dense(20 =&gt; 20, relu),                # 420 parameters
+  Dense(20 =&gt; 3),                       # 63 parameters
+)                   # Total: 6 arrays, 583 parameters, 2.652 KiB.</code></pre>
+</div>
+</div>
+<p>Train/optimize Model:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-9_def010d895779ec0cc2d942727853b9c">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>parameters <span class="op">=</span> Flux.<span class="fu">params</span>(model);</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> <span class="fu">ADAM</span>(<span class="fl">0.01</span>);</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Help functions</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">loss</span>(x, y) <span class="op">=</span> <span class="fu">logitcrossentropy</span>(<span class="fu">model</span>(x), y);</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_loss</span>() <span class="op">=</span> <span class="pp">@show</span> <span class="fu">sum</span>(<span class="fu">logitcrossentropy</span>(<span class="fu">model</span>(X), YT));</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">## Training</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  Flux.<span class="fu">train!</span>(loss, parameters, data_loader, optimizer, cb <span class="op">=</span> Flux.<span class="fu">throttle</span>(get_loss, <span class="fl">5</span>))</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sum(logitcrossentropy(model(X), YT)) = 1.0847621827469989
+sum(logitcrossentropy(model(X), YT)) = 0.41861586893929087
+sum(logitcrossentropy(model(X), YT)) = 0.28409296777747656
+sum(logitcrossentropy(model(X), YT)) = 0.19468215242911596
+sum(logitcrossentropy(model(X), YT)) = 0.13160069597338106
+sum(logitcrossentropy(model(X), YT)) = 0.09292801366692326
+sum(logitcrossentropy(model(X), YT)) = 0.08476726510840268
+sum(logitcrossentropy(model(X), YT)) = 0.07357130215647495
+sum(logitcrossentropy(model(X), YT)) = 0.05955705216439545
+sum(logitcrossentropy(model(X), YT)) = 0.06489229857135734
+sum(logitcrossentropy(model(X), YT)) = 0.04552515538160692
+sum(logitcrossentropy(model(X), YT)) = 0.04941019442329357
+sum(logitcrossentropy(model(X), YT)) = 0.04051517193299854
+sum(logitcrossentropy(model(X), YT)) = 0.05666814742618713
+sum(logitcrossentropy(model(X), YT)) = 0.05791907364710918
+sum(logitcrossentropy(model(X), YT)) = 0.04238850341678316
+sum(logitcrossentropy(model(X), YT)) = 0.08791328847980895
+sum(logitcrossentropy(model(X), YT)) = 0.047533954738316425
+sum(logitcrossentropy(model(X), YT)) = 0.044352655498664274
+sum(logitcrossentropy(model(X), YT)) = 0.0397672009806662</code></pre>
+</div>
+</div>
+<p>Predictions:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-10_ad869418105438cc29354026ae25a9dd">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">transpose</span>(<span class="fu">softmax</span>(<span class="fu">model</span>(X)))[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,<span class="op">:</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>5×3 Matrix{Float64}:
+ 0.999997  2.61079e-6  1.15129e-11
+ 0.999971  2.85092e-5  2.56738e-10
+ 0.999999  1.29144e-6  1.78573e-11
+ 0.999998  2.14865e-6  5.09192e-11
+ 0.999999  9.7007e-7   3.61251e-12</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="regression" class="level2">
+<h2 class="anchored" data-anchor-id="regression">Regression</h2>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">R</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Julia</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-11_64ea00cb1beb237958cac1b1413693b0">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">=</span> <span class="fu">scale</span>(<span class="fu">as.matrix</span>(iris[,<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]))</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>Y <span class="ot">=</span> <span class="fu">as.matrix</span>(iris[,<span class="dv">1</span>,<span class="at">drop=</span><span class="cn">FALSE</span>])</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>DNN <span class="ot">=</span> <span class="fu">keras_model_sequential</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">input_shape =</span> <span class="fu">ncol</span>(X), </span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">units =</span> <span class="dv">10</span>, </span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"relu"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># second hidden layer with regularization</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">20</span>, </span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">activation =</span> <span class="st">"relu"</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">kernel_regularizer =</span> <span class="fu">regularizer_l1</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># output layer, one output neuron for one response</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and no activation function</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">1</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co"># print architecture</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(DNN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential_2"
+________________________________________________________________________________
+ Layer (type)                       Output Shape                    Param #     
+================================================================================
+ dense_8 (Dense)                    (None, 10)                      40          
+ dense_7 (Dense)                    (None, 20)                      220         
+ dense_6 (Dense)                    (None, 1)                       21          
+================================================================================
+Total params: 281
+Trainable params: 281
+Non-trainable params: 0
+________________________________________________________________________________</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>DNN <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compile</span>(<span class="at">loss =</span> loss_mean_squared_error,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">optimizer =</span> <span class="fu">optimizer_adamax</span>(<span class="fl">0.01</span>))</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>DNN <span class="sc">%&gt;%</span> </span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(X, YT, <span class="at">epochs =</span> <span class="dv">50</span>, <span class="at">verbose =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Make predictions:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-12_879630ad864b5177f320c495e5ef9d7f">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">predict</span>(DNN, X), <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]
+[1,] 0.3332271
+[2,] 0.3336180
+[3,] 0.3334625</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-13_95d296202b5dc3b23642604d977f5618">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow <span class="im">import</span> keras</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tensorflow.keras.layers <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> datasets</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> scale</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> datasets.load_iris()</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> iris.data</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scale(data[:,<span class="dv">1</span>:<span class="dv">4</span>])</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> data[:,<span class="dv">0</span>]</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>DNN <span class="op">=</span> keras.Sequential()</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># first hidden layer</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>  input_shape<span class="op">=</span>[X.shape[<span class="dv">1</span>]], </span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">10</span>, </span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="st">"relu"</span>)) </span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># second hidden layer with regularization</span></span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">20</span>, </span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="st">"relu"</span>,</span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  kernel_regularizer <span class="op">=</span> keras.regularizers.l1()))</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># output layer, 3 output neurons for our three classes</span></span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># and softmax activation to get quasi probabilities </span></span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># that sum up to 1 for each observation</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>DNN.add(Dense(</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  units <span class="op">=</span> <span class="dv">1</span>, </span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>  activation <span class="op">=</span> <span class="va">None</span>))</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a><span class="co"># print architecture</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>DNN.summary()</span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a><span class="co"># add loss function and optimizer</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential_3"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense_9 (Dense)             (None, 10)                40        
+                                                                 
+ dense_10 (Dense)            (None, 20)                220       
+                                                                 
+ dense_11 (Dense)            (None, 1)                 21        
+                                                                 
+=================================================================
+Total params: 281
+Trainable params: 281
+Non-trainable params: 0
+_________________________________________________________________</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>DNN.<span class="bu">compile</span>(loss <span class="op">=</span> keras.losses.mean_squared_error,</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>            optimizer <span class="op">=</span> keras.optimizers.Adamax(<span class="fl">0.01</span>))</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># train model</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>DNN.fit(X, Y, epochs <span class="op">=</span> <span class="dv">50</span>, verbose <span class="op">=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;keras.callbacks.History object at 0x7faf45b6fac0&gt;</code></pre>
+</div>
+</div>
+<p>Make predictions:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-14_a33f2fdd6a1209b265c895affa749bba">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>DNN.predict(X)[<span class="dv">0</span>:<span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+1/5 [=====&gt;........................] - ETA: 0s
+5/5 [==============================] - 0s 626us/step
+array([[5.153783 ],
+       [4.8413796],
+       [4.947369 ],
+       [4.906414 ],
+       [5.2335167],
+       [5.212913 ],
+       [4.928632 ],
+       [5.086681 ],
+       [4.784372 ],
+       [5.047194 ]], dtype=float32)</code></pre>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-15_67431682b8fdbf525ae6cf799ed94718">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">StatsBase</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> <span class="bu">MLJBase.int</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>, <span class="bu">Statistics</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux.Data</span>: DataLoader</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux</span>: onehotbatch, onecold, @epochs</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Flux.Losses</span>: mse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Data preparation:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-16_4107a190971f6f9891e313825bc36eae">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> <span class="fu">dataset</span>(<span class="st">"datasets"</span>, <span class="st">"iris"</span>);</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> <span class="fu">transpose</span>(<span class="fu">Matrix</span>(<span class="fu">mapcols</span>(StatsBase.zscore, iris[<span class="op">:</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>])));</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>YT <span class="op">=</span> iris[<span class="op">:</span>, <span class="fl">1</span>];</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>YT <span class="op">=</span> <span class="fu">reshape</span>(YT, <span class="fl">1</span>, <span class="fu">length</span>(YT));</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>data_loader <span class="op">=</span> <span class="fu">DataLoader</span>((X, YT), batchsize<span class="op">=</span><span class="fl">10</span>, shuffle<span class="op">=</span><span class="cn">true</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Create model (similar to Keras):</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-17_a62eeafcd275bfe399bec3a72c176241">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="fu">Chain</span>(</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Dense</span>(<span class="fl">3</span>, <span class="fl">20</span>, relu),</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Dense</span>(<span class="fl">20</span>, <span class="fl">20</span>, relu),</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Dense</span>(<span class="fl">20</span>, <span class="fl">1</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Chain(
+  Dense(3 =&gt; 20, relu),                 # 80 parameters
+  Dense(20 =&gt; 20, relu),                # 420 parameters
+  Dense(20 =&gt; 1),                       # 21 parameters
+)                   # Total: 6 arrays, 521 parameters, 2.410 KiB.</code></pre>
+</div>
+</div>
+<p>Train/optimize Model:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-18_baeaa7877c77fe944f8c5fde3b869fa9">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>parameters <span class="op">=</span> Flux.<span class="fu">params</span>(model);</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> <span class="fu">ADAM</span>(<span class="fl">0.01</span>);</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Help functions</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">loss</span>(x, y) <span class="op">=</span> <span class="fu">mse</span>(<span class="fu">model</span>(x), y);</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="fu">get_loss</span>() <span class="op">=</span> <span class="pp">@show</span> <span class="fu">sum</span>(<span class="fu">mse</span>(<span class="fu">model</span>(X), YT));</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co">## Training</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fl">20</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>  Flux.<span class="fu">train!</span>(loss, parameters, data_loader, optimizer, cb <span class="op">=</span> Flux.<span class="fu">throttle</span>(get_loss, <span class="fl">5</span>))</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>sum(mse(model(X), YT)) = 29.07346144222025
+sum(mse(model(X), YT)) = 2.2416517572050343
+sum(mse(model(X), YT)) = 1.5487028757261814
+sum(mse(model(X), YT)) = 1.0567789347316945
+sum(mse(model(X), YT)) = 0.7146277767677577
+sum(mse(model(X), YT)) = 0.4873170089597854
+sum(mse(model(X), YT)) = 0.2943587558821003
+sum(mse(model(X), YT)) = 0.23717687312953964
+sum(mse(model(X), YT)) = 0.15060292095730848
+sum(mse(model(X), YT)) = 0.12921184500980595
+sum(mse(model(X), YT)) = 0.11438955839064809
+sum(mse(model(X), YT)) = 0.1209811019396246
+sum(mse(model(X), YT)) = 0.1095651084591268
+sum(mse(model(X), YT)) = 0.10894502288937695
+sum(mse(model(X), YT)) = 0.09853287235725164
+sum(mse(model(X), YT)) = 0.1296184768039172
+sum(mse(model(X), YT)) = 0.11522763156480774
+sum(mse(model(X), YT)) = 0.09469441130795656
+sum(mse(model(X), YT)) = 0.09941779923178777
+sum(mse(model(X), YT)) = 0.10689945604907174</code></pre>
+</div>
+</div>
+<p>Predictions:</p>
+<div class="cell" data-hash="dnn_cache/html/unnamed-chunk-19_a07babe2f09ac0307ad54d32a0329909">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">transpose</span>(<span class="fu">model</span>(X))[<span class="fl">1</span><span class="op">:</span><span class="fl">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>5-element Vector{Float64}:
+ 5.044081758527378
+ 4.578648187686671
+ 4.7570435189899944
+ 4.713898034456124
+ 5.1239384911577</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-abadi2016tensorflow" class="csl-entry" role="doc-biblioentry">
+Abadi, Martı́n, Paul Barham, Jianmin Chen, Zhifeng Chen, Andy Davis, Jeffrey Dean, Matthieu Devin, et al. 2016. <span>“Tensorflow: A System for Large-Scale Machine Learning.”</span> In <em>12th <span class="math inline">\(\{\)</span>USENIX<span class="math inline">\(\}\)</span> Symposium on Operating Systems Design and Implementation (<span class="math inline">\(\{\)</span>OSDI<span class="math inline">\(\}\)</span> 16)</em>, 265–83.
+</div>
+<div id="ref-kerasR" class="csl-entry" role="doc-biblioentry">
+Allaire, JJ, and François Chollet. 2022. <em>Keras: R Interface to ’Keras’</em>. <a href="https://CRAN.R-project.org/package=keras">https://CRAN.R-project.org/package=keras</a>.
+</div>
+<div id="ref-chollet2015keras" class="csl-entry" role="doc-biblioentry">
+Chollet, Francois et al. 2015. <span>“Keras.”</span> GitHub. 2015. <a href="https://github.com/fchollet/keras">https://github.com/fchollet/keras</a>.
+</div>
+<div id="ref-Flux" class="csl-entry" role="doc-biblioentry">
+Innes, Michael, Elliot Saba, Keno Fischer, Dhairya Gandhi, Marco Concetto Rudilosso, Neethu Mariya Joy, Tejan Karmali, Avik Pal, and Viral Shah. 2018. <span>“Fashionable Modelling with Flux.”</span> <em>CoRR</em> abs/1811.01457. <a href="https://arxiv.org/abs/1811.01457">https://arxiv.org/abs/1811.01457</a>.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
