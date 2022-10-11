@@ -7,7 +7,7 @@ format:
     number-sections: true
     reference-doc: custom-reference-doc.docx
   html: default
-bibliography: references.bib
+bibliography: ML_Introduction/references.bib
 ---
 
 ```{r setup2, include=FALSE}
