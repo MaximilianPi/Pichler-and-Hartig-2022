@@ -1,6 +1,7 @@
 .ipynb_checkpoints
 .Rproj.user/
 .Rproj.user/*
+.Rproj.user
 Supporting-Information_cache/
 Supporting_Information_cache/
 ML_Introduction/*_cache

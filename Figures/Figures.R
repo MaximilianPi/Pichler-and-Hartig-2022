@@ -1,3 +1,5 @@
+###### Script to create Figure 1 (trends at the head of the figure) and Figure 3 ###### 
+
 library(europepmc)
 library(tidyverse)
 library(ggplot2)
@@ -177,7 +179,7 @@ g2 =
           panel.grid.major.y = element_blank(),
           panel.grid.minor.y = element_blank())
 
-pdf("Figures/Fig_2.pdf", width = 9, height = 7)
+pdf("Figures/Fig_3.pdf", width = 9, height = 7)
 grid.arrange(g1, g2, ncol=1, nrow = 2)
 dev.off()
 

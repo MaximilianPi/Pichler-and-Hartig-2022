@@ -1,9 +1,0 @@
-tf = reticulate::import("tensorflow")
-library(tensorflow)
-tf$enable_eager_execution()
-
-tfp = reticulate::import('tensorflow_probability')
-
-pkg = reticulate::import("pkg_resources")
-pkg$require("tensorflow==2.0.0")
-

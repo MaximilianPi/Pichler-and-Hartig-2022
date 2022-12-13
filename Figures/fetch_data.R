@@ -1,3 +1,5 @@
+###### Script to fetch the trend data ###### 
+
 library(europepmc)
 library(tidyverse)
 library(ggplot2)
